@@ -1,0 +1,15 @@
+{
+  "name": "60121849657221935028128-copy",
+  "version": "1.0.0",
+  "description": "### commands `!cutie !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !dubtrack`",
+  "main": "poopthefirst.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dank-twitch-irc": "^4.3.0",
+    "dotenv": "^8.2.0"
+  }
+}
