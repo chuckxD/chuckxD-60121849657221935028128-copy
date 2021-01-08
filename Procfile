@@ -1,1 +1,1 @@
-web: node poopthefirst.js
+web: npm run start

@@ -4,7 +4,8 @@
   "description": "### commands `!cutie !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !dubtrack`",
   "main": "poopthefirst.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node poopthefirst.js"
   },
   "author": "",
   "license": "ISC",
