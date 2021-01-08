@@ -57,7 +57,9 @@ try {
 
     if (
       messageText.toLowerCase().includes("tanties") &&
-      event.senderUsername.toLowerCase() === "tifas_sweaty_feet"
+      ["tifas_sweaty_feet", "ii57rx", "nice_name_skye"].includes(
+        event.senderUsername.toLowerCase()
+      )
     ) {
       if (DEBUG) console.log(event, getRandomArrayElement(["heads", "tails"]));
       if (getRandomArrayElement(["heads", "tails"]) === "heads") {
@@ -66,8 +68,8 @@ try {
           getRandomArrayElement([
             "TANTIES",
             "TANTIES wtf",
-            "TANTIES tifas_sweaty_feet",
-            "TANTIES ii",
+            `TANTIES ${event.senderUsername}`,
+            "TANTIES",
             "Madge",
           ])
         );
