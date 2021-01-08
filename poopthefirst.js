@@ -34,7 +34,8 @@ try {
   client.join(CHANNEL);
 
   let globalCommandCooldown = 5001,
-  (dtsLastMessageSent = Date.now()), (isMoonLive = false);
+    dtsLastMessageSent = Date.now(),
+    isMoonLive = false;
 
   client.on("message", (event) => {
     if (DEBUG) console.info(event);
