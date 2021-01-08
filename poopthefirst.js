@@ -33,9 +33,8 @@ try {
   client.connect();
   client.join(CHANNEL);
 
-  let globalCommandCooldown = 4000,
-    dtsLastMessageSent = Date.now(),
-    isMoonLive = false;
+  let globalCommandCooldown = 5001,
+  (dtsLastMessageSent = Date.now()), (isMoonLive = false);
 
   client.on("message", (event) => {
     if (DEBUG) console.info(event);
@@ -55,26 +54,26 @@ try {
       return;
     }
 
-    if (
-      messageText.toLowerCase().includes("tanties") &&
-      ["tifas_sweaty_feet", "ii57rx", "nice_name_skye"].includes(
-        event.senderUsername.toLowerCase()
-      )
-    ) {
-      if (DEBUG) console.log(event, getRandomArrayElement(["heads", "tails"]));
-      if (getRandomArrayElement(["heads", "tails"]) === "heads") {
-        client.say(
-          CHANNEL,
-          getRandomArrayElement([
-            "TANTIES",
-            "TANTIES wtf",
-            `TANTIES ${event.senderUsername}`,
-            "TANTIES",
-            "Madge",
-          ])
-        );
-      }
-    }
+    // if (
+    //   messageText.toLowerCase().includes("tanties") &&
+    //   ["duwubson", "tifas_sweaty_feet", "ii57rx", "nice_name_skye"].includes(
+    //     event.senderUsername.toLowerCase()
+    //   )
+    // ) {
+    //   if (DEBUG) console.log(event, getRandomArrayElement(["heads", "tails"]));
+    //   if (getRandomArrayElement(["heads", "tails"]) === "heads") {
+    //     client.say(
+    //       CHANNEL,
+    //       getRandomArrayElement([
+    //         "TANTIES",
+    //         "TANTIES wtf",
+    //         `TANTIES ${event.senderUsername}`,
+    //         "TANTIES",
+    //         `Madge ${event.senderUsername}`,
+    //       ])
+    //     );
+    //   }
+    // }
 
     if (!messageText.startsWith("!")) {
       return;
@@ -136,10 +135,10 @@ try {
 
     if (command === "ban") {
       if (target === "60121849657221935028128") {
-        // client.me(
-        //   CHANNEL,
-        //   `🔧  ${target} has beenpermanently banned. RedTeam FishMoley 🔫 `
-        // );
+        client.me(
+          CHANNEL,
+          `🔧  ${target} has beenpermanently banned. RedTeam FishMoley 🔫 `
+        );
       } else {
         client.me(CHANNEL, `🔧  ${target} has beenpermanently banned.`);
       }
@@ -202,7 +201,10 @@ try {
     }
 
     if (command === "why") {
-      client.say(CHANNEL, `${target === 'chat' ? sender : target} why are you always here pepeW`);
+      client.say(
+        CHANNEL,
+        `${target === "chat" ? sender : target} why are you always here pepeW`
+      );
     }
 
     if (command === "smoke") {
@@ -254,7 +256,7 @@ try {
     if (command === "commands") {
       client.say(
         CHANNEL,
-        `${sender} poopthefirst clone | mish_al modCheck | !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop !code`
+        `${sender} poopthefirst copycat | mish_al modCheck | !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop`
       );
     }
 
@@ -273,9 +275,9 @@ try {
       client.say(CHANNEL, `is based`);
     }
 
-    if (command === 'code') {
-      client.say(CHANNEL, `https://github.com/chuckxD/chuckxD-60121849657221935028128-copy ${target}`)
-    }
+    //if (command === 'code') {
+    //  client.say(CHANNEL, `https://github.com/chuckxD/chuckxD-60121849657221935028128-copy ${target}`)
+    //}
   });
 } catch (err) {
   console.error(err);
