@@ -33,7 +33,7 @@ try {
   client.connect();
   client.join(CHANNEL);
 
-  let cooldown = 5000,
+  let globalCommandCooldown = 5000,
     dtsLastMessageSent = Date.now(),
     isMoonLive = false;
 
@@ -51,11 +51,29 @@ try {
       return;
     }
 
-    if (!messageText.startsWith("!")) {
+    if (Date.now() < dtsLastMessageSent + globalCommandCooldown) {
       return;
     }
 
-    if (Date.now() < dtsLastMessageSent + cooldown) {
+    if (
+      messageText.toLowerCase().includes("tanties") &&
+      event.senderUsername.toLowerCase() === "duwubson"
+    ) {
+      if (DEBUG) console.log(event, getRandomArrayElement(["heads", "tails"]));
+      if (getRandomArrayElement(["heads", "tails"]) === "heads") {
+        client.say(
+          CHANNEL,
+          getRandomArrayElement([
+            "TANTIES",
+            "TANTIES wtf",
+            "TANTIES tifas_sweaty_feet",
+            "Madge",
+          ])
+        );
+      }
+    }
+
+    if (!messageText.startsWith("!")) {
       return;
     }
 
@@ -246,6 +264,10 @@ try {
         CHANNEL,
         `${sender} is cuddling with ${target} in bed moon2BED UwU`
       );
+    }
+
+    if (command === "gumiho") {
+      client.say(CHANNEL, `is based`);
     }
   });
 } catch (err) {
