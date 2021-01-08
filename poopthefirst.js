@@ -31,7 +31,7 @@ try {
     }
   });
   client.connect();
-  client.join("60121849657221935028128");
+  client.join(CHANNEL);
 
   let cooldown = 5000,
     dtsLastMessageSent = Date.now(),
@@ -233,7 +233,7 @@ try {
     if (command === "commands") {
       client.say(
         CHANNEL,
-        "!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang"
+        `!lastseen poopthefirst PepeHands ${sender} | !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop`
       );
     }
 
