@@ -138,10 +138,10 @@ try {
       if (target === "60121849657221935028128") {
         client.me(
           CHANNEL,
-          `🔧  ${target} has beenpermanently banned. RedTeam FishMoley 🔫 `
+          `🔧  ${target} has been permanently banned. RedTeam NaM 🔫 `
         );
       } else {
-        client.me(CHANNEL, `🔧  ${target} has beenpermanently banned.`);
+        client.me(CHANNEL, `🔧  ${target} has been permanently banned.`);
       }
     }
 
