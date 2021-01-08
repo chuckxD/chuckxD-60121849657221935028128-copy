@@ -33,7 +33,7 @@ try {
   client.connect();
   client.join(CHANNEL);
 
-  let globalCommandCooldown = 5000,
+  let globalCommandCooldown = 1000,
     dtsLastMessageSent = Date.now(),
     isMoonLive = false;
 
@@ -254,7 +254,7 @@ try {
     if (command === "commands") {
       client.say(
         CHANNEL,
-        `!lastseen poopthefirst PepeHands ${sender} | !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop`
+        `${sender} poopthefirst clone | mish_al modCheck | !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop !code`
       );
     }
 
@@ -271,6 +271,10 @@ try {
 
     if (command === "gumiho") {
       client.say(CHANNEL, `is based`);
+    }
+
+    if (command === 'code') {
+      client.say(CHANNEL, `https://github.com/chuckxD/chuckxD-60121849657221935028128-copy ${target}`)
     }
   });
 } catch (err) {
