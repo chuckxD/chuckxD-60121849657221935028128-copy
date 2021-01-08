@@ -33,7 +33,7 @@ try {
   client.connect();
   client.join(CHANNEL);
 
-  let globalCommandCooldown = 1000,
+  let globalCommandCooldown = 4000,
     dtsLastMessageSent = Date.now(),
     isMoonLive = false;
 
@@ -202,7 +202,7 @@ try {
     }
 
     if (command === "why") {
-      client.say(CHANNEL, `${sender} why are you always here pepeW`);
+      client.say(CHANNEL, `${target === 'chat' ? sender : target} why are you always here pepeW`);
     }
 
     if (command === "smoke") {
