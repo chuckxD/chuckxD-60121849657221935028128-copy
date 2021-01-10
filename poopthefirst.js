@@ -4,20 +4,19 @@ module.exports = (() => {
     originalcommands - !cutie !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !dubtrack
     logs - https://poop.delivery/log/poopthefirst
   */
-
-  const {
-    DEBUG,
-    CHANNEL,
-    TWITCH_OAUTH_PASSWORD,
-    TWITCH_OAUTH_USERNAME,
-  } = process.env;
-  // const sleep = require("util").promisify(setTimeout);
-  const { ChatClient } = require("dank-twitch-irc");
-
-  const getRandomArrayElement = (arr) =>
-    arr[Math.floor(Math.random() * arr.length)];
-
   try {
+    const {
+      DEBUG,
+      CHANNEL,
+      TWITCH_OAUTH_PASSWORD,
+      TWITCH_OAUTH_USERNAME,
+    } = process.env;
+    const sleep = require("util").promisify(setTimeout);
+    const { ChatClient } = require("dank-twitch-irc");
+
+    const getRandomArrayElement = (arr) =>
+      arr[Math.floor(Math.random() * arr.length)];
+
     let client = new ChatClient({
       username: TWITCH_OAUTH_USERNAME,
       password: TWITCH_OAUTH_PASSWORD,
@@ -40,11 +39,11 @@ module.exports = (() => {
       isMoonLive = false;
 
     client.on("message", (event) => {
-      if (DEBUG) console.info(event);
       const { senderUsername: sender, messageText } = event;
       // throw a return here for system notice that he is live
 
       if (event.senderUsername === "60121849657221935028128") {
+        console.log(`${sender}: ${messageText}`)
         dtsLastMessageSent = Number(event.serverTimestampRaw);
         return;
       }
@@ -56,27 +55,6 @@ module.exports = (() => {
       if (Date.now() < dtsLastMessageSent + globalCommandCooldown) {
         return;
       }
-
-      // if (
-      //   messageText.toLowerCase().includes("tanties") &&
-      //   ["duwubson", "tifas_sweaty_feet", "ii57rx", "nice_name_skye"].includes(
-      //     event.senderUsername.toLowerCase()
-      //   )
-      // ) {
-      //   if (DEBUG) console.log(event, getRandomArrayElement(["heads", "tails"]));
-      //   if (getRandomArrayElement(["heads", "tails"]) === "heads") {
-      //     client.say(
-      //       CHANNEL,
-      //       getRandomArrayElement([
-      //         "TANTIES",
-      //         "TANTIES wtf",
-      //         `TANTIES ${event.senderUsername}`,
-      //         "TANTIES",
-      //         `Madge ${event.senderUsername}`,
-      //       ])
-      //     );
-      //   }
-      // }
 
       if (!messageText.startsWith("!")) {
         return;
@@ -97,22 +75,22 @@ module.exports = (() => {
       let fullMessage = "";
 
       if (command === "poop") {
-        const msg1 = `${sender} is pooping on ${target}'s`;
+        const msg1 = `${sender} is pooping`;
         const msg2 = getRandomArrayElement([
-          "bed",
-          "bathtub",
-          "car",
-          "chest",
-          "desk",
-          "porch",
-          "carpet",
-          "sink",
-          "clothes",
+          `on ${target}'s bed`,
+          `in ${target}'s bathtub`,
+          `in the trunk of ${target}'s car`,
+          `on ${target}'s chest`,
+          `on ${target}'s desk`,
+          `in ${target}'s porch`,
+          `on ${target}'s carpet`,
+          `in ${target}'s sink`,
+          `in ${target}'s litter box. ${target} is a cat MYAA.`,
+          `in ${target}'s dog bowl. ${target} is a dog EEKUM.`,
         ]);
         const msg3 = getRandomArrayElement(["SHITTERS", "moon2DEV", "moon2C"]);
         fullMessage = [msg1, msg2, msg3].join(" ");
 
-        if (DEBUG) console.info(fullMessage);
         client.say(CHANNEL, fullMessage);
       }
 
@@ -162,7 +140,7 @@ module.exports = (() => {
           "NERD LOOOOOLE",
           "PUSSY LOLE",
         ]);
-        client.say(CHANNEL, [target, insult].join(" "));
+        client.say(CHANNEL, [target, insult, 'moon2LOLE'].join(" "));
       }
 
       if (command === "bang") {
@@ -278,9 +256,9 @@ module.exports = (() => {
         client.say(CHANNEL, `is based`);
       }
 
-      //if (command === 'code') {
-      //  client.say(CHANNEL, `https://github.com/chuckxD/chuckxD-60121849657221935028128-copy ${target}`)
-      //}
+      if (command === 'dab') {
+        client.say(CHANNEL, `HYPERROBDAB ${sender} is dabbing all over ${target}'s face HYPERROBDAB`)
+      }
     });
   } catch (err) {
     console.error(err);
