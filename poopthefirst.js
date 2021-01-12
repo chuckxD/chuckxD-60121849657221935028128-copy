@@ -82,7 +82,7 @@ module.exports = (() => {
           `in the trunk of ${target}'s car`,
           `on ${target}'s chest`,
           `on ${target}'s desk`,
-          `in ${target}'s porch`,
+          `on ${target}'s porch`,
           `on ${target}'s carpet`,
           `in ${target}'s sink`,
           `in ${target}'s litter box. ${target} is a cat MYAAA`,
