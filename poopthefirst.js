@@ -85,8 +85,8 @@ module.exports = (() => {
           `in ${target}'s porch`,
           `on ${target}'s carpet`,
           `in ${target}'s sink`,
-          `in ${target}'s litter box. ${target} is a cat MYAA.`,
-          `in ${target}'s dog bowl. ${target} is a dog EEKUM.`,
+          `in ${target}'s litter box. ${target} is a cat MYAAA`,
+          `in ${target}'s dog bowl. ${target} is a dog EEKUM`,
         ]);
         const msg3 = getRandomArrayElement(["SHITTERS", "moon2DEV", "moon2C"]);
         fullMessage = [msg1, msg2, msg3].join(" ");
