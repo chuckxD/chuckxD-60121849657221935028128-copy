@@ -237,7 +237,7 @@ module.exports = (() => {
       if (command === "commands") {
         client.say(
           CHANNEL,
-          `${sender} | RIP poopthefirst| !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop`
+          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop`
         );
       }
 
