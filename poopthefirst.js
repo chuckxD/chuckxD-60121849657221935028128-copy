@@ -43,7 +43,7 @@ module.exports = (() => {
       // throw a return here for system notice that he is live
 
       if (event.senderUsername === "60121849657221935028128") {
-        console.log(`${sender}: ${messageText}`)
+        console.log(`${sender}: ${messageText}`);
         dtsLastMessageSent = Number(event.serverTimestampRaw);
         return;
       }
@@ -140,7 +140,7 @@ module.exports = (() => {
           "NERD LOOOOOLE",
           "PUSSY LOLE",
         ]);
-        client.say(CHANNEL, [target, insult, 'moon2LOLE'].join(" "));
+        client.say(CHANNEL, [target, insult, "moon2LOLE"].join(" "));
       }
 
       if (command === "bang") {
@@ -256,57 +256,76 @@ module.exports = (() => {
         client.say(CHANNEL, `is based`);
       }
 
-      if (command === 'dab') {
-        client.say(CHANNEL, `HYPERROBDAB ${sender} is dabbing all over ${target}'s face HYPERROBDAB`)
+      if (command === "dab") {
+        client.say(
+          CHANNEL,
+          `HYPERROBDAB ${sender} is dabbing all over ${target}'s face HYPERROBDAB`
+        );
       }
 
-      if (command === 'bttv') {
-        const ROUGHLY_MESSAGE_CHAR_LIMIT = 250
-        const https = require('https')
-        const bttv_url = 'https://api.betterttv.net/3/cached/users/twitch/121059319'
+      if (command === "bttv") {
+        const ROUGHLY_MESSAGE_CHAR_LIMIT = 250;
+        const https = require("https");
+        const bttv_url =
+          "https://api.betterttv.net/3/cached/users/twitch/121059319";
 
         https.get(bttv_url, (resp) => {
           let json,
-            respStr = ''
-          bttvEmotes = []
-          bttvEmoteMsgArray = [],
-            emoteCount = 0
+            emoteCount,
+            respStr = "",
+            bttvEmotes = [],
+            bttvEmoteMsgArray = [];
 
-          resp.on('data', (data) => {
-            respStr += data.toString()
-          })
-          resp.on('close', () => {
-            json = JSON.parse(respStr)
-            // console.log(`json resp: `, json.channelEmotes.map((obj) => obj.code).sort())
+          resp.on("data", (data) => {
+            respStr += data.toString();
+          });
+
+          resp.on("end", () => {
+            json = JSON.parse(respStr);
+            console.log(
+              `json resp: `,
+              json.channelEmotes.map((obj) => obj.code).sort()
+            );
             emoteCount = json.channelEmotes.length;
-            bttvEmotes = json.channelEmotes.map((obj) => obj.code).sort()
+            // console.log(`json.channelEmotes.length: `, json.channelEmotes.length)
+            bttvEmotes = json.channelEmotes.map((obj) => obj.code).sort();
 
-            let currentMsg = ''
-
-
+            let currentMsg = "";
 
             for (const emote of bttvEmotes) {
               // console.log(emote)
-              currentMsg = currentMsg.split(' ').concat(emote).join(' ')
-              if (currentMsg.length > ROUGHLY_MESSAGE_CHAR_LIMIT) {
-                bttvEmoteMsgArray = bttvEmoteMsgArray.concat(currentMsg)
+              currentMsg = currentMsg.split(" ").concat(emote).join(" ");
+              if (
+                currentMsg.length > ROUGHLY_MESSAGE_CHAR_LIMIT ||
+                emote === bttvEmotes[bttvEmotes.length - 1]
+              ) {
+                bttvEmoteMsgArray = bttvEmoteMsgArray.concat(currentMsg);
                 //console.log(`${currentMsg}\n\n\n`)
                 //setTimeout(() => {
                 //  console.log(`${currentMsg}\n\n\n`)
                 //}, 3000)
-                currentMsg = ''
+                currentMsg = "";
               }
             }
-          })
+          });
 
-          client.say(CHANNEL, `BTTV count: ${emoteCount}`)
-          client.say(CHANNEL, `Dumping BTTV emotes...`)
-          bttvEmoteMsgArray.forEach((str) => client.say(CHANNEL, str))
-        })
+          resp.on("close", () => {
+            setTimeout(
+              () => client.say(CHANNEL, `BTTV count: ${emoteCount}`),
+              500
+            );
+            setTimeout(async () => {
+              await client.say(CHANNEL, `Dumping BTTV emotes...`);
+            }, 2000);
+
+            bttvEmoteMsgArray.forEach((str) => {
+              setTimeout(async () => await client.say(CHANNEL, str), 4000);
+            });
+          });
+        });
       }
-    })
-
-    } catch (err) {
-      console.error(err);
-    }
-  })();
+    });
+  } catch (err) {
+    console.error(err);
+  }
+})();
