@@ -317,10 +317,21 @@ module.exports = (() => {
             //setTimeout(async () => {
             //  await client.say(CHANNEL, `Dumping BTTV emotes...`);
             //}, 2000);
-
-            bttvEmoteMsgArray.forEach((str) => {
-              setTimeout(async () => await client.say(CHANNEL, str), 3000);
-            });
+            setTimeout(
+              () => client.say(CHANNEL, bttvEmoteMsgArray[0]),
+              2100
+            );
+            setTimeout(
+              () => client.say(CHANNEL, bttvEmoteMsgArray[1]),
+              3100
+            );
+            setTimeout(
+              () => client.say(CHANNEL, bttvEmoteMsgArray[2]),
+              4100
+            );
+            //bttvEmoteMsgArray.forEach((str) => {
+            //  setTimeout(async () => await client.say(CHANNEL, str), 3000);
+            //});
           });
         });
       }
