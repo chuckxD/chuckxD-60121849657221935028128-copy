@@ -282,10 +282,10 @@ module.exports = (() => {
 
           resp.on("end", () => {
             json = JSON.parse(respStr);
-            console.log(
-              `json resp: `,
-              json.channelEmotes.map((obj) => obj.code).sort()
-            );
+            //console.log(
+            //  `json resp: `,
+            //  json.channelEmotes.map((obj) => obj.code).sort()
+            //);
             emoteCount = json.channelEmotes.length;
             // console.log(`json.channelEmotes.length: `, json.channelEmotes.length)
             bttvEmotes = json.channelEmotes.map((obj) => obj.code).sort();
@@ -310,25 +310,16 @@ module.exports = (() => {
           });
 
           resp.on("close", () => {
-            setTimeout(
-              () => client.say(CHANNEL, `BTTV count: ${emoteCount}`),
-              1000
-            );
+            //setTimeout(
+            //  () => client.say(CHANNEL, `BTTV count: ${emoteCount}`),
+            //  1000
+            //);
             //setTimeout(async () => {
             //  await client.say(CHANNEL, `Dumping BTTV emotes...`);
             //}, 2000);
-            setTimeout(
-              () => client.say(CHANNEL, bttvEmoteMsgArray[0]),
-              2400
-            );
-            setTimeout(
-              () => client.say(CHANNEL, bttvEmoteMsgArray[1]),
-              3500
-            );
-            setTimeout(
-              () => client.say(CHANNEL, bttvEmoteMsgArray[2]),
-              4600
-            );
+            setTimeout(() => client.say(CHANNEL, bttvEmoteMsgArray[0]), 500);
+            setTimeout(() => client.say(CHANNEL, bttvEmoteMsgArray[1]), 2200);
+            setTimeout(() => client.say(CHANNEL, bttvEmoteMsgArray[2]), 4200);
             //bttvEmoteMsgArray.forEach((str) => {
             //  setTimeout(async () => await client.say(CHANNEL, str), 3000);
             //});
