@@ -319,15 +319,15 @@ module.exports = (() => {
             //}, 2000);
             setTimeout(
               () => client.say(CHANNEL, bttvEmoteMsgArray[0]),
-              2100
+              2400
             );
             setTimeout(
               () => client.say(CHANNEL, bttvEmoteMsgArray[1]),
-              3100
+              3500
             );
             setTimeout(
               () => client.say(CHANNEL, bttvEmoteMsgArray[2]),
-              4300
+              4600
             );
             //bttvEmoteMsgArray.forEach((str) => {
             //  setTimeout(async () => await client.say(CHANNEL, str), 3000);
