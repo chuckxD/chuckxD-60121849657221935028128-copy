@@ -259,8 +259,54 @@ module.exports = (() => {
       if (command === 'dab') {
         client.say(CHANNEL, `HYPERROBDAB ${sender} is dabbing all over ${target}'s face HYPERROBDAB`)
       }
-    });
-  } catch (err) {
-    console.error(err);
-  }
-})();
+
+      if (command === 'bttv') {
+        const ROUGHLY_MESSAGE_CHAR_LIMIT = 250
+        const https = require('https')
+        const bttv_url = 'https://api.betterttv.net/3/cached/users/twitch/121059319'
+
+        https.get(bttv_url, (resp) => {
+          let json,
+            respStr = ''
+          bttvEmotes = []
+          bttvEmoteMsgArray = [],
+            emoteCount = 0
+
+          resp.on('data', (data) => {
+            respStr += data.toString()
+          })
+          resp.on('close', () => {
+            json = JSON.parse(respStr)
+            // console.log(`json resp: `, json.channelEmotes.map((obj) => obj.code).sort())
+            emoteCount = json.channelEmotes.length;
+            bttvEmotes = json.channelEmotes.map((obj) => obj.code).sort()
+
+            let currentMsg = ''
+
+
+
+            for (const emote of bttvEmotes) {
+              // console.log(emote)
+              currentMsg = currentMsg.split(' ').concat(emote).join(' ')
+              if (currentMsg.length > ROUGHLY_MESSAGE_CHAR_LIMIT) {
+                bttvEmoteMsgArray = bttvEmoteMsgArray.concat(currentMsg)
+                //console.log(`${currentMsg}\n\n\n`)
+                //setTimeout(() => {
+                //  console.log(`${currentMsg}\n\n\n`)
+                //}, 3000)
+                currentMsg = ''
+              }
+            }
+          })
+
+          client.say(CHANNEL, `BTTV count: ${emoteCount}`)
+          client.say(CHANNEL, `Dumping BTTV emotes...`)
+          bttvEmoteMsgArray.forEach((str) => client.say(CHANNEL, str))
+        })
+      }
+    })
+
+    } catch (err) {
+      console.error(err);
+    }
+  })();
