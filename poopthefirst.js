@@ -312,14 +312,14 @@ module.exports = (() => {
           resp.on("close", () => {
             setTimeout(
               () => client.say(CHANNEL, `BTTV count: ${emoteCount}`),
-              500
+              1000
             );
-            setTimeout(async () => {
-              await client.say(CHANNEL, `Dumping BTTV emotes...`);
-            }, 2000);
+            //setTimeout(async () => {
+            //  await client.say(CHANNEL, `Dumping BTTV emotes...`);
+            //}, 2000);
 
             bttvEmoteMsgArray.forEach((str) => {
-              setTimeout(async () => await client.say(CHANNEL, str), 4000);
+              setTimeout(async () => await client.say(CHANNEL, str), 3000);
             });
           });
         });
