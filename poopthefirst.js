@@ -352,11 +352,10 @@ module.exports = (() => {
         }
 
         if (!recentChatters.includes("dantiko")) {
+          const victim = getRandomArrayElement(recentChatters)
           client.say(
             CHANNEL,
-            `${sender} PEEPERS peepin in on ${target} peepersD -- who is fucking ${getRandomArrayElement(
-              recentChatters
-            )} mom PawgChamp .. what the-- how..`
+            `${sender} PEEPERS peepin in on ${target} fucking ${victim} 's mom peepersD PawgChamp`
           );
         }
       }
