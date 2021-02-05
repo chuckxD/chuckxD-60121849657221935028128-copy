@@ -39,9 +39,18 @@ module.exports = (() => {
       isMoonLive = false;
 
     client.on("message", (event) => {
-      const { senderUsername: sender, messageText } = event;
-      // throw a return here for system notice that he is live
 
+      // if (DEBUG) console.info('client event: ', event);
+
+      const {
+        senderUsername: sender,
+        colorRaw: senderColorHex,
+        color: senderColorRgb,
+        messageText,
+      } = event;
+
+      // throw a return here for system notice that he is live
+      // console.info(senderColorRgb)
       if (event.senderUsername === "60121849657221935028128") {
         console.log(`${sender}: ${messageText}`);
         dtsLastMessageSent = Number(event.serverTimestampRaw);
@@ -73,6 +82,11 @@ module.exports = (() => {
       }
 
       let fullMessage = "";
+
+      if (command === "mycolor") {
+          const { r, g, b } = senderColorRgb
+          client.say(CHANNEL, `${sender} your color's hex value is ${senderColorHex} | RGB values are ${r}, ${g}, ${b}; type /color for more info`);
+      }
 
       if (command === "poop") {
         const msg1 = `${sender} is pooping`;
@@ -110,7 +124,7 @@ module.exports = (() => {
         ]);
         client.say(
           CHANNEL,
-          `${sender} untucks ${target}'s face PEPELEPSY from bed and dabs on their face ${dab}`
+          `${sender} untucks ${target} from bed and dabs on their face ${dab} PEPELEPSY`
         );
       }
 
@@ -218,11 +232,7 @@ module.exports = (() => {
           "the forehead",
           "neck",
         ]);
-        const emote = getRandomArrayElement([
-          `💋 moon2S`,
-          `💋 Kissahomie`,
-          `💋 Lickahomie`,
-        ]);
+        const emote = getRandomArrayElement([`💋 moon2S`, `💋 Kissahomie`]);
 
         client.say(
           CHANNEL,
