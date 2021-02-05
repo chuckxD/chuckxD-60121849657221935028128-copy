@@ -159,7 +159,7 @@ module.exports = (() => {
           });
         }
 
-        client.say(CHANNEL, msgString.join(", "));
+        client.say(CHANNEL, msgString.join(" "));
       }
 
       if (command === "cd") {
