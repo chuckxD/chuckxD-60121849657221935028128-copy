@@ -356,7 +356,7 @@ module.exports = (() => {
             CHANNEL,
             `${sender} PEEPERS peepin in on ${target} peepersD -- who is fucking ${getRandomArrayElement(
               recentChatters
-            )} mom PawgChamp.. what the-- how..`
+            )} mom PawgChamp .. what the-- how..`
           );
         }
       }
