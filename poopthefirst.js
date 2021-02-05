@@ -11,6 +11,17 @@ module.exports = (() => {
       TWITCH_OAUTH_PASSWORD,
       TWITCH_OAUTH_USERNAME,
     } = process.env;
+    const EXCLUDE_CHATTERS = [
+      "nightbot",
+      "moobot",
+      "markov_chain_bot",
+      "sumbot_",
+      "poopthefirst",
+      "danitko",
+      "moonmoon_nam",
+      "scootycoolguy",
+      "60121849657221935028128"
+    ];
     const sleep = require("util").promisify(setTimeout);
     const { ChatClient } = require("dank-twitch-irc");
 
@@ -36,10 +47,10 @@ module.exports = (() => {
 
     let globalCommandCooldown = 5001,
       dtsLastMessageSent = Date.now(),
-      isMoonLive = false;
+      isMoonLive = false,
+      recentChatters = [];
 
     client.on("message", (event) => {
-
       // if (DEBUG) console.info('client event: ', event);
 
       const {
@@ -48,6 +59,14 @@ module.exports = (() => {
         color: senderColorRgb,
         messageText,
       } = event;
+
+      if (
+        !recentChatters.includes(sender) &&
+        !EXCLUDE_CHATTERS.includes(sender) &&
+        typeof sender === 'string'
+      ) {
+        recentChatters = recentChatters.concat(sender).slice(0, 49);
+      }
 
       // throw a return here for system notice that he is live
       // console.info(senderColorRgb)
@@ -83,9 +102,34 @@ module.exports = (() => {
 
       let fullMessage = "";
 
+      if (command === "recentchatters") {
+        let msgString = [];
+        if (recentChatters.length > 0) {
+          recentChatters.forEach((chatter) => {
+            if (msgString.join(', ').length >= 265 && target !== 'nolimit') {
+              return;
+            }
+            msgString = msgString.concat(chatter)
+          });
+        }
+
+        client.say(CHANNEL, msgString.join(', '));
+      }
+
+      if (command === "cd") {
+        client.say(
+          CHANNEL,
+          `${sender} current command cool down is ${globalCommandCooldown} ms`
+        );
+      }
+
+
       if (command === "mycolor") {
-          const { r, g, b } = senderColorRgb
-          client.say(CHANNEL, `${sender} your color's hex value is ${senderColorHex} | RGB values are ${r}, ${g}, ${b}; type /color for more info`);
+        const { r, g, b } = senderColorRgb;
+        client.say(
+          CHANNEL,
+          `${sender} your color's hex value is ${senderColorHex} | RGB values are ${r}, ${g}, ${b}; type /color for more info`
+        );
       }
 
       if (command === "poop") {
@@ -223,7 +267,7 @@ module.exports = (() => {
         );
       }
 
-      if (command === "kiss") {
+     if (command === "kiss") {
         const bodyPart = getRandomArrayElement([
           "hand",
           "cheek",
@@ -245,10 +289,21 @@ module.exports = (() => {
       }
 
       if (command === "commands") {
-        client.say(
+        client.me(
           CHANNEL,
-          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !mycolor | unlisted bot commands | !onred !peep !mypp !peepod !bas[1-4] !pogbas !rq !rs !search !searchuser `
+          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !mycolor, !othercommands`
         );
+      }
+
+      if (command === "othercommands") {
+        client.me(
+          CHANNEL,
+          `${target} !recentchatters !bttvsearch | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !poopthefirst !nammers !nam !cd`
+        );
+      }
+
+      if (['poopthefirst', 'thiscode', 'thisbot'].includes(command)) {
+        client.say(CHANNEL, `this bot is dumb and the code is shit: https://github.com/chuckxD/chuckxD-60121849657221935028128-copy`)
       }
 
       if (command === "handhold") {
@@ -270,6 +325,13 @@ module.exports = (() => {
         client.say(
           CHANNEL,
           `HYPERROBDAB ${sender} is dabbing all over ${target}'s face HYPERROBDAB`
+        );
+      }
+
+      if (command === "bttvsearch") {
+        client.say(
+          CHANNEL,
+          `${sender} here's your link: https://betterttv.com/emotes/shared/search?query=${target}`
         );
       }
 
