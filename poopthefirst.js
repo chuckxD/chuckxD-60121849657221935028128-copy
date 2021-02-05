@@ -137,17 +137,23 @@ module.exports = (() => {
       if (command === "help" || command === "commands") {
         let _target = !target || target === "chat" ? sender : target;
 
-        const commandsString = `${sender} `;
+        // const commandsString = ;
 
         if (command === "help") {
           client.say(CHANNEL, `!commands ${_target}`);
           setTimeout(() => {
-            client.me(CHANNEL, commandString);
-          }, 5001);
+            client.me(CHANNEL, `${sender} ${BASE_COMMANDS_HELP}`);
+          }, 2001);
+          // setTimeout(() => {
+          //   client.me(CHANNEL, `${sender} ${BASE_COMMANDS_HELP}`);
+          // }, 10001);
+          // setTimeout(() => {
+          //   client.me(CHANNEL, `${sender} ${BASE_COMMANDS_HELP}`);
+          // }, 15001);
         }
 
         if (command === "commands") {
-          client.me(CHANNEL, commandString);
+          client.me(CHANNEL, `${sender} ${BASE_COMMANDS_HELP}`);
         }
       }
 
