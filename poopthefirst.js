@@ -247,7 +247,7 @@ module.exports = (() => {
       if (command === "commands") {
         client.say(
           CHANNEL,
-          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop`
+          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !mycolor | unlisted bot commands | !onred !peep !mypp !peepod !bas[1-4] !pogbas !rq !rs !search !searchuser `
         );
       }
 
