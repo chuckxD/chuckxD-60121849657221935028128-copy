@@ -48,7 +48,8 @@ module.exports = (() => {
     let globalCommandCooldown = 4201,
       dtsLastMessageSent = Date.now(),
       isMoonLive = false,
-      recentChatters = [];
+      recentChatters = [],
+      recentChatterColors = {};
 
     client.on("message", (event) => {
       // if (DEBUG) console.info('client event: ', event);
@@ -66,6 +67,12 @@ module.exports = (() => {
         typeof sender === "string"
       ) {
         recentChatters = recentChatters.concat(sender).slice(0, 49);
+        if (DEBUG) console.info(`recentChatters `, recentChatters);
+
+        if (!Object.keys(recentChatterColors).includes(sender)) {
+          recentChatterColors[sender] = { senderColorHex, senderColorRgb };
+        }
+        if (DEBUG) console.info(`recentChatterColors `, recentChatterColors);
       }
 
       // throw a return here for system notice that he is live
@@ -102,6 +109,45 @@ module.exports = (() => {
 
       let fullMessage = "";
 
+      if (command === "help") {
+        let _target = !target || target === 'chat' ? sender : target
+        client.say(CHANNEL, `!commands ${_target}`);
+        setTimeout(() => {
+          client.me(
+            CHANNEL,
+            `${_target} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !color`
+          );
+        }, 5001);
+      }
+
+      if (command === "commands") {
+        client.me(
+          CHANNEL,
+          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !mycolor`
+        );
+      }
+
+      if (command === "othercommands") {
+        const [msgPrefix, msgPostfix] = !target
+          .split(" ")
+          .map((x) => x.toLowerCase())
+          .includes("nam")
+          ? [`${sender} PawgChamp`, ""]
+          : [`!nammers ${sender} takeTheRob`, "!nam"];
+
+        client.say(
+          CHANNEL,
+          `${msgPrefix} | !othercommands !recentchatters !bttvsearch !cd !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !pawgchamp ${msgPostfix}`
+        );
+      }
+
+      if (["poopthefirst", "thiscode", "thisbot"].includes(command)) {
+        client.say(
+          CHANNEL,
+          `this bot is dumb and the code is shit: https://github.com/chuckxD/chuckxD-60121849657221935028128-copy`
+        );
+      }
+
       if (command === "recentchatters") {
         let msgString = [];
         if (recentChatters.length > 0) {
@@ -123,15 +169,50 @@ module.exports = (() => {
         );
       }
 
-      if (command === "mycolor") {
+      if (command === "color") {
         const { r, g, b } = senderColorRgb;
-        client.say(
-          CHANNEL,
-          `${sender} your color's hex value is ${senderColorHex} | RGB values are ${r}, ${g}, ${b}; type /color for more info`
-        );
+        let msg = `${sender} `;
+        if (DEBUG) console.dir(recentChatterColors);
+
+        if (target && target !== "chat" && !recentChatters.includes(target)) {
+          msg += `couldn't find ${target} in recent chatters.. Sadge `;
+        }
+
+        if (!target || target === "chat") {
+          msg += ` here is your color's hex value: ${senderColorHex} | RGB values (respectively): ${r}, ${g}, ${b} ; type /color for more info`;
+        }
+
+        if (
+          target &&
+          recentChatters.includes(target) &&
+          Object.keys(recentChatterColors).includes(target)
+        ) {
+          // do this later
+          if (DEBUG && target)
+            console.info(`RECENT CHATTER OBJ: `, recentChatterColors[target]);
+          const { senderColorHex, senderColorRgb } = recentChatterColors[
+            target
+          ];
+
+          const sillyStr = [
+            `sender `,
+            sender,
+            `target `,
+            target,
+            `targetColorHex `,
+            senderColorHex,
+            ` targetColorRgb `,
+            senderColorRgb,
+          ].join();
+          // if (DEBUG && Object.keys(recentChatterColors).includes(target)) console.info(recentChatterColors[target])
+
+          if (DEBUG) console.info(sillyStr);
+          msg += ` here is your half implemented feature ${sillyStr}`;
+        }
+        client.say(CHANNEL, msg);
       }
 
-      if (command === "poop") {
+      if (command == "poop") {
         const msg1 = `${sender} is pooping`;
         const msg2 = getRandomArrayElement([
           `on ${target}'s bed`,
@@ -287,34 +368,6 @@ module.exports = (() => {
         client.say(CHANNEL, `${sender} sends ${target} on their way! 🚗 💨`);
       }
 
-      if (command === "commands") {
-        client.me(
-          CHANNEL,
-          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !mycolor`
-        );
-      }
-
-      if (command === "othercommands") {
-        const [msgPrefix, msgPostfix] = !target
-          .split(" ")
-          .map((x) => x.toLowerCase())
-          .includes("nam")
-            ? [`${sender} PawgChamp`, ""]
-            : [`!nammers ${sender} takeTheRob`, "!nam"];
-
-        client.say(
-          CHANNEL,
-          `${msgPrefix} | !othercommands !recentchatters !bttvsearch !cd !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !pawgchamp ${msgPostfix}`
-        );
-      }
-
-      if (["poopthefirst", "thiscode", "thisbot"].includes(command)) {
-        client.say(
-          CHANNEL,
-          `this bot is dumb and the code is shit: https://github.com/chuckxD/chuckxD-60121849657221935028128-copy`
-        );
-      }
-
       if (command === "handhold") {
         client.say(CHANNEL, `${sender} is holding ${target}'s hand moon2L`);
       }
@@ -352,7 +405,7 @@ module.exports = (() => {
         }
 
         if (!recentChatters.includes("dantiko")) {
-          const victim = getRandomArrayElement(recentChatters)
+          const victim = getRandomArrayElement(recentChatters);
           client.say(
             CHANNEL,
             `${sender} PEEPERS peepin in on ${target} fucking ${victim} 's mom peepersD PawgChamp`
