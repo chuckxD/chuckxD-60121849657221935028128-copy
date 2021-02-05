@@ -20,7 +20,7 @@ module.exports = (() => {
       "danitko",
       "moonmoon_nam",
       "scootycoolguy",
-      "60121849657221935028128"
+      "60121849657221935028128",
     ];
     const sleep = require("util").promisify(setTimeout);
     const { ChatClient } = require("dank-twitch-irc");
@@ -63,7 +63,7 @@ module.exports = (() => {
       if (
         !recentChatters.includes(sender) &&
         !EXCLUDE_CHATTERS.includes(sender) &&
-        typeof sender === 'string'
+        typeof sender === "string"
       ) {
         recentChatters = recentChatters.concat(sender).slice(0, 49);
       }
@@ -106,14 +106,14 @@ module.exports = (() => {
         let msgString = [];
         if (recentChatters.length > 0) {
           recentChatters.forEach((chatter) => {
-            if (msgString.join(', ').length >= 265 && target !== 'nolimit') {
+            if (msgString.join(" ").length >= 265 && target !== "nolimit") {
               return;
             }
-            msgString = msgString.concat(chatter)
+            msgString = msgString.concat(chatter);
           });
         }
 
-        client.say(CHANNEL, msgString.join(', '));
+        client.say(CHANNEL, msgString.join(", "));
       }
 
       if (command === "cd") {
@@ -122,7 +122,6 @@ module.exports = (() => {
           `${sender} current command cool down is ${globalCommandCooldown} ms`
         );
       }
-
 
       if (command === "mycolor") {
         const { r, g, b } = senderColorRgb;
@@ -267,7 +266,7 @@ module.exports = (() => {
         );
       }
 
-     if (command === "kiss") {
+      if (command === "kiss") {
         const bodyPart = getRandomArrayElement([
           "hand",
           "cheek",
@@ -296,14 +295,24 @@ module.exports = (() => {
       }
 
       if (command === "othercommands") {
+        const [msgPrefix, msgPostfix] = !target
+          .split(" ")
+          .map((x) => x.toLowerCase())
+          .includes("nam")
+            ? [`${sender} PawgChamp`, ""]
+            : [`!nammers ${sender} takeTheRob`, "!nam"];
+
         client.say(
           CHANNEL,
-          `!nammers ${target} takeTheRob | !othercommands !recentchatters !bttvsearch !cd !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !nam`
+          `${msgPrefix} | !othercommands !recentchatters !bttvsearch !cd !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !pawgchamp ${msgPostfix}`
         );
       }
 
-      if (['poopthefirst', 'thiscode', 'thisbot'].includes(command)) {
-        client.say(CHANNEL, `this bot is dumb and the code is shit: https://github.com/chuckxD/chuckxD-60121849657221935028128-copy`)
+      if (["poopthefirst", "thiscode", "thisbot"].includes(command)) {
+        client.say(
+          CHANNEL,
+          `this bot is dumb and the code is shit: https://github.com/chuckxD/chuckxD-60121849657221935028128-copy`
+        );
       }
 
       if (command === "handhold") {
@@ -332,6 +341,32 @@ module.exports = (() => {
         client.say(
           CHANNEL,
           `${sender} here's your link: https://betterttv.com/emotes/shared/search?query=${target}`
+        );
+      }
+
+      if (command === "peep") {
+        if (recentChatters.includes("dantiko")) {
+          setTimeout(() => {
+            client.say(CHANNEL, `ii am pep heh peepoD`);
+          }, 3001);
+        }
+
+        if (!recentChatters.includes("dantiko")) {
+          client.say(
+            CHANNEL,
+            `${sender} PEEPERS peepin in on ${target} peepersD -- who is fucking ${getRandomArrayElement(
+              recentChatters
+            )} mom PawgChamp.. what the-- how..`
+          );
+        }
+      }
+
+      if (command === "pawgchamp") {
+        client.say(
+          CHANNEL,
+          `${getRandomArrayElement(
+            recentChatters
+          )} -> PawgChamp <- ${getRandomArrayElement(recentChatters)}`
         );
       }
 
