@@ -45,7 +45,7 @@ module.exports = (() => {
     client.connect();
     client.join(CHANNEL);
 
-    let globalCommandCooldown = 5001,
+    let globalCommandCooldown = 4201,
       dtsLastMessageSent = Date.now(),
       isMoonLive = false,
       recentChatters = [];
@@ -291,14 +291,14 @@ module.exports = (() => {
       if (command === "commands") {
         client.me(
           CHANNEL,
-          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !mycolor, !othercommands`
+          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !mycolor`
         );
       }
 
       if (command === "othercommands") {
         client.me(
           CHANNEL,
-          `!nammers ${target} !recentchatters !bttvsearch | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !poopthefirst !nammers !nam !cd`
+          `!nammers ${target} takeTheRob | !othercommands !recentchatters !bttvsearch !cd !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !nam`
         );
       }
 
