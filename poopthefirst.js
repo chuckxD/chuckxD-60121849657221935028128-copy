@@ -1,16 +1,39 @@
 module.exports = (() => {
-  require("dotenv").config();
-  /* changelog-0
-    originalcommands - !cutie !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !dubtrack
-    logs - https://poop.delivery/log/poopthefirst
-  */
   try {
+    let appEnvRuntime = "";
+    const path = require("path");
+
+    if (
+      !Object.keys(process.env).includes("NODE_APP_ENV") ||
+      !process.env["NODE_APP_ENV"] ||
+      process.env["NODE_APP_ENV"] === "moonmoon" ||
+      process.env["NODE_APP_ENV"] === "production"
+    ) {
+      appEnvRuntime = "moon";
+      console.info("loading default env...");
+      require("dotenv").config();
+    }
+
+    if (
+      Object.keys(process.env).includes("NODE_APP_ENV") &&
+      process.env["NODE_APP_ENV"] === "local"
+    ) {
+      appEnvRuntime = "local";
+      console.info("loading " + process.env["NODE_APP_ENV"] + " env...");
+      require("dotenv").config({ path: path.resolve(".env.local") });
+    }
+
     const {
       DEBUG,
-      CHANNEL,
       TWITCH_OAUTH_PASSWORD,
+      CHANNEL,
       TWITCH_OAUTH_USERNAME,
     } = process.env;
+
+    const getRandomArrayElement = (arr) =>
+      arr[Math.floor(Math.random() * arr.length)];
+
+    const BOT_DISPLAY_NAME = "60121849657221935028128";
     const EXCLUDE_CHATTERS = [
       "nightbot",
       "moobot",
@@ -22,11 +45,9 @@ module.exports = (() => {
       "scootycoolguy",
       "60121849657221935028128",
     ];
-    const sleep = require("util").promisify(setTimeout);
-    const { ChatClient } = require("dank-twitch-irc");
+    const BASE_COMMANDS_HELP = `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !color !cd`;
 
-    const getRandomArrayElement = (arr) =>
-      arr[Math.floor(Math.random() * arr.length)];
+    const { ChatClient } = require("dank-twitch-irc");
 
     let client = new ChatClient({
       username: TWITCH_OAUTH_USERNAME,
@@ -35,13 +56,17 @@ module.exports = (() => {
     });
 
     client.on("ready", () => {
-      console.log("Successfully connected to chat");
+      console.log(
+        `Successfully connected to ${CHANNEL}! Debug = ${DEBUG} | Env = ${appEnvRuntime}`
+      );
     });
+
     client.on("close", (error) => {
       if (error != null) {
         console.error("Client closed due to error", error);
       }
     });
+
     client.connect();
     client.join(CHANNEL);
 
@@ -109,25 +134,27 @@ module.exports = (() => {
 
       let fullMessage = "";
 
-      if (command === "help") {
-        let _target = !target || target === 'chat' ? sender : target
-        client.say(CHANNEL, `!commands ${_target}`);
-        setTimeout(() => {
-          client.me(
-            CHANNEL,
-            `${_target} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !color`
-          );
-        }, 5001);
+      if (command === "help" || command === "commands") {
+        let _target = !target || target === "chat" ? sender : target;
+
+        const commandsString = `${sender} `;
+
+        if (command === "help") {
+          client.say(CHANNEL, `!commands ${_target}`);
+          setTimeout(() => {
+            client.me(CHANNEL, commandString);
+          }, 5001);
+        }
+
+        if (command === "commands") {
+          client.me(CHANNEL, commandString);
+        }
       }
 
-      if (command === "commands") {
-        client.me(
-          CHANNEL,
-          `${sender} !handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !mycolor`
-        );
-      }
-
-      if (command === "othercommands") {
+      if (
+        command === "othercommands" ||
+        command === "60121849657221935028128"
+      ) {
         const [msgPrefix, msgPostfix] = !target
           .split(" ")
           .map((x) => x.toLowerCase())
@@ -137,7 +164,7 @@ module.exports = (() => {
 
         client.say(
           CHANNEL,
-          `${msgPrefix} | !othercommands !recentchatters !bttvsearch !cd !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !pawgchamp ${msgPostfix}`
+          `${msgPrefix} | !othercommands !recentchatters !bttvsearch !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !pawgchamp ${msgPostfix}`
         );
       }
 
@@ -173,7 +200,6 @@ module.exports = (() => {
         let { r, g, b } = senderColorRgb;
         let msg = `${sender} `;
         if (DEBUG) console.dir(recentChatterColors);
-
         if (target && target !== "chat" && !recentChatters.includes(target)) {
           msg += `couldn't find ${target} in recent chatters.. Sadge `;
         }
@@ -191,7 +217,7 @@ module.exports = (() => {
           if (DEBUG && target)
             console.info(`RECENT CHATTER OBJ: `, recentChatterColors[target]);
 
-            const { senderColorHex, senderColorRgb } = recentChatterColors[
+          const { senderColorHex, senderColorRgb } = recentChatterColors[
             target
           ];
 
@@ -298,14 +324,13 @@ module.exports = (() => {
       }
 
       if (command === "godgamer") {
-        client.say(
-          CHANNEL,
-          `${sender}, moon2M 📣 ${getRandomArrayElement([
-            "Jump King DLC",
-            "Terraria Master Hardcore",
-            "DoomEternal Ultra Nightmare",
-          ])} I BEAT IT ☑`
-        );
+        const flex = getRandomArrayElement([
+          "Jump King DLC",
+          "Terraria Master Hardcore",
+          "DoomEternal Ultra Nightmare",
+        ]);
+
+        client.say(CHANNEL, `${sender}, moon2M 📣  ${flex} I BEAT IT ☑`);
       }
 
       if (command === "why") {
@@ -368,8 +393,11 @@ module.exports = (() => {
         );
       }
 
-      if (command === "gumiho") {
-        client.say(CHANNEL, `is based`);
+      if (command.startsWith("gumi")) {
+        client.say(
+          CHANNEL,
+          getRandomArrayElement([`is based`, `is cringe`, `is based on cringe`])
+        );
       }
 
       if (command === "dab") {
@@ -409,71 +437,6 @@ module.exports = (() => {
             recentChatters
           )} -> PawgChamp <- ${getRandomArrayElement(recentChatters)}`
         );
-      }
-
-      if (command === "bttv") {
-        const ROUGHLY_MESSAGE_CHAR_LIMIT = 250;
-        const https = require("https");
-        const bttv_url =
-          "https://api.betterttv.net/3/cached/users/twitch/121059319";
-
-        https.get(bttv_url, (resp) => {
-          let json,
-            emoteCount,
-            respStr = "",
-            bttvEmotes = [],
-            bttvEmoteMsgArray = [];
-
-          resp.on("data", (data) => {
-            respStr += data.toString();
-          });
-
-          resp.on("end", () => {
-            json = JSON.parse(respStr);
-            //console.log(
-            //  `json resp: `,
-            //  json.channelEmotes.map((obj) => obj.code).sort()
-            //);
-            emoteCount = json.channelEmotes.length;
-            // console.log(`json.channelEmotes.length: `, json.channelEmotes.length)
-            bttvEmotes = json.channelEmotes.map((obj) => obj.code).sort();
-
-            let currentMsg = "";
-
-            for (const emote of bttvEmotes) {
-              // console.log(emote)
-              currentMsg = currentMsg.split(" ").concat(emote).join(" ");
-              if (
-                currentMsg.length > ROUGHLY_MESSAGE_CHAR_LIMIT ||
-                emote === bttvEmotes[bttvEmotes.length - 1]
-              ) {
-                bttvEmoteMsgArray = bttvEmoteMsgArray.concat(currentMsg);
-                //console.log(`${currentMsg}\n\n\n`)
-                //setTimeout(() => {
-                //  console.log(`${currentMsg}\n\n\n`)
-                //}, 3000)
-                currentMsg = "";
-              }
-            }
-          });
-
-          resp.on("close", () => {
-            //setTimeout(
-            //  () => client.say(CHANNEL, `BTTV count: ${emoteCount}`),
-            //  1000
-            //);
-            //setTimeout(async () => {
-            //  await client.say(CHANNEL, `Dumping BTTV emotes...`);
-            //}, 2000);
-            // setTimeout(() => client.say(CHANNEL, bttvEmoteMsgArray[0]), 500);
-            // client.say(CHANNEL, bttvEmoteMsgArray[0])
-            // setTimeout(() => client.say(CHANNEL, bttvEmoteMsgArray[1]), 2200);
-            // setTimeout(() => client.say(CHANNEL, bttvEmoteMsgArray[2]), 4200);
-            //bttvEmoteMsgArray.forEach((str) => {
-            //  setTimeout(async () => await client.say(CHANNEL, str), 3000);
-            //});
-          });
-        });
       }
     });
   } catch (err) {
