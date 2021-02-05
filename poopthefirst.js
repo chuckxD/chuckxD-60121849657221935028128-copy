@@ -296,7 +296,7 @@ module.exports = (() => {
       }
 
       if (command === "othercommands") {
-        client.me(
+        client.say(
           CHANNEL,
           `!nammers ${target} takeTheRob | !othercommands !recentchatters !bttvsearch !cd !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !nam`
         );
