@@ -170,7 +170,7 @@ module.exports = (() => {
       }
 
       if (command === "color") {
-        const { r, g, b } = senderColorRgb;
+        let { r, g, b } = senderColorRgb;
         let msg = `${sender} `;
         if (DEBUG) console.dir(recentChatterColors);
 
@@ -190,24 +190,13 @@ module.exports = (() => {
           // do this later
           if (DEBUG && target)
             console.info(`RECENT CHATTER OBJ: `, recentChatterColors[target]);
-          const { senderColorHex, senderColorRgb } = recentChatterColors[
+
+            const { senderColorHex, senderColorRgb } = recentChatterColors[
             target
           ];
 
-          const sillyStr = [
-            `sender `,
-            sender,
-            `target `,
-            target,
-            `targetColorHex `,
-            senderColorHex,
-            ` targetColorRgb `,
-            senderColorRgb,
-          ].join();
-          // if (DEBUG && Object.keys(recentChatterColors).includes(target)) console.info(recentChatterColors[target])
-
-          if (DEBUG) console.info(sillyStr);
-          msg += ` here is your half implemented feature ${sillyStr}`;
+          ({ r, g, b } = senderColorRgb);
+          msg += ` here is ${target}'s hex color's value: ${senderColorHex} | RGB values (respectively): ${r}, ${g}, ${b} ; type /color for more info `;
         }
         client.say(CHANNEL, msg);
       }
