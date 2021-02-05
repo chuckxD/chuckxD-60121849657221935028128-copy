@@ -5,7 +5,8 @@
   "main": "poopthefirst.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node poopthefirst.js"
+    "start": "node poopthefirst.js",
+    "deploy": "git push origin master && git push heroku master"
   },
   "author": "",
   "license": "ISC",
