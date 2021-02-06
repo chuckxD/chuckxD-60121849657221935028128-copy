@@ -76,11 +76,11 @@ module.exports = (() => {
 
     // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
     // - for polling if broadcaster is offline/online
-    let globalCommandCooldown = 8201,
-      recentChatterCooldown = 15001,
+    let globalCommandCooldown = 4201,
+      recentChatterCooldown = 10001,
       lastBotMessageEpoch = Date.now(),
       isMoonLive = false,
-      recentChatters = [],
+      activechatters = [],
       recentChatterColors = {},
       currentCooldown;
 
@@ -96,13 +96,13 @@ module.exports = (() => {
       } = event;
 
       if (
-        !recentChatters.includes(sender) &&
+        !activechatters.includes(sender) &&
         !EXCLUDE_CHATTERS.includes(sender) &&
         typeof sender === "string"
       ) {
-        recentChatters.unshift(sender);
-        recentChatters.slice(0, 99);
-        if (DEBUG) console.info(`recentChatters `, recentChatters);
+        activechatters.unshift(sender);
+        activechatters.slice(0, 99);
+        if (DEBUG) console.info(`activechatters `, activechatters);
         recentChatterColors[sender] = { senderColorHex, senderColorRgb };
         if (DEBUG) console.info(`recentChatterColors `, recentChatterColors);
       }
@@ -117,7 +117,7 @@ module.exports = (() => {
       if (sender === BOT_DISPLAY_NAME) {
         lastBotMessageEpoch = Number(serverTimestampRaw);
         currentCooldown =
-          command === "recentchatters" || command === "activechatters"
+          command === "activechatters" || command === "activechatters"
             ? recentChatterCooldown
             : globalCommandCooldown;
         return;
@@ -171,7 +171,7 @@ module.exports = (() => {
 
         client.say(
           CHANNEL,
-          `${msgPrefix} | !othercommands !recentchatters !bttvsearch !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !pawgchamp ${msgPostfix}`
+          `${msgPrefix} | !othercommands !activechatters !bttvsearch !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !pawgchamp ${msgPostfix}`
         );
       }
 
@@ -182,10 +182,10 @@ module.exports = (() => {
         );
       }
 
-      if (command === "recentchatters" || command === "activechatters") {
+      if (command === "activechatters" || command === "activechatters") {
         let msgString = [];
-        if (recentChatters.length > 0) {
-          recentChatters.forEach((chatter) => {
+        if (activechatters.length > 0) {
+          activechatters.forEach((chatter) => {
             if (msgString.join(" ").length >= 265 && target !== "nolimit") {
               return;
             }
@@ -193,18 +193,13 @@ module.exports = (() => {
           });
         }
 
-        if (command === "recentchatters")
-          // client.say(CHANNEL, msgString.join(" "));
-          client.whisper(sender, msgString.join(" ") + "mods gat takeTheRob");
-        if (command === "activechatters") {
-          client.whisper(sender, msgString.join(" ") + "mods gat takeTheRob");
-        }
+        client.say(CHANNEL, msgString.join(" "));
       }
 
       if (command === "cd") {
         client.say(
           CHANNEL,
-          `${sender} current command cool down is ${globalCommandCooldown} ms, recentchatters cd is ${recentChatterCooldown} ms`
+          `${sender} current command cool down is ${globalCommandCooldown} ms, activechatters cd is ${recentChatterCooldown} ms`
         );
       }
 
@@ -212,7 +207,7 @@ module.exports = (() => {
         let { r, g, b } = senderColorRgb;
         let msg = `${sender} `;
         if (DEBUG) console.dir(recentChatterColors);
-        if (target && target !== "chat" && !recentChatters.includes(target)) {
+        if (target && target !== "chat" && !activechatters.includes(target)) {
           msg += `couldn't find ${target} in recent chatters.. Sadge `;
         }
 
@@ -222,7 +217,7 @@ module.exports = (() => {
 
         if (
           target &&
-          recentChatters.includes(target) &&
+          activechatters.includes(target) &&
           Object.keys(recentChatterColors).includes(target)
         ) {
           // do this later
@@ -426,14 +421,14 @@ module.exports = (() => {
       }
 
       if (command === "peep") {
-        if (recentChatters.includes("dantiko")) {
+        if (activechatters.includes("dantiko")) {
           setTimeout(() => {
             client.say(CHANNEL, `ii am pep heh peepoD`);
           }, 3001);
         }
 
-        if (!recentChatters.includes("dantiko")) {
-          const victim = getRandomArrayElement(recentChatters);
+        if (!activechatters.includes("dantiko")) {
+          const victim = getRandomArrayElement(activechatters);
           client.say(
             CHANNEL,
             `${sender} PEEPERS peepin in on ${target} fucking ${victim} 's mom peepersD PawgChamp`
@@ -445,12 +440,12 @@ module.exports = (() => {
         client.say(
           CHANNEL,
           `${getRandomArrayElement(
-            recentChatters
-          )} -> PawgChamp <- ${getRandomArrayElement(recentChatters)}`
+            activechatters
+          )} -> PawgChamp <- ${getRandomArrayElement(activechatters)}`
         );
       }
 
-      // if (command === 'recentchatters' || command === 'activechatters') {
+      // if (command === 'activechatters' || command === 'activechatters') {
       //   setTimeout(() => console.log('sleep'), recentChatterCooldown)
       // } else {
       //   setTimeout(() => console.log('sleep'), globalCommandCooldown)
