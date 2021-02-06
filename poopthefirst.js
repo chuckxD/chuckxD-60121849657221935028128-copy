@@ -123,7 +123,7 @@ module.exports = (() => {
         return;
       }
 
-      if (messageText.startsWith('!recentchatters') && Date.now() < dtsLastMessageSent + recentChatterCooldown) {
+      if (messageText.startsWith('!recentchatters') || messageText.startsWith('!bigpoop') && Date.now() < dtsLastMessageSent + recentChatterCooldown) {
         return;
       }
 
@@ -192,7 +192,7 @@ module.exports = (() => {
         );
       }
 
-      if (command === "recentchatters") {
+      if (command === "recentchatters" || command === 'bigpoop') {
         let msgString = [];
         if (recentChatters.length > 0) {
           recentChatters.forEach((chatter) => {
@@ -203,7 +203,10 @@ module.exports = (() => {
           });
         }
 
-        client.say(CHANNEL, msgString.join(" "));
+        if (command === 'recentchatters') client.say(CHANNEL, msgString.join(" "));
+        if (command === "bigpoop") {
+          client.whisper(sender, msgString.join(" ") + 'mods gat takeTheRob');
+        }
       }
 
       if (command === "cd") {
