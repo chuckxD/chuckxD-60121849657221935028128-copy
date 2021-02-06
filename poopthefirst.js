@@ -2,6 +2,7 @@ module.exports = (() => {
   try {
     let appEnvRuntime = "";
     const path = require("path");
+    const sleep = require("util").promisify(setTimeout);
 
     if (
       !Object.keys(process.env).includes("NODE_APP_ENV") ||
@@ -40,10 +41,13 @@ module.exports = (() => {
       "markov_chain_bot",
       "sumbot_",
       "poopthefirst",
-      "danitko",
+      "dantiko",
       "moonmoon_nam",
       "scootycoolguy",
       "60121849657221935028128",
+      "moonmoon",
+      "moonmoon_has_tiny_teeth",
+      "je_ek",
     ];
     const BASE_COMMANDS_HELP = `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !color !cd`;
 
@@ -70,29 +74,25 @@ module.exports = (() => {
     client.connect();
     client.join(CHANNEL);
 
-    let globalCommandCooldown = 4201,
-      recentChatterCooldown = 15001,
-      dtsLastMessageSent = Date.now(),
-      isMoonLive = false,
-      recentChatters = [],
-      recentChatterColors = {};
-
-
-
-
-
     // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
     // - for polling if broadcaster is offline/online
-
+    let globalCommandCooldown = 8201,
+      recentChatterCooldown = 15001,
+      lastBotMessageEpoch = Date.now(),
+      isMoonLive = false,
+      recentChatters = [],
+      recentChatterColors = {},
+      currentCooldown;
 
     client.on("message", (event) => {
-      if (DEBUG) console.info('client event: ', event);
+      if (DEBUG) console.info("client event: ", event);
 
       const {
         senderUsername: sender,
         colorRaw: senderColorHex,
         color: senderColorRgb,
         messageText,
+        serverTimestampRaw,
       } = event;
 
       if (
@@ -100,40 +100,36 @@ module.exports = (() => {
         !EXCLUDE_CHATTERS.includes(sender) &&
         typeof sender === "string"
       ) {
-        recentChatters.unshift(sender)
+        recentChatters.unshift(sender);
         recentChatters.slice(0, 99);
         if (DEBUG) console.info(`recentChatters `, recentChatters);
         recentChatterColors[sender] = { senderColorHex, senderColorRgb };
         if (DEBUG) console.info(`recentChatterColors `, recentChatterColors);
       }
 
-      // throw a return here for system notice that he is live
-      // console.info(senderColorRgb)
-      if (event.senderUsername === "60121849657221935028128") {
-        console.log(`${sender}: ${messageText}`);
-        dtsLastMessageSent = Number(event.serverTimestampRaw);
+      if (typeof messageText != "string") {
         return;
       }
 
-     if (typeof messageText != "string") {
+      let [command, target] = messageText.split(" ");
+      command = command.slice(1).toLocaleLowerCase();
+
+      if (sender === BOT_DISPLAY_NAME) {
+        lastBotMessageEpoch = Number(serverTimestampRaw);
+        currentCooldown =
+          command === "recentchatters" || command === "activechatters"
+            ? recentChatterCooldown
+            : globalCommandCooldown;
         return;
       }
 
-      if (Date.now() < dtsLastMessageSent + globalCommandCooldown) {
-        return;
-      }
-
-      if (messageText.startsWith('!recentchatters') || messageText.startsWith('!bigpoop') && Date.now() < dtsLastMessageSent + recentChatterCooldown) {
-        return;
+      if (Date.now() < lastBotMessageEpoch + currentCooldown) {
+        return
       }
 
       if (!messageText.startsWith("!")) {
         return;
       }
-
-      let [command, target] = messageText.split(" ");
-
-      command = command.slice(1).toLocaleLowerCase();
 
       if (!target) {
         target = "chat";
@@ -154,13 +150,7 @@ module.exports = (() => {
           client.say(CHANNEL, `!commands ${_target}`);
           setTimeout(() => {
             client.me(CHANNEL, `${sender} ${BASE_COMMANDS_HELP}`);
-          }, 2001);
-          // setTimeout(() => {
-          //   client.me(CHANNEL, `${sender} ${BASE_COMMANDS_HELP}`);
-          // }, 10001);
-          // setTimeout(() => {
-          //   client.me(CHANNEL, `${sender} ${BASE_COMMANDS_HELP}`);
-          // }, 15001);
+          }, 1001);
         }
 
         if (command === "commands") {
@@ -192,7 +182,7 @@ module.exports = (() => {
         );
       }
 
-      if (command === "recentchatters" || command === 'bigpoop') {
+      if (command === "recentchatters" || command === "activechatters") {
         let msgString = [];
         if (recentChatters.length > 0) {
           recentChatters.forEach((chatter) => {
@@ -203,9 +193,11 @@ module.exports = (() => {
           });
         }
 
-        if (command === 'recentchatters') client.say(CHANNEL, msgString.join(" "));
-        if (command === "bigpoop") {
-          client.whisper(sender, msgString.join(" ") + 'mods gat takeTheRob');
+        if (command === "recentchatters")
+          // client.say(CHANNEL, msgString.join(" "));
+          client.whisper(sender, msgString.join(" ") + "mods gat takeTheRob");
+        if (command === "activechatters") {
+          client.whisper(sender, msgString.join(" ") + "mods gat takeTheRob");
         }
       }
 
@@ -263,7 +255,6 @@ module.exports = (() => {
         ]);
         const msg3 = getRandomArrayElement(["SHITTERS", "moon2DEV", "moon2C"]);
         fullMessage = [msg1, msg2, msg3].join(" ");
-
         client.say(CHANNEL, fullMessage);
       }
 
@@ -458,6 +449,12 @@ module.exports = (() => {
           )} -> PawgChamp <- ${getRandomArrayElement(recentChatters)}`
         );
       }
+
+      // if (command === 'recentchatters' || command === 'activechatters') {
+      //   setTimeout(() => console.log('sleep'), recentChatterCooldown)
+      // } else {
+      //   setTimeout(() => console.log('sleep'), globalCommandCooldown)
+      // }
     });
   } catch (err) {
     console.error(err);
