@@ -71,13 +71,22 @@ module.exports = (() => {
     client.join(CHANNEL);
 
     let globalCommandCooldown = 4201,
+      recentChatterCooldown = 15001,
       dtsLastMessageSent = Date.now(),
       isMoonLive = false,
       recentChatters = [],
       recentChatterColors = {};
 
+
+
+
+
+    // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
+    // - for polling if broadcaster is offline/online
+
+
     client.on("message", (event) => {
-      // if (DEBUG) console.info('client event: ', event);
+      if (DEBUG) console.info('client event: ', event);
 
       const {
         senderUsername: sender,
@@ -91,12 +100,10 @@ module.exports = (() => {
         !EXCLUDE_CHATTERS.includes(sender) &&
         typeof sender === "string"
       ) {
-        recentChatters = recentChatters.concat(sender).slice(0, 49);
+        recentChatters.unshift(sender)
+        recentChatters.slice(0, 99);
         if (DEBUG) console.info(`recentChatters `, recentChatters);
-
-        if (!Object.keys(recentChatterColors).includes(sender)) {
-          recentChatterColors[sender] = { senderColorHex, senderColorRgb };
-        }
+        recentChatterColors[sender] = { senderColorHex, senderColorRgb };
         if (DEBUG) console.info(`recentChatterColors `, recentChatterColors);
       }
 
@@ -108,11 +115,15 @@ module.exports = (() => {
         return;
       }
 
-      if (typeof messageText != "string") {
+     if (typeof messageText != "string") {
         return;
       }
 
       if (Date.now() < dtsLastMessageSent + globalCommandCooldown) {
+        return;
+      }
+
+      if (messageText.startsWith('!recentchatters') && Date.now() < dtsLastMessageSent + recentChatterCooldown) {
         return;
       }
 
