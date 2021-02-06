@@ -96,12 +96,11 @@ module.exports = (() => {
       } = event;
 
       if (
-        !activechatters.includes(sender) &&
         !EXCLUDE_CHATTERS.includes(sender) &&
         typeof sender === "string"
       ) {
-        activechatters.unshift(sender);
-        activechatters.slice(0, 49);
+        activechatters.filter(chatter => sender === chatter).unshift(sender);
+        activechatters.slice(0, 99);
         if (DEBUG) console.info(`activechatters `, activechatters);
         recentChatterColors[sender] = { senderColorHex, senderColorRgb };
         if (DEBUG) console.info(`recentChatterColors `, recentChatterColors);
@@ -115,6 +114,8 @@ module.exports = (() => {
       command = command.slice(1).toLocaleLowerCase();
 
       if (sender === BOT_DISPLAY_NAME) {
+        console.log(`${sender} ${messageText}`)
+
         lastBotMessageEpoch = Number(serverTimestampRaw);
         currentCooldown =
           command === "activechatters" || command === "activechatters"
@@ -182,17 +183,17 @@ module.exports = (() => {
         );
       }
 
-      if (command === "activechatters" || command === "activechatters") {
+      if (command === "activechatters") {
         let msgString = [];
         if (activechatters.length > 0) {
           activechatters.forEach((chatter) => {
-            if (msgString.join(" ").length >= 265 && target !== "nolimit") {
+            if (msgString.join(" ").length >= 265 && target.toLowerCase() !== "nam") {
               return;
             }
             msgString = msgString.concat(chatter);
           });
         }
-
+        console.log(`active chatters: ${activechatters}`)
         client.say(CHANNEL, msgString.join(" "));
       }
 
