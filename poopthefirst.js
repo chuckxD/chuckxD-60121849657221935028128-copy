@@ -96,10 +96,11 @@ module.exports = (() => {
       } = event;
 
       if (
+				!activechatters.includes(sender) &&
         !EXCLUDE_CHATTERS.includes(sender) &&
         typeof sender === "string"
       ) {
-        activechatters.filter(chatter => sender != chatter).unshift(sender);
+        activechatters.unshift(sender);
         activechatters.slice(0, 99);
         if (DEBUG) console.info(`activechatters `, activechatters);
         recentChatterColors[sender] = { senderColorHex, senderColorRgb };
