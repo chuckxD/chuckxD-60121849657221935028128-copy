@@ -76,8 +76,8 @@ module.exports = (() => {
 
     // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
     // - for polling if broadcaster is offline/online
-    let globalCommandCooldown = 4201,
-      recentChatterCooldown = 10001,
+    let globalCommandCooldown = 8201,
+      recentChatterCooldown = 20001,
       lastBotMessageEpoch = Date.now(),
       isMoonLive = false,
       activechatters = [],
@@ -101,7 +101,7 @@ module.exports = (() => {
         typeof sender === "string"
       ) {
         activechatters.unshift(sender);
-        activechatters.slice(0, 99);
+        activechatters.slice(0, 49);
         if (DEBUG) console.info(`activechatters `, activechatters);
         recentChatterColors[sender] = { senderColorHex, senderColorRgb };
         if (DEBUG) console.info(`recentChatterColors `, recentChatterColors);
