@@ -209,7 +209,7 @@ module.exports = (() => {
       if (command === "cd") {
         client.say(
           CHANNEL,
-          `${sender} current command cool down is ${globalCommandCooldown} ms`
+          `${sender} current command cool down is ${globalCommandCooldown} ms, recentchatters cd is ${recentChatterCooldown} ms`
         );
       }
 
