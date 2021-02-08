@@ -41,7 +41,6 @@ module.exports = (() => {
       "markov_chain_bot",
       "sumbot_",
       "poopthefirst",
-      "dantiko",
       "moonmoon_nam",
       "scootycoolguy",
       "60121849657221935028128",
@@ -101,7 +100,7 @@ module.exports = (() => {
         typeof sender === "string"
       ) {
         activechatters.unshift(sender);
-        activechatters.slice(0, 99);
+        activechatters.slice(0, 49);
         if (DEBUG) console.info(`activechatters `, activechatters);
         recentChatterColors[sender] = { senderColorHex, senderColorRgb };
         if (DEBUG) console.info(`recentChatterColors `, recentChatterColors);
@@ -173,7 +172,7 @@ module.exports = (() => {
 
         client.say(
           CHANNEL,
-          `${msgPrefix} | !othercommands !activechatters !bttvsearch !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !pawgchamp ${msgPostfix}`
+          `${msgPrefix} | !othercommands !pawgchamp !bttvsearch !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean ${msgPostfix}`
         );
       }
 
@@ -194,7 +193,6 @@ module.exports = (() => {
             msgString = msgString.concat(chatter);
           });
         }
-        console.log(`active chatters: ${activechatters}`)
         client.say(CHANNEL, msgString.join(" "));
       }
 
