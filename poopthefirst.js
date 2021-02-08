@@ -48,7 +48,7 @@ module.exports = (() => {
       "moonmoon_has_tiny_teeth",
       "je_ek",
     ];
-    const BASE_COMMANDS_HELP = `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !color !cd`;
+    const BASE_COMMANDS_HELP = `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !color !cd !othercommands`;
 
     const { ChatClient } = require("dank-twitch-irc");
 
@@ -172,7 +172,7 @@ module.exports = (() => {
 
         client.say(
           CHANNEL,
-          `${msgPrefix} | !othercommands !pawgchamp !bttvsearch !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean ${msgPostfix}`
+          `${msgPrefix} | !pawgchamp !bttvsearch !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !gachiquote !100stress !200stress ${msgPostfix}`
         );
       }
 
@@ -422,9 +422,7 @@ module.exports = (() => {
 
       if (command === "peep") {
         if (activechatters.includes("dantiko")) {
-          setTimeout(() => {
-            client.say(CHANNEL, `ii am pep heh peepoD`);
-          }, 3001);
+					return
         }
 
         if (!activechatters.includes("dantiko")) {
