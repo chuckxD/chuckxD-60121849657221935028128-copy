@@ -167,7 +167,7 @@ module.exports = (() => {
           .split(" ")
           .map((x) => x.toLowerCase())
           .includes("nam")
-          ? [`${sender} PawgChamp`, ""]
+          ? [`${sender} 🟦 🟥 󠀀 `, ""]
           : [`!nammers ${sender} takeTheRob`, "!nam"];
 
         client.say(
@@ -316,7 +316,7 @@ module.exports = (() => {
           "PEPELEPSY",
           "gachiROLL",
           "pepeBASS",
-          "PawgChamp",
+          "🟦 🟥 󠀀 ",
         ];
         fullMessage = [
           msg1,
@@ -439,7 +439,7 @@ module.exports = (() => {
           CHANNEL,
           `${getRandomArrayElement(
             activechatters
-          )} -> PawgChamp <- ${getRandomArrayElement(activechatters)}`
+          )} -> 🟦 🟥 󠀀<- ${getRandomArrayElement(activechatters)}`
         );
       }
 
