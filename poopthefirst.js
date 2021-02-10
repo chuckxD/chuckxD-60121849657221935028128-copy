@@ -30,7 +30,7 @@ module.exports = (() => {
     });
 
     let globalCommandCooldown = 8201,
-      specialCommandCooldown = 4201, // 30001,
+      specialCommandCooldown =  30001,
       lastBotMessageEpoch = Date.now(),
       isMoonLive = false,
       activechatters = [],
