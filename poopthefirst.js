@@ -161,7 +161,15 @@ module.exports = (() => {
 
       if (command === "supapasta") {
         // wip
-        return
+
+        // given a standard/normal chat width
+        // take 2 required args as emotes and output theh former emote around the latter as such: https://pastebin.com/raw/13wj6PsJ see also pastaStringTemplate below
+
+        // optionally take a  3rd title arg and prepend it to the output above left/right padded with filler asciii code and inner padding each character of title with SEP charaacter e.g. ᅚᅚᅚᅚᅚT■E■S■Tᅚᅚᅚᅚᅚᅚ
+        
+        // the title final result should evenly occuppy the whole line or ignore it if it's too long
+
+        // return
         if (target === "chat") {
           return;
         }
