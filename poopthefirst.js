@@ -29,6 +29,7 @@ module.exports = (() => {
       TWITCH_OAUTH_PASSWORD,
       CHANNEL,
       TWITCH_OAUTH_USERNAME,
+      CLIENT_EVENT_DEBUG,
     } = process.env;
 
     const getRandomArrayElement = (arr) =>
@@ -48,7 +49,7 @@ module.exports = (() => {
       "moonmoon_has_tiny_teeth",
       "je_ek",
     ];
-    const BASE_COMMANDS_HELP = `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, !color !cd !othercommands`;
+    const BASE_COMMANDS_HELP = `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, | !color !cd !pawgchamp !bttvsearch !poopthefirst !othercommands`;
 
     const { ChatClient } = require("dank-twitch-irc");
 
@@ -76,7 +77,7 @@ module.exports = (() => {
     // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
     // - for polling if broadcaster is offline/online
     let globalCommandCooldown = 8201,
-      recentChatterCooldown = 20001,
+      specialCommandCooldown = 30001,
       lastBotMessageEpoch = Date.now(),
       isMoonLive = false,
       activechatters = [],
@@ -84,7 +85,7 @@ module.exports = (() => {
       currentCooldown;
 
     client.on("message", (event) => {
-      if (DEBUG) console.info("client event: ", event);
+      if (DEBUG && CLIENT_EVENT_DEBUG) console.info("client event: ", event);
 
       const {
         senderUsername: sender,
@@ -118,8 +119,10 @@ module.exports = (() => {
 
         lastBotMessageEpoch = Number(serverTimestampRaw);
         currentCooldown =
-          command === "activechatters" || command === "pawgchamp"
-            ? recentChatterCooldown
+          command === "activechatters" ||
+          command === "pawgchamp" ||
+          command === "supapasta"
+            ? specialCommandCooldown
             : globalCommandCooldown;
         return;
       }
@@ -172,39 +175,80 @@ module.exports = (() => {
 
         client.say(
           CHANNEL,
-          `${msgPrefix} | !pawgchamp !bttvsearch !poopthefirst | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !gachiquote !100stress !200stress ${msgPostfix}`
+          "NOPERS"
+          // `${msgPrefix} | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !gachiquote !100stress !200stress ${msgPostfix}`
         );
       }
 
       if (["poopthefirst", "thiscode", "thisbot"].includes(command)) {
         client.say(
           CHANNEL,
-          `this bot is dumb and the code is shit: https://github.com/chuckxD/chuckxD-60121849657221935028128-copy`
+          `poopthefirst port; bot is dumb and the code is shit: https://raw.githubusercontent.com/chuckxD/chuckxD-60121849657221935028128-copy/master/poopthefirst.js`
         );
       }
 
-      if (command === "activechatters") {
-        let msgString = [];
-        if (activechatters.length > 0) {
-          activechatters.forEach((chatter) => {
-            if (
-              msgString.join(" ").length >= 265 &&
-              target.toLowerCase() !== "nam"
-            ) {
-              return;
-            }
-            msgString = msgString.concat(chatter);
-          });
+      if (command === "supapasta") {
+        if (target === "chat") {
+          return;
         }
-        // client.say(CHANNEL, msgString.join(" "));
-        console.info(`active chatters: `, msgString);
-        client.whisper(sender, msgString.join(" "));
+
+        const TITLE_CHAR_LEN = 22; // ?
+        const SPECIAL_PASTA_CHAR = "ᅚ";
+        const SPECIAL_PASTA_TITLE_SEP = "█";
+
+        let emote1,
+          emote2,
+          title,
+          _title,
+          pastaString = "",
+          pastaStringTemplate = `ᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ EMOTE_1 ᅚᅚ ᅚ ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚ ᅚ EMOTE_2 ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1`;
+
+        [emote1, emote2, title] = messageText.split(" ").slice(1);
+        console.info(`[emote1, emote2, title] `, [emote1, emote2, title]);
+
+        if (!emote1 || !emote2) {
+          console.info("missing emote1 & 2: ", emote1, emote2);
+          return;
+        }
+        pastaString = pastaStringTemplate
+          .replace(/EMOTE_1/g, emote1)
+          .replace(/EMOTE_2/g, emote2);
+
+        if (typeof title === "string" && title.length > 1) {
+          _title = title.split("").join(SPECIAL_PASTA_TITLE_SEP);
+          console.info(`_title: `, _title);
+
+          for (; TITLE_CHAR_LEN > _title.length; ) {
+            _title = SPECIAL_PASTA_CHAR + _title + SPECIAL_PASTA_CHAR;
+          }
+          console.info(`_title: `, _title);
+          client.say(CHANNEL, `${_title} ${pastaString}`);
+          return;
+        }
+
+        _title = new Array(TITLE_CHAR_LEN)
+          .fill(SPECIAL_PASTA_CHAR, 0, TITLE_CHAR_LEN)
+          .join("");
+        client.say(CHANNEL, `${_title} ${pastaString}`);
+        return;
       }
+
+      // banned command
+      // if (command === "activechatters") {
+      //   let msgString = [];
+      //   if (activechatters.length > 0) {
+      //     activechatters.forEach((chatter) => {
+      //       msgString = msgString.concat(chatter);
+      //     });
+      //   }
+      //   client.say(CHANNEL, msgString.join(" "));
+      //   console.info(`active chatters (${msgString.length}): `, msgString.join(' '));
+      // }
 
       if (command === "cd") {
         client.say(
           CHANNEL,
-          `${sender} current command cool down is ${globalCommandCooldown} ms, [redacted] / pawgchamp cd is ${recentChatterCooldown} ms`
+          `${sender} current global command cool down is ${globalCommandCooldown} ms, [redacted] / pawgchamp / speical commands cd is ${specialCommandCooldown} ms`
         );
       }
 
@@ -405,10 +449,7 @@ module.exports = (() => {
       }
 
       if (command.startsWith("gumi")) {
-        client.say(
-          CHANNEL,
-          getRandomArrayElement([`is based`, `is cringe`, `is based on cringe`])
-        );
+        client.say(CHANNEL, getRandomArrayElement([`is based`, `is cringe`]));
       }
 
       if (command === "dab") {
@@ -454,7 +495,7 @@ module.exports = (() => {
       }
 
       // if (command === 'activechatters' || command === 'activechatters') {
-      //   setTimeout(() => console.log('sleep'), recentChatterCooldown)
+      //   setTimeout(() => console.log('sleep'), specialCommandCooldown)
       // } else {
       //   setTimeout(() => console.log('sleep'), globalCommandCooldown)
       // }
