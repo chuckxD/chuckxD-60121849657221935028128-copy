@@ -24,6 +24,17 @@ module.exports = (() => {
       require("dotenv").config({ path: path.resolve(".env.local") });
     }
 
+
+    if (
+      Object.keys(process.env).includes("NODE_APP_ENV") &&
+      process.env["NODE_APP_ENV"] === "replit"
+    ) {
+      
+      require("dotenv").config({ path: path.resolve(".env.replit") });
+      appEnvRuntime = `replit:${process.env['CHANNEL']}`
+      console.info("loading " + appEnvRuntime + " env...");
+    }
+
     const {
       DEBUG,
       TWITCH_OAUTH_PASSWORD,
