@@ -1,66 +1,25 @@
+// poopthefirst port: repl/novelty bot for moonmoon
+// irc dank chat usage - https://github.com/robotty/dank-twitch-irc#usage
 module.exports = (() => {
   try {
-    let appEnvRuntime = "";
-    const path = require("path");
-    const sleep = require("util").promisify(setTimeout);
-
-    if (
-      !Object.keys(process.env).includes("NODE_APP_ENV") ||
-      !process.env["NODE_APP_ENV"] ||
-      process.env["NODE_APP_ENV"] === "moonmoon" ||
-      process.env["NODE_APP_ENV"] === "production"
-    ) {
-      appEnvRuntime = "moon";
-      console.info("loading default env...");
-      require("dotenv").config();
-    }
-
-    if (
-      Object.keys(process.env).includes("NODE_APP_ENV") &&
-      process.env["NODE_APP_ENV"] === "local"
-    ) {
-      appEnvRuntime = "local";
-      console.info("loading " + process.env["NODE_APP_ENV"] + " env...");
-      require("dotenv").config({ path: path.resolve(".env.local") });
-    }
-
-
-    if (
-      Object.keys(process.env).includes("NODE_APP_ENV") &&
-      process.env["NODE_APP_ENV"] === "replit"
-    ) {
-      
-      require("dotenv").config({ path: path.resolve(".env.replit") });
-      appEnvRuntime = `replit:${process.env['CHANNEL']}`
-      console.info("loading " + appEnvRuntime + " env...");
-    }
-
     const {
+      appEnvRuntime,
       DEBUG,
       TWITCH_OAUTH_PASSWORD,
       CHANNEL,
       TWITCH_OAUTH_USERNAME,
       CLIENT_EVENT_DEBUG,
-    } = process.env;
+    } = require('./env');
 
-    const getRandomArrayElement = (arr) =>
-      arr[Math.floor(Math.random() * arr.length)];
+    const {
+      BOT_DISPLAY_NAME,
+      EXCLUDE_CHATTERS,
+      BASE_COMMANDS_HELP
+    } = require('./constants')
 
-    const BOT_DISPLAY_NAME = "60121849657221935028128";
-    const EXCLUDE_CHATTERS = [
-      "nightbot",
-      "moobot",
-      "markov_chain_bot",
-      "sumbot_",
-      "poopthefirst",
-      "moonmoon_nam",
-      "scootycoolguy",
-      "60121849657221935028128",
-      "moonmoon",
-      "moonmoon_has_tiny_teeth",
-      "je_ek",
-    ];
-    const BASE_COMMANDS_HELP = `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop, | !color !cd !pawgchamp !bttvsearch !poopthefirst !othercommands`;
+    const {
+      getRandomArrayElement
+    } = require('./utils')
 
     const { ChatClient } = require("dank-twitch-irc");
 
@@ -69,6 +28,15 @@ module.exports = (() => {
       password: TWITCH_OAUTH_PASSWORD,
       ignoreUnhandledPromiseRejections: true,
     });
+
+    let globalCommandCooldown = 8201,
+      specialCommandCooldown = 30001,
+      lastBotMessageEpoch = Date.now(),
+      isMoonLive = false,
+      activechatters = [],
+      recentChatterColors = {},
+      currentCooldown;
+
 
     client.on("ready", () => {
       console.log(
@@ -85,17 +53,10 @@ module.exports = (() => {
     client.connect();
     client.join(CHANNEL);
 
-    // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
-    // - for polling if broadcaster is offline/online
-    let globalCommandCooldown = 8201,
-      specialCommandCooldown = 30001,
-      lastBotMessageEpoch = Date.now(),
-      isMoonLive = false,
-      activechatters = [],
-      recentChatterColors = {},
-      currentCooldown;
-
     client.on("message", (event) => {
+      // TODO: broadcaster status
+      // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
+      // - for polling if broadcaster is offline/online
       if (DEBUG && CLIENT_EVENT_DEBUG) console.info("client event: ", event);
 
       const {
@@ -131,8 +92,8 @@ module.exports = (() => {
         lastBotMessageEpoch = Number(serverTimestampRaw);
         currentCooldown =
           command === "activechatters" ||
-          command === "pawgchamp" ||
-          command === "supapasta"
+            command === "pawgchamp" ||
+            command === "supapasta"
             ? specialCommandCooldown
             : globalCommandCooldown;
         return;
@@ -231,7 +192,7 @@ module.exports = (() => {
           _title = title.split("").join(SPECIAL_PASTA_TITLE_SEP);
           console.info(`_title: `, _title);
 
-          for (; TITLE_CHAR_LEN > _title.length; ) {
+          for (; TITLE_CHAR_LEN > _title.length;) {
             _title = SPECIAL_PASTA_CHAR + _title + SPECIAL_PASTA_CHAR;
           }
           console.info(`_title: `, _title);
@@ -500,9 +461,9 @@ module.exports = (() => {
         client.say(
           CHANNEL,
           `${
-            randomIndex === 0 ? sender : randomRecentChatter
+          randomIndex === 0 ? sender : randomRecentChatter
           } -> BlueMovingPixel RedMovingPixel 󠀀<- ${
-            randomIndex === 0 ? randomRecentChatter : sender
+          randomIndex === 0 ? randomRecentChatter : sender
           }`
         );
       }
