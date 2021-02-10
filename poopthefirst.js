@@ -95,7 +95,7 @@ module.exports = (() => {
       } = event;
 
       if (
-				!activechatters.includes(sender) &&
+        !activechatters.includes(sender) &&
         !EXCLUDE_CHATTERS.includes(sender) &&
         typeof sender === "string"
       ) {
@@ -114,7 +114,7 @@ module.exports = (() => {
       command = command.slice(1).toLocaleLowerCase();
 
       if (sender === BOT_DISPLAY_NAME) {
-        console.log(`${sender} ${messageText}`)
+        console.log(`${sender} ${messageText}`);
 
         lastBotMessageEpoch = Number(serverTimestampRaw);
         currentCooldown =
@@ -125,7 +125,7 @@ module.exports = (() => {
       }
 
       if (Date.now() < lastBotMessageEpoch + currentCooldown) {
-        return
+        return;
       }
 
       if (!messageText.startsWith("!")) {
@@ -187,13 +187,18 @@ module.exports = (() => {
         let msgString = [];
         if (activechatters.length > 0) {
           activechatters.forEach((chatter) => {
-            if (msgString.join(" ").length >= 265 && target.toLowerCase() !== "nam") {
+            if (
+              msgString.join(" ").length >= 265 &&
+              target.toLowerCase() !== "nam"
+            ) {
               return;
             }
             msgString = msgString.concat(chatter);
           });
         }
-        client.say(CHANNEL, msgString.join(" "));
+        // client.say(CHANNEL, msgString.join(" "));
+        console.info(`active chatters: `, msgString);
+        client.whisper(sender, msgString.join(" "));
       }
 
       if (command === "cd") {
@@ -422,24 +427,29 @@ module.exports = (() => {
 
       if (command === "peep") {
         if (activechatters.includes("dantiko")) {
-					return
+          return;
         }
 
         if (!activechatters.includes("dantiko")) {
           const victim = getRandomArrayElement(activechatters);
           client.say(
             CHANNEL,
-            `${sender} PEEPERS peepin in on ${target} fucking ${victim} 's mom peepersD PawgChamp`
+            `${sender} PEEPERS peepin in on ${target} fucking ${victim} 's mom peepersD BlueMovingPixel RedMovingPixel`
           );
         }
       }
 
       if (command === "pawgchamp") {
+        const randomRecentChatter = getRandomArrayElement(activechatters);
+        const randomIndex = Math.floor(Math.random() * 2);
+
         client.say(
           CHANNEL,
-          `${getRandomArrayElement(
-            activechatters
-          )} -> 🟦 🟥 󠀀<- ${getRandomArrayElement(activechatters)}`
+          `${
+            randomIndex === 0 ? sender : randomRecentChatter
+          } -> BlueMovingPixel RedMovingPixel 󠀀<- ${
+            randomIndex === 0 ? randomRecentChatter : sender
+          }`
         );
       }
 
