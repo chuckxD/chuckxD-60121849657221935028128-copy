@@ -118,7 +118,7 @@ module.exports = (() => {
 
         lastBotMessageEpoch = Number(serverTimestampRaw);
         currentCooldown =
-          command === "activechatters" || command === "activechatters"
+          command === "activechatters" || command === "pawgchamp"
             ? recentChatterCooldown
             : globalCommandCooldown;
         return;
@@ -204,7 +204,7 @@ module.exports = (() => {
       if (command === "cd") {
         client.say(
           CHANNEL,
-          `${sender} current command cool down is ${globalCommandCooldown} ms, activechatters cd is ${recentChatterCooldown} ms`
+          `${sender} current command cool down is ${globalCommandCooldown} ms, [redacted] / pawgchamp cd is ${recentChatterCooldown} ms`
         );
       }
 
