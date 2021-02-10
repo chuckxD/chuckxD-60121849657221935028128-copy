@@ -30,7 +30,7 @@ module.exports = (() => {
     });
 
     let globalCommandCooldown = 8201,
-      specialCommandCooldown = 30001,
+      specialCommandCooldown = 4201, // 30001,
       lastBotMessageEpoch = Date.now(),
       isMoonLive = false,
       activechatters = [],
@@ -99,7 +99,7 @@ module.exports = (() => {
         return;
       }
 
-      if (Date.now() < lastBotMessageEpoch + currentCooldown) {
+      if (Date.now() > lastBotMessageEpoch + currentCooldown) {
         return;
       }
 
@@ -159,7 +159,7 @@ module.exports = (() => {
         );
       }
 
-      if (command === "supapasta") {
+      if (command === "e2p" || command === "7c" || command 'dothepasta') {
         // wip
 
         // given a standard/normal chat width
@@ -174,16 +174,18 @@ module.exports = (() => {
           return;
         }
 
-        const TITLE_CHAR_LEN = 22; // ?
+        const TITLE_CHAR_LEN = 28; // ?
         const SPECIAL_PASTA_CHAR = "ᅚ";
         const SPECIAL_PASTA_TITLE_SEP = "█";
+        const ENABLE_TITLE_OPTION = true
 
         let emote1,
           emote2,
           title,
           _title,
           pastaString = "",
-          pastaStringTemplate = `ᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ EMOTE_1 ᅚᅚ ᅚ ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚ ᅚ EMOTE_2 ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1`;
+          pastaStringTemplate = 'ᅚᅚᅚᅚ ᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ EMOTE_1 ᅚᅚ ᅚ ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚ ᅚ EMOTE_2 ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 󠀀 ';
+            // ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ
 
         [emote1, emote2, title] = messageText.split(" ").slice(1);
         console.info(`[emote1, emote2, title] `, [emote1, emote2, title]);
@@ -196,22 +198,21 @@ module.exports = (() => {
           .replace(/EMOTE_1/g, emote1)
           .replace(/EMOTE_2/g, emote2);
 
-        if (typeof title === "string" && title.length > 1) {
-          _title = title.split("").join(SPECIAL_PASTA_TITLE_SEP);
+        
+        if (typeof title === "string" && title.length > 2 && ENABLE_TITLE_OPTION && title.length <= 12) {
+          _title = SPECIAL_PASTA_TITLE_SEP + title.toUpperCase().split("").join(SPECIAL_PASTA_TITLE_SEP) + SPECIAL_PASTA_TITLE_SEP;
           console.info(`_title: `, _title);
 
           for (; TITLE_CHAR_LEN > _title.length;) {
             _title = SPECIAL_PASTA_CHAR + _title + SPECIAL_PASTA_CHAR;
           }
           console.info(`_title: `, _title);
-          client.say(CHANNEL, `${_title} ${pastaString}`);
+          client.me(CHANNEL, `${_title} ${pastaString}`);
           return;
         }
 
-        _title = new Array(TITLE_CHAR_LEN)
-          .fill(SPECIAL_PASTA_CHAR, 0, TITLE_CHAR_LEN)
-          .join("");
-        client.say(CHANNEL, `${_title} ${pastaString}`);
+         _title = 'ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ'
+        client.me(CHANNEL, `${_title} ${pastaString}`);
         return;
       }
 
