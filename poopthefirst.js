@@ -169,7 +169,7 @@ module.exports = (() => {
         
         // the title final result should evenly occuppy the whole line or ignore it if it's too long
 
-        // return
+        return
         if (target === "chat") {
           return;
         }
@@ -177,7 +177,7 @@ module.exports = (() => {
         const TITLE_CHAR_LEN = 28; // ?
         const SPECIAL_PASTA_CHAR = "ᅚ";
         const SPECIAL_PASTA_TITLE_SEP = "█";
-        const ENABLE_TITLE_OPTION = true
+        const ENABLE_TITLE_OPTION = false
 
         let emote1,
           emote2,
