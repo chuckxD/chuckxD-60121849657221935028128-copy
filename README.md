@@ -1,2 +1,4 @@
-`npm install`
-`npm run start`
+poopthefirst novelty twitch bot for moonmoon
+
+- replit support
+- heorku support
