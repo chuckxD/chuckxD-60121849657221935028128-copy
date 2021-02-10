@@ -159,7 +159,7 @@ module.exports = (() => {
         );
       }
 
-      if (command === "e2p" || command === "7c" || command 'dothepasta') {
+      if (command === "e2p" || command === "7c" || command === 'dothepasta') {
         // wip
 
         // given a standard/normal chat width
