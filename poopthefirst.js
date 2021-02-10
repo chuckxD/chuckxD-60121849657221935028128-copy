@@ -188,6 +188,8 @@ module.exports = (() => {
       }
 
       if (command === "supapasta") {
+        // wip
+        return
         if (target === "chat") {
           return;
         }
