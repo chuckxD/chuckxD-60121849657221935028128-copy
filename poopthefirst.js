@@ -57,17 +57,19 @@ module.exports = (() => {
       // TODO: broadcaster status
       // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
       // - for polling if broadcaster is offline/online
-      console.info(`current time: `, new Date().toISOString());
-      console.info(
-        `lastBotMessageEpoch: `,
-        lastBotMessageEpoch,
-        `currentCooldown: `,
-        currentCooldown
-      );
-      console.info(
-        `cool down till: `,
-        new Date(lastBotMessageEpoch + currentCooldown).toISOString()
-      );
+      if (DEBUG) {
+        console.info(`current time: `, new Date().toISOString());
+        console.info(
+          `lastBotMessageEpoch: `,
+          lastBotMessageEpoch,
+          `currentCooldown: `,
+          currentCooldown
+        );
+        console.info(
+          `cool down till: `,
+          new Date(lastBotMessageEpoch + currentCooldown).toISOString()
+        );
+      }
 
       if (DEBUG && CLIENT_EVENT_DEBUG) console.info("client event: ", event);
 
@@ -248,7 +250,7 @@ module.exports = (() => {
           return;
         }
 
-        _title = "ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ";
+        _title = "ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚeᅚᅚᅚᅚᅚ";
         client.me(CHANNEL, `${_title} ${pastaString}`);
         return;
       }
