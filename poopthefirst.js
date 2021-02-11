@@ -169,7 +169,7 @@ module.exports = (() => {
         
         // the title final result should evenly occuppy the whole line or ignore it if it's too long
 
-        return
+        // return
         if (target === "chat") {
           return;
         }
