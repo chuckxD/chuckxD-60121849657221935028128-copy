@@ -9,17 +9,17 @@ module.exports = (() => {
       CHANNEL,
       TWITCH_OAUTH_USERNAME,
       CLIENT_EVENT_DEBUG,
-    } = require('./env');
+    } = require("./env");
 
     const {
       BOT_DISPLAY_NAME,
       EXCLUDE_CHATTERS,
-      BASE_COMMANDS_HELP
-    } = require('./constants')
+      BASE_COMMANDS_HELP,
+    } = require("./constants");
 
-    const {
-      getRandomArrayElement
-    } = require('./utils')
+    console.log(`BOT_DISPLAY_NAME): `, BOT_DISPLAY_NAME);
+
+    const { getRandomArrayElement } = require("./utils");
 
     const { ChatClient } = require("dank-twitch-irc");
 
@@ -28,15 +28,6 @@ module.exports = (() => {
       password: TWITCH_OAUTH_PASSWORD,
       ignoreUnhandledPromiseRejections: true,
     });
-
-    let globalCommandCooldown = 8201,
-      specialCommandCooldown =  30001,
-      lastBotMessageEpoch = Date.now(),
-      isMoonLive = false,
-      activechatters = [],
-      recentChatterColors = {},
-      currentCooldown;
-
 
     client.on("ready", () => {
       console.log(
@@ -53,10 +44,31 @@ module.exports = (() => {
     client.connect();
     client.join(CHANNEL);
 
+  let globalCommandCooldown = 8201,
+    specialCommandCooldown = 30001,
+    lastBotMessageEpoch = Date.now(),
+    isMoonLive = false,
+    activechatters = [],
+    recentChatterColors = {},
+    currentCooldown = 8201;
+
     client.on("message", (event) => {
+
       // TODO: broadcaster status
       // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
       // - for polling if broadcaster is offline/online
+      console.info(`current time: `, new Date().toISOString());
+      console.info(
+        `lastBotMessageEpoch: `,
+        lastBotMessageEpoch,
+        `currentCooldown: `,
+        currentCooldown
+      );
+      console.info(
+        `cool down till: `,
+        new Date(lastBotMessageEpoch + currentCooldown).toISOString()
+      );
+
       if (DEBUG && CLIENT_EVENT_DEBUG) console.info("client event: ", event);
 
       const {
@@ -66,6 +78,10 @@ module.exports = (() => {
         messageText,
         serverTimestampRaw,
       } = event;
+
+      if (!sender) return;
+
+      if (DEBUG) console.log(`sender: `, sender);
 
       if (
         !activechatters.includes(sender) &&
@@ -84,24 +100,37 @@ module.exports = (() => {
       }
 
       let [command, target] = messageText.split(" ");
+      if (DEBUG) console.log(`COMMAND: `, command, `TARGET: `, target);
       command = command.slice(1).toLocaleLowerCase();
+
+      console.log(
+        "currentCooldown: ",
+        currentCooldown,
+        `lastBotMessageEpoch: `,
+        lastBotMessageEpoch,
+        `Date.now() `,
+        Date.now()
+      );
 
       if (sender === BOT_DISPLAY_NAME) {
         console.log(`${sender} ${messageText}`);
 
-        lastBotMessageEpoch = Number(serverTimestampRaw);
+        lastBotMessageEpoch = Date.now();
         currentCooldown =
           command === "activechatters" ||
-            command === "pawgchamp" ||
-            command === "supapasta"
+          command === "pawgchamp" ||
+          command === "supapasta"
             ? specialCommandCooldown
             : globalCommandCooldown;
         return;
       }
 
-      if (Date.now() > lastBotMessageEpoch + currentCooldown) {
-        return;
-      }
+      console.log(`${Date.now()} > ${lastBotMessageEpoch + currentCooldown}`);
+
+      // if (Date.now() > lastBotMessageEpoch + currentCooldown) {
+      //   console.info('here');
+      //   return;
+      // }
 
       if (!messageText.startsWith("!")) {
         return;
@@ -159,14 +188,14 @@ module.exports = (() => {
         );
       }
 
-      if (command === "e2p" || command === "7c" || command === 'dothepasta') {
+      if (command === "e2p" || command === "7c" || command === "dothepasta") {
         // wip
 
         // given a standard/normal chat width
         // take 2 required args as emotes and output theh former emote around the latter as such: https://pastebin.com/raw/13wj6PsJ see also pastaStringTemplate below
 
         // optionally take a  3rd title arg and prepend it to the output above left/right padded with filler asciii code and inner padding each character of title with SEP charaacter e.g. ᅚᅚᅚᅚᅚT■E■S■Tᅚᅚᅚᅚᅚᅚ
-        
+
         // the title final result should evenly occuppy the whole line or ignore it if it's too long
 
         // return
@@ -177,15 +206,16 @@ module.exports = (() => {
         const TITLE_CHAR_LEN = 28; // ?
         const SPECIAL_PASTA_CHAR = "ᅚ";
         const SPECIAL_PASTA_TITLE_SEP = "█";
-        const ENABLE_TITLE_OPTION = false
+        const ENABLE_TITLE_OPTION = false;
 
         let emote1,
           emote2,
           title,
           _title,
           pastaString = "",
-          pastaStringTemplate = 'ᅚᅚᅚᅚ ᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ EMOTE_1 ᅚᅚ ᅚ ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚ ᅚ EMOTE_2 ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 󠀀 ';
-            // ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ
+          pastaStringTemplate =
+            "ᅚᅚᅚᅚ ᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ EMOTE_1 ᅚᅚ ᅚ ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚ ᅚ EMOTE_2 ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 󠀀 ";
+        // ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ
 
         [emote1, emote2, title] = messageText.split(" ").slice(1);
         console.info(`[emote1, emote2, title] `, [emote1, emote2, title]);
@@ -198,12 +228,19 @@ module.exports = (() => {
           .replace(/EMOTE_1/g, emote1)
           .replace(/EMOTE_2/g, emote2);
 
-        
-        if (typeof title === "string" && title.length > 2 && ENABLE_TITLE_OPTION && title.length <= 12) {
-          _title = SPECIAL_PASTA_TITLE_SEP + title.toUpperCase().split("").join(SPECIAL_PASTA_TITLE_SEP) + SPECIAL_PASTA_TITLE_SEP;
+        if (
+          typeof title === "string" &&
+          title.length > 2 &&
+          ENABLE_TITLE_OPTION &&
+          title.length <= 12
+        ) {
+          _title =
+            SPECIAL_PASTA_TITLE_SEP +
+            title.toUpperCase().split("").join(SPECIAL_PASTA_TITLE_SEP) +
+            SPECIAL_PASTA_TITLE_SEP;
           console.info(`_title: `, _title);
 
-          for (; TITLE_CHAR_LEN > _title.length;) {
+          for (; TITLE_CHAR_LEN > _title.length; ) {
             _title = SPECIAL_PASTA_CHAR + _title + SPECIAL_PASTA_CHAR;
           }
           console.info(`_title: `, _title);
@@ -211,7 +248,7 @@ module.exports = (() => {
           return;
         }
 
-         _title = 'ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ'
+        _title = "ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ";
         client.me(CHANNEL, `${_title} ${pastaString}`);
         return;
       }
@@ -458,21 +495,21 @@ module.exports = (() => {
           const victim = getRandomArrayElement(activechatters);
           client.say(
             CHANNEL,
-            `${sender} PEEPERS peepin in on ${target} fucking ${victim} 's mom peepersD BlueMovingPixel RedMovingPixel`
+            `${sender} PEEPERS peepin in on ${target} fucking ${victim}'s mom peepersD BlueMovingPixel RedMovingPixel`
           );
         }
       }
 
-      if (command === "pawgchamp") {
+      if (command === "pawgchamp" || command === "pg") {
         const randomRecentChatter = getRandomArrayElement(activechatters);
         const randomIndex = Math.floor(Math.random() * 2);
 
         client.say(
           CHANNEL,
           `${
-          randomIndex === 0 ? sender : randomRecentChatter
+            randomIndex === 0 ? sender : randomRecentChatter
           } -> BlueMovingPixel RedMovingPixel 󠀀<- ${
-          randomIndex === 0 ? randomRecentChatter : sender
+            randomIndex === 0 ? randomRecentChatter : sender
           }`
         );
       }
