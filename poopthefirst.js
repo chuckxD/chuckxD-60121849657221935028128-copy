@@ -17,7 +17,7 @@ module.exports = (() => {
       BASE_COMMANDS_HELP,
     } = require("./constants");
 
-    console.log(`BOT_DISPLAY_NAME): `, BOT_DISPLAY_NAME);
+    console.log(`BOT_DISPLAY_NAME: `, BOT_DISPLAY_NAME);
 
     const { getRandomArrayElement } = require("./utils");
 
@@ -44,32 +44,18 @@ module.exports = (() => {
     client.connect();
     client.join(CHANNEL);
 
-  let globalCommandCooldown = 8201,
-    specialCommandCooldown = 30001,
-    lastBotMessageEpoch = Date.now(),
-    isMoonLive = false,
-    activechatters = [],
-    recentChatterColors = {},
-    currentCooldown = 8201;
+    let globalCommandCooldown = 8201,
+      currentCooldown,
+      specialCommandCooldown = 45001,
+      lastBotMessageEpoch = Date.now(),
+      isMoonLive = false,
+      activechatters = [],
+      recentChatterColors = {};
 
     client.on("message", (event) => {
-
       // TODO: broadcaster status
       // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
       // - for polling if broadcaster is offline/online
-      if (DEBUG) {
-        console.info(`current time: `, new Date().toISOString());
-        console.info(
-          `lastBotMessageEpoch: `,
-          lastBotMessageEpoch,
-          `currentCooldown: `,
-          currentCooldown
-        );
-        console.info(
-          `cool down till: `,
-          new Date(lastBotMessageEpoch + currentCooldown).toISOString()
-        );
-      }
 
       if (DEBUG && CLIENT_EVENT_DEBUG) console.info("client event: ", event);
 
@@ -81,6 +67,20 @@ module.exports = (() => {
         serverTimestampRaw,
       } = event;
 
+      if (
+        typeof currentCooldown === "number" &&
+        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw)
+      ) {
+        if (DEBUG)
+          console.info(
+            `serverTimestampRaw message: ${new Date(
+              Number(serverTimestampRaw)
+            ).toUTCString()} | current cooldown ms: ${currentCooldown} | next bot msg request available: ${new Date(
+              lastBotMessageEpoch + currentCooldown
+            ).toUTCString()}`
+          );
+        return;
+      }
       if (!sender) return;
 
       if (DEBUG) console.log(`sender: `, sender);
@@ -100,51 +100,42 @@ module.exports = (() => {
       if (typeof messageText != "string") {
         return;
       }
-
-      let [command, target] = messageText.split(" ");
-      if (DEBUG) console.log(`COMMAND: `, command, `TARGET: `, target);
-      command = command.slice(1).toLocaleLowerCase();
-
-      console.log(
-        "currentCooldown: ",
-        currentCooldown,
-        `lastBotMessageEpoch: `,
-        lastBotMessageEpoch,
-        `Date.now() `,
-        Date.now()
-      );
-
-      if (sender === BOT_DISPLAY_NAME) {
-        console.log(`${sender} ${messageText}`);
-
-        lastBotMessageEpoch = Date.now();
-        currentCooldown =
-          command === "activechatters" ||
-          command === "pawgchamp" ||
-          command === "supapasta"
-            ? specialCommandCooldown
-            : globalCommandCooldown;
-        return;
-      }
-
-      console.log(`${Date.now()} > ${lastBotMessageEpoch + currentCooldown}`);
-
-      // if (Date.now() > lastBotMessageEpoch + currentCooldown) {
-      //   console.info('here');
-      //   return;
-      // }
-
       if (!messageText.startsWith("!")) {
         return;
       }
 
+      if (sender === BOT_DISPLAY_NAME) {
+        lastBotMessageEpoch = Number(serverTimestampRaw);
+      }
+
+      let [command, target] = messageText.split(" ");
       if (!target) {
         target = "chat";
       }
 
+      if (DEBUG)
+        console.log(
+          `SENDER: `,
+          sender,
+          ` | COMMAND: `,
+          command,
+          ` | TARGET: `,
+          target
+        );
+      command = command.slice(1).toLocaleLowerCase();
+
       if (typeof target === "string" && target.startsWith("@")) {
         target = target.slice(1);
       }
+
+      currentCooldown =
+        messageText.startsWith("!") &&
+        command &&
+        ["activechatters", "pawgchamp", "pg", "dothepasta", "botping"].includes(
+          command
+        )
+          ? specialCommandCooldown
+          : globalCommandCooldown;
 
       let fullMessage = "";
 
@@ -165,15 +156,12 @@ module.exports = (() => {
         }
       }
 
-      if (
-        command === "othercommands" ||
-        command === "60121849657221935028128"
-      ) {
+      if (command === "othercommands") {
         const [msgPrefix, msgPostfix] = !target
           .split(" ")
           .map((x) => x.toLowerCase())
           .includes("nam")
-          ? [`${sender} 🟦 🟥 󠀀 `, ""]
+          ? [`${sender} BlueMovingPixel RedMovingPixel 󠀀 `, ""]
           : [`!nammers ${sender} takeTheRob`, "!nam"];
 
         client.say(
@@ -190,7 +178,9 @@ module.exports = (() => {
         );
       }
 
-      if (command === "e2p" || command === "7c" || command === "dothepasta") {
+      if (command === "dothepasta") {
+        // disabled
+        return
         // wip
 
         // given a standard/normal chat width
@@ -208,7 +198,7 @@ module.exports = (() => {
         const TITLE_CHAR_LEN = 28; // ?
         const SPECIAL_PASTA_CHAR = "ᅚ";
         const SPECIAL_PASTA_TITLE_SEP = "█";
-        const ENABLE_TITLE_OPTION = false;
+        const ENABLE_TITLE_OPTION = true;
 
         let emote1,
           emote2,
@@ -216,9 +206,8 @@ module.exports = (() => {
           _title,
           pastaString = "",
           pastaStringTemplate =
-            "ᅚᅚᅚᅚ ᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ EMOTE_1 ᅚᅚ ᅚ ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚ ᅚ EMOTE_2 ᅚᅚ EMOTE_1 ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚᅚ EMOTE_1 ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ EMOTE_1 EMOTE_1 EMOTE_1 󠀀 ";
-        // ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ
-
+            "ᅚᅚᅚᅚ ᅚᅚᅚᅚ clintD clintD clintD ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ clintD ᅚᅚ ᅚ ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚ clintD ᅚ ᅚ cJerk ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ clintD clintD clintD 󠀀";
+        // ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ ᅚᅚᅚᅚ ᅚᅚᅚᅚ clintD clintD clintD ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ clintD ᅚᅚ ᅚ ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚ clintD ᅚ ᅚ cJerk ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ clintD clintD clintD 󠀀
         [emote1, emote2, title] = messageText.split(" ").slice(1);
         console.info(`[emote1, emote2, title] `, [emote1, emote2, title]);
 
@@ -227,14 +216,14 @@ module.exports = (() => {
           return;
         }
         pastaString = pastaStringTemplate
-          .replace(/EMOTE_1/g, emote1)
-          .replace(/EMOTE_2/g, emote2);
+          .replace(/clintD/g, emote1)
+          .replace(/cJerk/g, emote2);
 
         if (
           typeof title === "string" &&
           title.length > 2 &&
           ENABLE_TITLE_OPTION &&
-          title.length <= 12
+          title.length <= 10
         ) {
           _title =
             SPECIAL_PASTA_TITLE_SEP +
@@ -250,8 +239,10 @@ module.exports = (() => {
           return;
         }
 
-        _title = "ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚeᅚᅚᅚᅚᅚ";
-        client.me(CHANNEL, `${_title} ${pastaString}`);
+        client.me(
+          CHANNEL,
+          `ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ ${pastaString}`
+        );
         return;
       }
 
@@ -266,6 +257,41 @@ module.exports = (() => {
       //   client.say(CHANNEL, msgString.join(" "));
       //   console.info(`active chatters (${msgString.length}): `, msgString.join(' '));
       // }
+
+      if (command === "botping") {
+        client.say(CHANNEL, "!ping");
+        setTimeout(() => {
+          client.say(CHANNEL, "!namping");
+        }, 5001);
+        setTimeout(() => {
+          client.say(CHANNEL, "!chain");
+        }, 10001);
+        setTimeout(() => {
+          client.say(CHANNEL, "!peepod");
+        }, 15001);
+        setTimeout(() => {
+          client.say(CHANNEL, "!onred");
+        }, 20001);
+        setTimeout(() => {
+          client.say(CHANNEL, "!lastseen dantiko");
+        }, 25001);
+        setTimeout(() => {
+          client.say(CHANNEL, "!commands");
+        }, 30001);
+
+        // setTimeout(() => {
+        //   client.say(CHANNEL, "!lastseen ");
+        // }, 20001);
+      }
+
+      if (command === "swag") {
+        client.say(
+          CHANNEL,
+          `${
+            target === "chat" ? sender : target
+          } https://streamable.com/9dy2iu moon2G`
+        );
+      }
 
       if (command === "cd") {
         client.say(
@@ -293,7 +319,7 @@ module.exports = (() => {
         ) {
           // do this later
           if (DEBUG && target)
-            console.info(`RECENT CHATTER OBJ: `, recentChatterColors[target]);
+            console.info(`RECENT CHATTER: `, recentChatterColors[target]);
 
           const { senderColorHex, senderColorRgb } = recentChatterColors[
             target
@@ -387,7 +413,7 @@ module.exports = (() => {
           "PEPELEPSY",
           "gachiROLL",
           "pepeBASS",
-          "🟦 🟥 󠀀 ",
+          "BlueMovingPixel RedMovingPixel 󠀀 ",
         ];
         fullMessage = [
           msg1,
