@@ -8,7 +8,8 @@
     "start": "export NODE_APP_ENV= && node poopthefirst.js",
     "start:local": "export NODE_APP_ENV=local && node poopthefirst.js",
     "start:replit": "export NODE_APP_ENV=replit && node poopthefirst.js",
-    "local": "npm run start:local"
+    "local": "npm run start:local",
+    "tail-logs": "heroku logs --app=poopthefirst --tail"
   },
   "author": "",
   "license": "ISC",

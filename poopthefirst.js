@@ -69,7 +69,8 @@ module.exports = (() => {
 
       if (
         typeof currentCooldown === "number" &&
-        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw)
+        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
+        messageText.startsWith('!')
       ) {
         if (DEBUG)
           console.info(
@@ -83,8 +84,6 @@ module.exports = (() => {
       }
       if (!sender) return;
 
-      if (DEBUG) console.log(`sender: `, sender);
-
       if (
         !activechatters.includes(sender) &&
         !EXCLUDE_CHATTERS.includes(sender) &&
@@ -92,20 +91,19 @@ module.exports = (() => {
       ) {
         activechatters.unshift(sender);
         activechatters.slice(0, 49);
-        if (DEBUG) console.info(`activechatters `, activechatters);
         recentChatterColors[sender] = { senderColorHex, senderColorRgb };
-        if (DEBUG) console.info(`recentChatterColors `, recentChatterColors);
-      }
-
-      if (typeof messageText != "string") {
-        return;
-      }
-      if (!messageText.startsWith("!")) {
-        return;
       }
 
       if (sender === BOT_DISPLAY_NAME) {
         lastBotMessageEpoch = Number(serverTimestampRaw);
+      }
+
+      if (!messageText.startsWith("!")) {
+        return;
+      }
+
+      if (typeof messageText != "string") {
+        return;
       }
 
       let [command, target] = messageText.split(" ");
