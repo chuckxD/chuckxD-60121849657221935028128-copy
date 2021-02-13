@@ -9,6 +9,9 @@ module.exports = (() => {
       CHANNEL,
       TWITCH_OAUTH_USERNAME,
       CLIENT_EVENT_DEBUG,
+      NODE_EVAL_ENABLED,
+      SPECIAL_COMMAND_COOLDOWN_MS: specialCommandCooldown,
+      GLOBAL_COMMAND_COOLDOWN_MS: globalCommandCooldown,
     } = require("./env");
 
     const {
@@ -19,15 +22,40 @@ module.exports = (() => {
 
     console.log(`BOT_DISPLAY_NAME: `, BOT_DISPLAY_NAME);
 
-    const { getRandomArrayElement } = require("./utils");
+    const { getRandomArrayElement, rollNum } = require("./utils");
 
     const { ChatClient } = require("dank-twitch-irc");
+
+    console.info(`NODE_EVAL_ENABLED: `, NODE_EVAL_ENABLED);
+    if (NODE_EVAL_ENABLED === true) {
+      // const nodeEval = require("node-eval");
+    }
+
+    // const nodeEval = require("node-eval");
+    // const moduleContents = `
+    //     const package = require('./package.json'); // to resolve this require need to know the path of current module (./index.js)
+    //
+    //     module.exports = {
+    //         name: package.name
+    //     };
+    // `;
 
     let client = new ChatClient({
       username: TWITCH_OAUTH_USERNAME,
       password: TWITCH_OAUTH_PASSWORD,
       ignoreUnhandledPromiseRejections: true,
     });
+    //const evalAccessString = `
+    //module.exports = {
+    //    BOT_DISPLAY_NAME,
+    //    EXCLUDE_CHATTERS,
+    //    BASE_COMMANDS_HELP,
+    //    appEnvRuntime,
+    //    DEBUG,
+    //    TWITCH_OAUTH_USERNAME,
+    //    CHANNEL,
+    //    client
+    //  }`;
 
     client.on("ready", () => {
       console.log(
@@ -44,13 +72,14 @@ module.exports = (() => {
     client.connect();
     client.join(CHANNEL);
 
-    let globalCommandCooldown = 8201,
+    let __specialCommandCooldown = Number(specialCommandCooldown),
+      __globalCommandCooldown = Number(globalCommandCooldown),
       currentCooldown,
-      specialCommandCooldown = 45001,
       lastBotMessageEpoch = Date.now(),
       isMoonLive = false,
       activechatters = [],
-      recentChatterColors = {};
+      recentChatterColors = {},
+      nodeEval;
 
     client.on("message", (event) => {
       // TODO: broadcaster status
@@ -70,15 +99,15 @@ module.exports = (() => {
       if (
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
-        messageText.startsWith('!')
+        messageText.startsWith("!")
       ) {
         if (DEBUG)
           console.info(
-            `serverTimestampRaw message: ${new Date(
+            `SENDER: ${sender} | MESSAGE: ${messageText} | DEBUG INFO: serverTimestampRaw message: ${new Date(
               Number(serverTimestampRaw)
-            ).toUTCString()} | current cooldown ms: ${currentCooldown} | next bot msg request available: ${new Date(
-              lastBotMessageEpoch + currentCooldown
-            ).toUTCString()}`
+            ).toUTCString()} | current cooldown ms: ${currentCooldown} | next bot msg request available: ${
+              currentCooldown + lastBotMessageEpoch - Number(serverTimestampRaw)
+            } ms`
           );
         return;
       }
@@ -129,11 +158,17 @@ module.exports = (() => {
       currentCooldown =
         messageText.startsWith("!") &&
         command &&
-        ["activechatters", "pawgchamp", "pg", "dothepasta", "botping"].includes(
-          command
-        )
-          ? specialCommandCooldown
-          : globalCommandCooldown;
+        [
+          "activechatters",
+          "pawgchamp",
+          "pg",
+          "dothepasta",
+          "botping",
+          "rollnum",
+          "eval",
+        ].includes(command)
+          ? __specialCommandCooldown
+          : __globalCommandCooldown;
 
       let fullMessage = "";
 
@@ -146,27 +181,12 @@ module.exports = (() => {
           client.say(CHANNEL, `!commands ${_target}`);
           setTimeout(() => {
             client.me(CHANNEL, `${sender} ${BASE_COMMANDS_HELP}`);
-          }, 1001);
+          }, currentCooldown + 1);
         }
 
         if (command === "commands") {
           client.me(CHANNEL, `${sender} ${BASE_COMMANDS_HELP}`);
         }
-      }
-
-      if (command === "othercommands") {
-        const [msgPrefix, msgPostfix] = !target
-          .split(" ")
-          .map((x) => x.toLowerCase())
-          .includes("nam")
-          ? [`${sender} BlueMovingPixel RedMovingPixel 󠀀 `, ""]
-          : [`!nammers ${sender} takeTheRob`, "!nam"];
-
-        client.say(
-          CHANNEL,
-          "NOPERS"
-          // `${msgPrefix} | unlisted bot commands | !onred !peep !mypp !peepod !bas1 !bas4 !pogbas !rq !rs !search !searchuser !piss !shit !cIean !gachiquote !100stress !200stress ${msgPostfix}`
-        );
       }
 
       if (["poopthefirst", "thiscode", "thisbot"].includes(command)) {
@@ -178,7 +198,7 @@ module.exports = (() => {
 
       if (command === "dothepasta") {
         // disabled
-        return
+        // return
         // wip
 
         // given a standard/normal chat width
@@ -538,6 +558,33 @@ module.exports = (() => {
             randomIndex === 0 ? randomRecentChatter : sender
           }`
         );
+      }
+
+      if (command === "rollnum") {
+        const _numSides = parseInt(target);
+        const numSides =
+          Number.isSafeInteger(_numSides) && _numSides > 1 ? _numSides : 100;
+        client.say(
+          CHANNEL,
+          `${sender} rolls(${numSides}): ${
+            Math.floor(Math.random() * numSides) + 1
+          }!`
+        );
+        return;
+      }
+
+      if (command === "eval" && NODE_EVAL_ENABLED === true) {
+        try {
+          let _cmd;
+          if (typeof nodeEval !== "module") {
+            nodeEval = require("node-eval");
+          }
+          _cmd = messageText.replace("!eval", "").trim();
+          console.info("nodeEval command: ", _cmd);
+          client.say(CHANNEL, nodeEval(_cmd));
+        } catch (err) {
+          client.say(CHANNEL, err.message);
+        }
       }
 
       // if (command === 'activechatters' || command === 'activechatters') {

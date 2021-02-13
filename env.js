@@ -1,5 +1,5 @@
 let appEnvRuntime = "";
-const path = require('path')
+const path = require("path");
 if (
   !Object.keys(process.env).includes("NODE_APP_ENV") ||
   !process.env["NODE_APP_ENV"] ||
@@ -20,18 +20,19 @@ if (
   require("dotenv").config({ path: path.resolve(".env.local") });
 }
 
-
 if (
   Object.keys(process.env).includes("NODE_APP_ENV") &&
   process.env["NODE_APP_ENV"] === "replit"
 ) {
-
   require("dotenv").config({ path: path.resolve(".env.replit") });
-  appEnvRuntime = `replit:${process.env['CHANNEL']}`
+  appEnvRuntime = `replit:${process.env["CHANNEL"]}`;
   console.info("loading " + appEnvRuntime + " env...");
 }
 
 module.exports = {
-  appEnvRuntime,
   ...process.env,
-}
+  appEnvRuntime,
+  NODE_EVAL_ENABLED:
+    Object.keys(process.env).includes("NODE_EVAL_ENABLED") &&
+    Boolean(process.env.NODE_EVAL_ENABLED),
+};
