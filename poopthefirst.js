@@ -99,7 +99,7 @@ module.exports = (() => {
       if (
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
-        messageText.startsWith("!")
+        typeof messageText === 'string' && messageText.startsWith("!")
       ) {
         if (DEBUG)
           console.info(
@@ -127,11 +127,7 @@ module.exports = (() => {
         lastBotMessageEpoch = Number(serverTimestampRaw);
       }
 
-      if (!messageText.startsWith("!")) {
-        return;
-      }
-
-      if (typeof messageText != "string") {
+      if (typeof messageText === 'string' && !messageText.startsWith("!")) {
         return;
       }
 
