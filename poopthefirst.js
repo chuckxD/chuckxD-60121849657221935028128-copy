@@ -152,8 +152,9 @@ module.exports = (() => {
       }
 
       currentCooldown =
+        typeof messageText === 'string' &&
         messageText.startsWith("!") &&
-        command &&
+        typeof command === 'string' &&
         [
           "activechatters",
           "pawgchamp",
