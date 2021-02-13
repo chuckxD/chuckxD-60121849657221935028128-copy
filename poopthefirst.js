@@ -127,7 +127,7 @@ module.exports = (() => {
         lastBotMessageEpoch = Number(serverTimestampRaw);
       }
 
-      if (typeof messageText === 'string' && !messageText.startsWith("!")) {
+      if (typeof messageText === 'undefined' || typeof messageText === 'string' && !messageText.startsWith("!")) {
         return;
       }
 
