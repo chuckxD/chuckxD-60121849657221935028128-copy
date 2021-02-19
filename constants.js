@@ -8,10 +8,8 @@ module.exports = {
     "poopthefirst",
     "moonmoon_nam",
     "scootycoolguy",
-    "60121849657221935028128",
-    "moonmoon",
-    "moonmoon_has_tiny_teeth",
-    "je_ek",
+    "60121849657221935028128"
   ],
-  BASE_COMMANDS_HELP: `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop | !poopthefirst !swag !color !cd !pawgchamp !bttvsearch !dothepasta !rollnum !eval !botping`,
+  BASE_COMMANDS_HELP: `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop | !poopthefirst !swag !color !cd !pawgchamp !bttvsearch`,
+  OTHER_COMMANDS: `!dothepasta !rollnum !eval !botping`
 };
