@@ -26,36 +26,11 @@ module.exports = (() => {
 
     const { ChatClient } = require("dank-twitch-irc");
 
-    console.info(`NODE_EVAL_ENABLED: `, NODE_EVAL_ENABLED);
-    if (NODE_EVAL_ENABLED === true) {
-      // const nodeEval = require("node-eval");
-    }
-
-    // const nodeEval = require("node-eval");
-    // const moduleContents = `
-    //     const package = require('./package.json'); // to resolve this require need to know the path of current module (./index.js)
-    //
-    //     module.exports = {
-    //         name: package.name
-    //     };
-    // `;
-
     let client = new ChatClient({
       username: TWITCH_OAUTH_USERNAME,
       password: TWITCH_OAUTH_PASSWORD,
       ignoreUnhandledPromiseRejections: true,
     });
-    //const evalAccessString = `
-    //module.exports = {
-    //    BOT_DISPLAY_NAME,
-    //    EXCLUDE_CHATTERS,
-    //    BASE_COMMANDS_HELP,
-    //    appEnvRuntime,
-    //    DEBUG,
-    //    TWITCH_OAUTH_USERNAME,
-    //    CHANNEL,
-    //    client
-    //  }`;
 
     client.on("ready", () => {
       console.log(
@@ -157,8 +132,6 @@ module.exports = (() => {
         typeof command === 'string' &&
         [
           "activechatters",
-          "pawgchamp",
-          "pg",
           "dothepasta",
           "botping",
           "rollnum",
@@ -171,8 +144,6 @@ module.exports = (() => {
 
       if (command === "help" || command === "commands") {
         let _target = !target || target === "chat" ? sender : target;
-
-        // const commandsString = ;
 
         if (command === "help") {
           client.say(CHANNEL, `!commands ${_target}`);
@@ -194,18 +165,6 @@ module.exports = (() => {
       }
 
       if (command === "dothepasta") {
-        // disabled
-        // return
-        // wip
-
-        // given a standard/normal chat width
-        // take 2 required args as emotes and output theh former emote around the latter as such: https://pastebin.com/raw/13wj6PsJ see also pastaStringTemplate below
-
-        // optionally take a  3rd title arg and prepend it to the output above left/right padded with filler asciii code and inner padding each character of title with SEP charaacter e.g. ᅚᅚᅚᅚᅚT■E■S■Tᅚᅚᅚᅚᅚᅚ
-
-        // the title final result should evenly occuppy the whole line or ignore it if it's too long
-
-        // return
         if (target === "chat") {
           return;
         }
@@ -222,7 +181,7 @@ module.exports = (() => {
           pastaString = "",
           pastaStringTemplate =
             "ᅚᅚᅚᅚ ᅚᅚᅚᅚ clintD clintD clintD ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ clintD ᅚᅚ ᅚ ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚ clintD ᅚ ᅚ cJerk ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ clintD clintD clintD 󠀀";
-        // ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ ᅚᅚᅚᅚ ᅚᅚᅚᅚ clintD clintD clintD ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ clintD ᅚᅚ ᅚ ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚ clintD ᅚ ᅚ cJerk ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ clintD clintD clintD 󠀀
+
         [emote1, emote2, title] = messageText.split(" ").slice(1);
         console.info(`[emote1, emote2, title] `, [emote1, emote2, title]);
 
@@ -261,18 +220,6 @@ module.exports = (() => {
         return;
       }
 
-      // banned command
-      // if (command === "activechatters") {
-      //   let msgString = [];
-      //   if (activechatters.length > 0) {
-      //     activechatters.forEach((chatter) => {
-      //       msgString = msgString.concat(chatter);
-      //     });
-      //   }
-      //   client.say(CHANNEL, msgString.join(" "));
-      //   console.info(`active chatters (${msgString.length}): `, msgString.join(' '));
-      // }
-
       if (command === "botping") {
         client.say(CHANNEL, "!ping");
         setTimeout(() => {
@@ -293,10 +240,6 @@ module.exports = (() => {
         setTimeout(() => {
           client.say(CHANNEL, "!commands");
         }, 30001);
-
-        // setTimeout(() => {
-        //   client.say(CHANNEL, "!lastseen ");
-        // }, 20001);
       }
 
       if (command === "swag") {
@@ -311,7 +254,7 @@ module.exports = (() => {
       if (command === "cd") {
         client.say(
           CHANNEL,
-          `${sender} current global command cool down is ${globalCommandCooldown} ms, [redacted] / pawgchamp / speical commands cd is ${specialCommandCooldown} ms`
+          `${sender} current global command cool down is ${globalCommandCooldown} ms, speical commands cd is ${specialCommandCooldown} ms`
         );
       }
 
@@ -428,7 +371,6 @@ module.exports = (() => {
           "PEPELEPSY",
           "gachiROLL",
           "pepeBASS",
-          "BlueMovingPixel RedMovingPixel 󠀀 ",
         ];
         fullMessage = [
           msg1,
@@ -529,34 +471,6 @@ module.exports = (() => {
         );
       }
 
-      if (command === "peep") {
-        if (activechatters.includes("dantiko")) {
-          return;
-        }
-
-        if (!activechatters.includes("dantiko")) {
-          const victim = getRandomArrayElement(activechatters);
-          client.say(
-            CHANNEL,
-            `${sender} PEEPERS peepin in on ${target} fucking ${victim}'s mom peepersD BlueMovingPixel RedMovingPixel`
-          );
-        }
-      }
-
-      if (command === "pawgchamp" || command === "pg") {
-        const randomRecentChatter = getRandomArrayElement(activechatters);
-        const randomIndex = Math.floor(Math.random() * 2);
-
-        client.say(
-          CHANNEL,
-          `${
-            randomIndex === 0 ? sender : randomRecentChatter
-          } -> BlueMovingPixel RedMovingPixel 󠀀<- ${
-            randomIndex === 0 ? randomRecentChatter : sender
-          }`
-        );
-      }
-
       if (command === "rollnum") {
         const _numSides = parseInt(target);
         const numSides =
@@ -583,12 +497,6 @@ module.exports = (() => {
           client.say(CHANNEL, err.message);
         }
       }
-
-      // if (command === 'activechatters' || command === 'activechatters') {
-      //   setTimeout(() => console.log('sleep'), specialCommandCooldown)
-      // } else {
-      //   setTimeout(() => console.log('sleep'), globalCommandCooldown)
-      // }
     });
   } catch (err) {
     console.error(err);

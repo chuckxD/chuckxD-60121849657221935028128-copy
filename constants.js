@@ -10,6 +10,6 @@ module.exports = {
     "scootycoolguy",
     "60121849657221935028128"
   ],
-  BASE_COMMANDS_HELP: `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop | !poopthefirst !swag !color !cd !pawgchamp !bttvsearch`,
+  BASE_COMMANDS_HELP: `!handhold !handshake !dab !send !cuddle !slap !kiss !hug !spit !bully !why !smoke !godgamer !untuck !bang !poop | !poopthefirst !swag !color !cd !bttvsearch`,
   OTHER_COMMANDS: `!dothepasta !rollnum !eval !botping`
 };
