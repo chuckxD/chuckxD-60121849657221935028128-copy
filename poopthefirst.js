@@ -157,10 +157,10 @@ module.exports = (() => {
         }
       }
 
-      if (["poopthefirst", "thiscode", "thisbot"].includes(command)) {
+      if (["poopthefirst", "thiscode", "thisbot", "code"].includes(command)) {
         client.say(
           CHANNEL,
-          `poopthefirst port; bot is dumb and the code is shit: https://raw.githubusercontent.com/chuckxD/chuckxD-60121849657221935028128-copy/master/poopthefirst.js`
+          `poopthefirst port; novelty bot for fun 4Head https://github.com/chuckxD/chuckxD-60121849657221935028128-copy | PR's, issues, and other contributions welcome.`
         );
       }
 
