@@ -299,6 +299,7 @@ module.exports = (() => {
           `on ${target}'s desk`,
           `on ${target}'s porch`,
           `on ${target}'s carpet`,
+          `on ${target}'s toes moon2SNIFF`,
           `in ${target}'s sink`,
           `in ${target}'s litter box. ${target} is a cat MYAAA`,
           `in ${target}'s dog bowl. ${target} is a dog EEKUM`,
