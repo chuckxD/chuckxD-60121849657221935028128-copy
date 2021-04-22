@@ -454,7 +454,7 @@ module.exports = (() => {
         );
       }
 
-      if (command.startsWith("gumi")) {
+      if (command.startsWith("gumiho")) {
         client.say(CHANNEL, getRandomArrayElement([`is based`, `is cringe`]));
       }
 
@@ -485,7 +485,7 @@ module.exports = (() => {
         return;
       }
 
-      if (command === "eval" && NODE_EVAL_ENABLED === true) {
+      if (command === "eval" && NODE_EVAL_ENABLED === 'true') {
         try {
           let _cmd;
           if (typeof nodeEval !== "module") {
