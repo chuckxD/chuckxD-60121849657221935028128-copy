@@ -23,6 +23,8 @@ module.exports = (() => {
     console.log(`BOT_DISPLAY_NAME: `, BOT_DISPLAY_NAME);
 
     const { getRandomArrayElement, rollNum } = require("./utils");
+    
+    const tinyText = require('tiny-text');
 
     const { ChatClient } = require("dank-twitch-irc");
 
@@ -240,6 +242,11 @@ module.exports = (() => {
         setTimeout(() => {
           client.say(CHANNEL, "!commands");
         }, 30001);
+      }
+      
+      if (command === "tinytext") {
+        let newMsgText = tinyText(messageText.replace(`!tinytext`, '').trim());
+        client.say(CHANNEL, newMsgText);
       }
 
       if (command === "swag") {
