@@ -90,15 +90,10 @@ module.exports = (() => {
       }
       if (!sender) return;
 
-      if (
-        !activechatters.includes(sender) &&
-        !EXCLUDE_CHATTERS.includes(sender) &&
-        typeof sender === "string"
-      ) {
+
         activechatters.unshift(sender);
         activechatters.slice(0, 49);
         recentChatterColors[sender] = { senderColorHex, senderColorRgb };
-      }
 
       if (sender === BOT_DISPLAY_NAME) {
         lastBotMessageEpoch = Number(serverTimestampRaw);
