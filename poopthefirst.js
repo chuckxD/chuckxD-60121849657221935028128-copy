@@ -66,7 +66,7 @@ module.exports = (() => {
       if (DEBUG && CLIENT_EVENT_DEBUG) console.info("client event: ", event);
 
       const {
-        senderUsername: sender,
+        displayName: sender,
         colorRaw: senderColorHex,
         color: senderColorRgb,
         messageText,
