@@ -328,7 +328,7 @@ module.exports = (() => {
         ]);
         client.say(
           CHANNEL,
-          `${sender} untucks ${target} from bed and dabs on their face ${dab} PEPELEPSY`
+          `${sender} untucks ${target} from bed and dabs on their face ${dab} Grumpge`
         );
       }
 
