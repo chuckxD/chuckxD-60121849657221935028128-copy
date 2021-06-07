@@ -20,6 +20,8 @@ module.exports = (() => {
       BASE_COMMANDS_HELP,
     } = require("./constants");
 
+    const hoppers = require('./hoppers')
+
     const Uwuifier = require('uwuifier');
     const uwu = new Uwuifier();
 
@@ -321,6 +323,10 @@ module.exports = (() => {
         const msg3 = getRandomArrayElement(["SHITTERS", "moon2DEV", "moon2C"]);
         fullMessage = [msg1, msg2, msg3].join(" ");
         client.say(CHANNEL, fullMessage);
+      }
+
+      if (command === 'hopperquote') {
+        client.say(CHANNEL, getRandomArrayElement(hoppers))
       }
 
       if (command === "spit") {
