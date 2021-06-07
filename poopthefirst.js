@@ -226,7 +226,7 @@ module.exports = (() => {
           client.say(CHANNEL, `${sender} NOPERS i can not uwu that, gib pasta`)
         }
 
-        client.say(CHANNEL, uwu.uwuifySentence(messageText));
+        client.say(CHANNEL, uwu.uwuifySentence(messageText.replace('!uwu', '')));
       }
 
       if (command === "botping") {
