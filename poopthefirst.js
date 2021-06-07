@@ -20,7 +20,7 @@ module.exports = (() => {
       BASE_COMMANDS_HELP,
     } = require("./constants");
 
-    const hoppers = require('./hoppers')
+    const hoppers = require('./hoppers').filter((v, i, a) => a.indexOf(v) === i)
 
     const Uwuifier = require('uwuifier');
     const uwu = new Uwuifier();
