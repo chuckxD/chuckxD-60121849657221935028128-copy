@@ -471,8 +471,15 @@ module.exports = (() => {
       if (command === "bttvsearch") {
         client.say(
           CHANNEL,
-          `${sender} here's your link: https://betterttv.com/emotes/shared/search?query=${target}`
+          `${sender} here's bttv your link: https://betterttv.com/emotes/shared/search?query=${target}`
         );
+        setTimeout(() => {
+          client.say(
+            CHANNEL,
+            `${sender} here's ffz your link: https://www.frankerfacez.com/emoticons/?q=${target}`
+          );
+        }, 2000);
+        
       }
 
       if (command === "rollnum") {
