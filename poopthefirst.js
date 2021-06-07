@@ -222,11 +222,11 @@ module.exports = (() => {
       }
 
       if (command === 'uwu') {
-        if (typeof target === 'undefined') {
+        if (typeof target === 'undefined' || target === sender || target === '') {
           client.say(CHANNEL, `${sender} NOPERS i can not uwu that, gib pasta`)
         }
 
-        client.say(CHANNEL, uwu.uwuifySentence(target));
+        client.say(CHANNEL, uwu.uwuifySentence(messageText));
       }
 
       if (command === "botping") {
