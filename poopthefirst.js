@@ -20,6 +20,9 @@ module.exports = (() => {
       BASE_COMMANDS_HELP,
     } = require("./constants");
 
+    const Uwuifier = require('Uwuifier');
+    const uwu = new Uwuifier();
+
     console.log(`BOT_DISPLAY_NAME: `, BOT_DISPLAY_NAME);
 
     const { getRandomArrayElement, rollNum } = require("./utils");
@@ -216,6 +219,14 @@ module.exports = (() => {
           `ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ ${pastaString}`
         );
         return;
+      }
+
+      if (command === 'uwu') {
+        if (typeof target === 'undefined') {
+          client.say(CHANNEL, `${sender} NOPERS i can not uwu that, gib pasta`)
+        }
+        
+        client.say(CHANNEL, uwu.uwuifySentence(target));
       }
 
       if (command === "botping") {
