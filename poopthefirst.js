@@ -422,10 +422,18 @@ module.exports = (() => {
       }
 
       if (command === "smoke") {
+        if (sender.toLowerCase() === 'chupawunga') {
         client.say(
           CHANNEL,
-          `${sender} is now smoking a cigarette with ${target} pepeSmoke pepeSmoke`
+          `${sender} is now hittin dat good kush with ${target} CiGrip CiGrip`
         );
+        } else {
+          client.say(
+            CHANNEL,
+            `${sender} is now smoking a cigarette with ${target} pepeSmoke pepeSmoke`
+          );
+        }
+
       }
 
       if (command === "handshake") {
