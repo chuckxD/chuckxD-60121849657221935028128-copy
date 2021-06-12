@@ -340,11 +340,15 @@ module.exports = (() => {
           ({ r, g, b } = senderColorRgb);
           msg += ` here is ${target}'s hex color's value: ${senderColorHex} | RGB values (respectively): ${r}, ${g}, ${b} ; type /color for more info `;
         }
-        client.say(CHANNEL, msg);
+        client.setColor(senderColorRgb);
+        setTimeout(() => {
+          client.say(CHANNEL, msg);
+        }, 500);
       }
 
-      if (command == "poop") {
+      if (command.startsWith('poop')) {
         const msg1 = `${sender} is pooping`;
+        if (command === 'pooproll') target = getRandomArrayElement(activechatters);
         const msg2 = getRandomArrayElement([
           `on ${target}'s bed`,
           `in ${target}'s bathtub`,
