@@ -115,15 +115,7 @@ module.exports = (() => {
         target = "chat";
       }
 
-      if (DEBUG)
-        console.log(
-          `SENDER: `,
-          sender,
-          ` | COMMAND: `,
-          command,
-          ` | TARGET: `,
-          target
-        );
+      if (DEBUG) console.info(`[${serverTimestampRaw.toUTCString()}] ${sender}: ${messageText}`);
       command = command.slice(1).toLocaleLowerCase();
 
       if (typeof target === "string" && target.startsWith("@")) {
