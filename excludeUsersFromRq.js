@@ -1,1 +1,1 @@
-module.exports = ["je_eek"];
+module.exports = ["je_ek", "test123"];
