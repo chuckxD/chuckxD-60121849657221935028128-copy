@@ -20,17 +20,19 @@ module.exports = (() => {
       BASE_COMMANDS_HELP,
     } = require("./constants");
 
-    const hoppers = require('./hoppers').filter((v, i, a) => a.indexOf(v) === i)
+    const hoppers = require("./hoppers").filter(
+      (v, i, a) => a.indexOf(v) === i
+    );
 
-    const Uwuifier = require('uwuifier');
+    const Uwuifier = require("uwuifier");
     const uwu = new Uwuifier();
 
     console.log(`BOT_DISPLAY_NAME: `, BOT_DISPLAY_NAME);
 
     const { getRandomArrayElement, rollNum } = require("./utils");
-    
-    const tinyText = require('tiny-text');
-    const fetch = require('node-fetch');
+
+    const tinyText = require("tiny-text");
+    const fetch = require("node-fetch");
 
     const { ChatClient } = require("dank-twitch-irc");
 
@@ -82,7 +84,8 @@ module.exports = (() => {
       if (
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
-        typeof messageText === 'string' && messageText.startsWith("!")
+        typeof messageText === "string" &&
+        messageText.startsWith("!")
       ) {
         if (DEBUG)
           console.info(
@@ -98,7 +101,7 @@ module.exports = (() => {
 
       if (!activechatters.includes(sender)) {
         activechatters.unshift(sender);
-        activechatters.slice(0, 49);  
+        activechatters.slice(0, 49);
       }
       recentChatterColors[sender] = { senderColorHex, senderColorRgb };
 
@@ -106,7 +109,10 @@ module.exports = (() => {
         lastBotMessageEpoch = Number(serverTimestampRaw);
       }
 
-      if (typeof messageText === 'undefined' || typeof messageText === 'string' && !messageText.startsWith("!")) {
+      if (
+        typeof messageText === "undefined" ||
+        (typeof messageText === "string" && !messageText.startsWith("!"))
+      ) {
         return;
       }
 
@@ -131,16 +137,12 @@ module.exports = (() => {
       }
 
       currentCooldown =
-        typeof messageText === 'string' &&
+        typeof messageText === "string" &&
         messageText.startsWith("!") &&
-        typeof command === 'string' &&
-        [
-          "activechatters",
-          "dothepasta",
-          "botping",
-          "rollnum",
-          "eval",
-        ].includes(command)
+        typeof command === "string" &&
+        ["activechatters", "dothepasta", "botping", "rollnum", "eval"].includes(
+          command
+        )
           ? __specialCommandCooldown
           : __globalCommandCooldown;
 
@@ -224,12 +226,16 @@ module.exports = (() => {
         return;
       }
 
-      if (command === 'uwu') {
-        if (typeof target === 'undefined' || target === sender || target === '') {
-          client.say(CHANNEL, `${sender} NOPERS i can not uwu that, gib pasta`)
+      if (command === "uwu") {
+        if (
+          typeof target === "undefined" ||
+          target === sender ||
+          target === ""
+        ) {
+          client.say(CHANNEL, `${sender} NOPERS i can not uwu that, gib pasta`);
         }
-        
-        const uwuMsg = uwu.uwuifySentence(messageText.replace('!uwu', ''));
+
+        const uwuMsg = uwu.uwuifySentence(messageText.replace("!uwu", ""));
         client.say(CHANNEL, uwuMsg);
       }
 
@@ -254,9 +260,9 @@ module.exports = (() => {
           client.say(CHANNEL, "!commands");
         }, 30001);
       }
-      
+
       if (command === "tinytext") {
-        let newMsgText = tinyText(messageText.replace(`!tinytext`, '').trim());
+        let newMsgText = tinyText(messageText.replace(`!tinytext`, "").trim());
         client.say(CHANNEL, newMsgText);
       }
 
@@ -297,9 +303,8 @@ module.exports = (() => {
           if (DEBUG && target)
             console.info(`RECENT CHATTER: `, recentChatterColors[target]);
 
-          const { senderColorHex, senderColorRgb } = recentChatterColors[
-            target
-          ];
+          const { senderColorHex, senderColorRgb } =
+            recentChatterColors[target];
 
           ({ r, g, b } = senderColorRgb);
           msg += ` here is ${target}'s hex color's value: ${senderColorHex} | RGB values (respectively): ${r}, ${g}, ${b} ; type /color for more info `;
@@ -327,8 +332,8 @@ module.exports = (() => {
         client.say(CHANNEL, fullMessage);
       }
 
-      if (command === 'hopperquote') {
-        client.say(CHANNEL, getRandomArrayElement(hoppers))
+      if (command === "hopperquote") {
+        client.say(CHANNEL, getRandomArrayElement(hoppers));
       }
 
       if (command === "spit") {
@@ -351,33 +356,66 @@ module.exports = (() => {
         );
       }
 
-      if (command === 'rq2') {
-        const [chan, username] = messageText.replace('!rq2', '').split(' ').filter(ele => ele.length > 0)
-        if (target === 'chat' && typeof chan === 'undefined' && typeof username === 'undefined') {
-          fetch(`https://api.ivr.fi/logs/rq/moonmoon/${sender}`).then(response => response.json()).then((result) => {
-            const { user, message, time, error } = result;
-            if (!error) client.say(CHANNEL, `(${time}) ${user}: ${message}`);
-            if (error) client.say(CHANNEL, 'NOPERS invalid channel or no message found');
-          })
-          return;
-        }
+      if (command === "rq2") {
+        try {
+          const [chan, username] = messageText
+            .replace("!rq2", "")
+            .split(" ")
+            .filter((ele) => ele.length > 0);
+          if (
+            target === "chat" &&
+            typeof chan === "undefined" &&
+            typeof username === "undefined"
+          ) {
+            fetch(`https://api.ivr.fi/logs/rq/moonmoon/${sender}`)
+              .then((response) => response.json())
+              .then((result) => {
+                const { user, message, time, error } = result;
+                if (!error)
+                  client.say(CHANNEL, `(${time}) ${user}: ${message}`);
+                if (error)
+                  client.say(
+                    CHANNEL,
+                    "NOPERS invalid channel or no message found"
+                  );
+              });
+            return;
+          }
 
-        if (typeof chan === 'string' && typeof username === 'undefined') {
-          fetch(`https://api.ivr.fi/logs/rq/${chan}/${sender}`).then(response => response.json()).then((result) => {
-            const { user, message, time, error } = result;
-            if (!error) client.say(CHANNEL, `(${time}) ${user}: ${message}`);
-            if (error) client.say(CHANNEL, 'NOPERS invalid channel or no message found');
-          })
-          return;
-        }
+          if (typeof chan === "string" && typeof username === "undefined") {
+            fetch(`https://api.ivr.fi/logs/rq/${chan}/${sender}`)
+              .then((response) => response.json())
+              .then((result) => {
+                const { user, message, time, error } = result;
+                if (!error)
+                  client.say(CHANNEL, `(${time}) ${user}: ${message}`);
+                if (error)
+                  client.say(
+                    CHANNEL,
+                    "NOPERS invalid channel or no message found"
+                  );
+              });
+            return;
+          }
 
-        if (typeof chan === 'string' && typeof username === 'string') {
-          fetch(`https://api.ivr.fi/logs/rq/${chan}/${username}`).then(response => response.json()).then((result) => {
-            const { user, message, time, error } = result;
-            if (!error) client.say(CHANNEL, `(${time}) ${user}: ${message}`);
-            if (error) client.say(CHANNEL, 'NOPERS invalid channel or no message found');
-          })
-          return;
+          if (typeof chan === "string" && typeof username === "string") {
+            fetch(`https://api.ivr.fi/logs/rq/${chan}/${username}`)
+              .then((response) => response.json())
+              .then((result) => {
+                const { user, message, time, error } = result;
+                if (!error)
+                  client.say(CHANNEL, `(${time}) ${user}: ${message}`);
+                if (error)
+                  client.say(
+                    CHANNEL,
+                    "NOPERS invalid channel or no message found"
+                  );
+              });
+            return;
+          }
+        } catch (err) {
+          console.error(err);
+          client.say(CHANNEL, "NOPERS something went wrong");
         }
       }
 
@@ -419,12 +457,7 @@ module.exports = (() => {
           "in the 🅱ussy",
           "in the ass",
         ]);
-        const emotes = [
-          "gachiW",
-          "PEPELEPSY",
-          "gachiROLL",
-          "pepeBASS",
-        ];
+        const emotes = ["gachiW", "PEPELEPSY", "gachiROLL", "pepeBASS"];
         fullMessage = [
           msg1,
           msg2,
@@ -454,18 +487,20 @@ module.exports = (() => {
       }
 
       if (command === "smoke") {
-        if (sender.toLowerCase() === 'chupawunga' || sender.toLowerCase() === 'qc_bajs') {
-        client.say(
-          CHANNEL,
-          `${sender} is now hittin dat good kush with ${target} CiGrip CiGrip`
-        );
+        if (
+          sender.toLowerCase() === "chupawunga" ||
+          sender.toLowerCase() === "qc_bajs"
+        ) {
+          client.say(
+            CHANNEL,
+            `${sender} is now hittin dat good kush with ${target} CiGrip CiGrip`
+          );
         } else {
           client.say(
             CHANNEL,
             `${sender} is now smoking a cigarette with ${target} pepeSmoke pepeSmoke`
           );
         }
-
       }
 
       if (command === "handshake") {
@@ -531,8 +566,8 @@ module.exports = (() => {
           `${sender} here's your bttv link: https://betterttv.com/emotes/shared/search?query=${target}`
         );
       }
-      
-      if (command === 'ffzsearch') {
+
+      if (command === "ffzsearch") {
         client.say(
           CHANNEL,
           `${sender} here's your ffz link: https://www.frankerfacez.com/emoticons?q=${target}`
@@ -552,7 +587,7 @@ module.exports = (() => {
         return;
       }
 
-      if (command === "eval" && NODE_EVAL_ENABLED === 'true') {
+      if (command === "eval" && NODE_EVAL_ENABLED === "true") {
         try {
           let _cmd;
           if (typeof nodeEval !== "module") {
