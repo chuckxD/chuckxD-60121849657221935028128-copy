@@ -366,8 +366,11 @@ module.exports = (() => {
             .split(" ")
             .filter((ele) => ele.length > 0);
 
-          if (typeof username === 'string' && excludeUsersFromRq.includes(username)) {
-            client.say(CHANNEL, 'NOPERS user excluded from rq2')
+          if (typeof chan === 'string' || typeof username === 'string') {
+            if (username && excludeUsersFromRq.includes(username) || chan && excludeUsersFromRq.includes(chan)) {
+              client.say(CHANNEL, 'NOPERS user excluded from rq2');
+              return;
+            }
           }
           if (
             target === "chat" &&
@@ -390,7 +393,7 @@ module.exports = (() => {
           }
 
           if (typeof chan === "string" && typeof username === "undefined") {
-            fetch(`https://api.ivr.fi/logs/rq/${chan}/${sender}`)
+            fetch(`https://api.ivr.fi/logs/rq/moonmoon/${chan}`)
               .then((response) => response.json())
               .then((result) => {
                 const { user, message, time, error } = result;
