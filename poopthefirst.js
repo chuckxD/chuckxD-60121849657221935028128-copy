@@ -89,15 +89,7 @@ module.exports = (() => {
         typeof messageText === "string" &&
         messageText.startsWith("!")
       ) {
-        if (DEBUG)
-          console.info(
-            `SENDER: ${sender} | MESSAGE: ${messageText} | DEBUG INFO: serverTimestampRaw message: ${new Date(
-              Number(serverTimestampRaw)
-            ).toUTCString()} | current cooldown ms: ${currentCooldown} | next bot msg request available: ${
-              currentCooldown + lastBotMessageEpoch - Number(serverTimestampRaw)
-            } ms`
-          );
-        return;
+        if (DEBUG) console.info(`[${serverTimestampRaw.toUTCString()}] ${sender}: ${messageText}`);
       }
       if (!sender) return;
 
