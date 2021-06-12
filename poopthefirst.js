@@ -340,7 +340,7 @@ module.exports = (() => {
           ({ r, g, b } = senderColorRgb);
           msg += ` here is ${target}'s hex color's value: ${senderColorHex} | RGB values (respectively): ${r}, ${g}, ${b} ; type /color for more info `;
         }
-        client.setColor(senderColorRgb);
+        client.setColor({ r, g, b });
         setTimeout(() => {
           client.say(CHANNEL, msg);
         }, 500);
