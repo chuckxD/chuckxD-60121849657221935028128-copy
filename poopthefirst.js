@@ -227,8 +227,9 @@ module.exports = (() => {
         if (typeof target === 'undefined' || target === sender || target === '') {
           client.say(CHANNEL, `${sender} NOPERS i can not uwu that, gib pasta`)
         }
-
-        client.say(CHANNEL, uwu.uwuifySentence(messageText.replace('!uwu', '')));
+        
+        const uwuMsg = uwu.uwuifySentence(messageText.replace('!uwu', ''));
+        client.say(CHANNEL, uwuMsg);
       }
 
       if (command === "botping") {
@@ -422,7 +423,7 @@ module.exports = (() => {
       }
 
       if (command === "smoke") {
-        if (sender.toLowerCase() === 'chupawunga') {
+        if (sender.toLowerCase() === 'chupawunga' || sender.toLowerCase() === 'qc_bajs') {
         client.say(
           CHANNEL,
           `${sender} is now hittin dat good kush with ${target} CiGrip CiGrip`
@@ -496,15 +497,15 @@ module.exports = (() => {
       if (command === "bttvsearch") {
         client.say(
           CHANNEL,
-          `${sender} here's bttv your link: https://betterttv.com/emotes/shared/search?query=${target}`
+          `${sender} here's your bttv link: https://betterttv.com/emotes/shared/search?query=${target}`
         );
-        setTimeout(() => {
-          client.say(
-            CHANNEL,
-            `${sender} here's ffz your link: https://www.frankerfacez.com/emoticons/?q=${target}`
-          );
-        }, 2000);
-        
+      }
+      
+      if (command === 'ffzsearch') {
+        client.say(
+          CHANNEL,
+          `${sender} here's your ffz link: https://www.frankerfacez.com/emoticons?q=${target}`
+        );
       }
 
       if (command === "rollnum") {
