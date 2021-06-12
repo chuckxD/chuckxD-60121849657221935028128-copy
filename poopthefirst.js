@@ -229,7 +229,7 @@ module.exports = (() => {
       }
 
       if (command === "emotelookup") {
-        if (!target) {
+        if (target === 'chat') {
           client.say(
             CHANNEL,
             "NOPERS - this command gets channel by emote - usage e.g. !emotelookup moon2A"
