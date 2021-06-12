@@ -30,6 +30,7 @@ module.exports = (() => {
     const { getRandomArrayElement, rollNum } = require("./utils");
     
     const tinyText = require('tiny-text');
+    const fetch = require('node-fetch');
 
     const { ChatClient } = require("dank-twitch-irc");
 
@@ -348,6 +349,36 @@ module.exports = (() => {
           CHANNEL,
           `${sender} untucks ${target} from bed and dabs on their face ${dab} Grumpge`
         );
+      }
+
+      if (command === 'rq2') {
+        const [chan, username] = messageText.replace('!rq2', '').split(' ').filter(ele => ele.length > 0)
+        if (target === 'chat' && typeof chan === 'undefined' && typeof username === 'undefined') {
+          fetch(`https://api.ivr.fi/logs/rq/moonmoon/${sender}`).then(response => response.json()).then((result) => {
+            const { user, message, time, error } = result;
+            if (!error) client.say(CHANNEL, `(${time}) ${user}: ${message}`);
+            if (error) client.say(CHANNEL, 'NOPERS invalid channel or no message found');
+          })
+          return;
+        }
+
+        if (typeof chan === 'string' && typeof username === 'undefined') {
+          fetch(`https://api.ivr.fi/logs/rq/${chan}/${sender}`).then(response => response.json()).then((result) => {
+            const { user, message, time, error } = result;
+            if (!error) client.say(CHANNEL, `(${time}) ${user}: ${message}`);
+            if (error) client.say(CHANNEL, 'NOPERS invalid channel or no message found');
+          })
+          return;
+        }
+
+        if (typeof chan === 'string' && typeof username === 'string') {
+          fetch(`https://api.ivr.fi/logs/rq/${chan}/${username}`).then(response => response.json()).then((result) => {
+            const { user, message, time, error } = result;
+            if (!error) client.say(CHANNEL, `(${time}) ${user}: ${message}`);
+            if (error) client.say(CHANNEL, 'NOPERS invalid channel or no message found');
+          })
+          return;
+        }
       }
 
       if (command === "ban") {
