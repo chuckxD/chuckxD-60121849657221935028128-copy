@@ -20,6 +20,8 @@ module.exports = (() => {
       BASE_COMMANDS_HELP,
     } = require("./constants");
 
+    const excludeUsersFromRq = require('./excludeUsersFromRq')
+
     const hoppers = require("./hoppers").filter(
       (v, i, a) => a.indexOf(v) === i
     );
@@ -358,10 +360,15 @@ module.exports = (() => {
 
       if (command === "rq2") {
         try {
+
           const [chan, username] = messageText
             .replace("!rq2", "")
             .split(" ")
             .filter((ele) => ele.length > 0);
+
+          if (typeof username === 'string' && excludeUsersFromRq.includes(username)) {
+            client.say(CHANNEL, 'NOPERS user excluded from rq2')
+          }
           if (
             target === "chat" &&
             typeof chan === "undefined" &&
