@@ -20,7 +20,7 @@ module.exports = (() => {
       BASE_COMMANDS_HELP,
     } = require("./constants");
 
-    const excludeUsersFromRq = require('./excludeUsersFromRq')
+    const excludeUsersFromRq = require("./excludeUsersFromRq");
 
     const hoppers = require("./hoppers").filter(
       (v, i, a) => a.indexOf(v) === i
@@ -227,20 +227,31 @@ module.exports = (() => {
         );
         return;
       }
-      
-      if (command === 'emotelookup') {
+
+      if (command === "emotelookup") {
         if (!target) {
-          client.say(CHANNEL, 'NOPERS - this command gets channel by emote - usage e.g. !emotelookup moon2A');
+          client.say(
+            CHANNEL,
+            "NOPERS - this command gets channel by emote - usage e.g. !emotelookup moon2A"
+          );
           return;
         }
         let result, channel, error, status;
-        fetch(`https://api.ivr.fi/twitch/emotes/${target}`).then((response) => response.json()).then((__result) => ({ channel, error, status } = __result)).catch((err) => (console.error(err.message) && client.say(CHANNEL, err.message));
-        if (!error) {
-          client.say(CHANNEL, `${sender} emote: ${target} belongs to channel: ${channel}`);
+        fetch(`https://api.ivr.fi/twitch/emotes/${target}`)
+          .then((response) => response.json())
+          .then((__result) => ({ channel, error, status } = __result))
+          .catch(
+            (err) =>
+              console.error(err.message) && client.say(CHANNEL, err.message)
+          );
+        if (!error && status === 200) {
+          client.say(
+            CHANNEL,
+            `${sender} emote: ${target} belongs to channel: ${channel}`
+          );
           return;
         }
         client.say(CHANNEL, `NOPERS  ${error}`);
-        
       }
 
       if (command === "uwu") {
@@ -375,15 +386,17 @@ module.exports = (() => {
 
       if (command === "rq2") {
         try {
-
           const [chan, username] = messageText
             .replace("!rq2", "")
             .split(" ")
             .filter((ele) => ele.length > 0);
 
-          if (typeof chan === 'string' || typeof username === 'string') {
-            if (username && excludeUsersFromRq.includes(username) || chan && excludeUsersFromRq.includes(chan)) {
-              client.say(CHANNEL, 'NOPERS user excluded from rq2');
+          if (typeof chan === "string" || typeof username === "string") {
+            if (
+              (username && excludeUsersFromRq.includes(username)) ||
+              (chan && excludeUsersFromRq.includes(chan))
+            ) {
+              client.say(CHANNEL, "NOPERS user excluded from rq2");
               return;
             }
           }
