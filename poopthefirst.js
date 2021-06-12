@@ -229,7 +229,7 @@ module.exports = (() => {
       }
 
       if (command === "emotelookup") {
-        if (target === 'chat') {
+        if (target === "chat") {
           client.say(
             CHANNEL,
             "NOPERS - this command gets channel by emote - usage e.g. !emotelookup moon2A"
@@ -239,19 +239,22 @@ module.exports = (() => {
         let result, channel, error, status;
         fetch(`https://api.ivr.fi/twitch/emotes/${target}`)
           .then((response) => response.json())
-          .then((__result) => ({ channel, error, status } = __result))
+          .then((__result) => {
+            ({ channel, error, status } = __result);
+            if (error && status === 404) {
+              throw new Error(error);
+            }
+            if (!error && status === 200) {
+              client.say(
+                CHANNEL,
+                `${sender} emote: ${target} belongs to channel: ${channel}`
+              );
+            }
+          })
           .catch(
             (err) =>
               console.error(err.message) && client.say(CHANNEL, err.message)
           );
-        if (!error && status === 200) {
-          client.say(
-            CHANNEL,
-            `${sender} emote: ${target} belongs to channel: ${channel}`
-          );
-          return;
-        }
-        client.say(CHANNEL, `NOPERS  ${error}`);
       }
 
       if (command === "uwu") {
