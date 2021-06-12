@@ -168,7 +168,7 @@ module.exports = (() => {
       if (["poopthefirst", "thiscode", "thisbot", "code"].includes(command)) {
         client.say(
           CHANNEL,
-          `poopthefirst port; novelty bot for fun 4Head https://github.com/chuckxD/chuckxD-60121849657221935028128-copy | PR's, issues, and other contributions welcome.`
+          `poopthefirst port; novelty bot for fun 4Head https://github.com/chuckxD/chuckxD-60121849657221935028128-copy | PR's, issues, and other contributions welcome; props to og creator Mish_al and api.ivr.fi and logs.ivr.fi.`
         );
       }
 
@@ -226,6 +226,21 @@ module.exports = (() => {
           `ᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚᅚ ${pastaString}`
         );
         return;
+      }
+      
+      if (command === 'emotelookup') {
+        if (!target) {
+          client.say(CHANNEL, 'NOPERS - this command gets channel by emote - usage e.g. !emotelookup moon2A');
+          return;
+        }
+        let result, channel, error, status;
+        fetch(`https://api.ivr.fi/twitch/emotes/${target}`).then((response) => response.json()).then((__result) => ({ channel, error, status } = __result)).catch((err) => (console.error(err.message) && client.say(CHANNEL, err.message));
+        if (!error) {
+          client.say(CHANNEL, `${sender} emote: ${target} belongs to channel: ${channel}`);
+          return;
+        }
+        client.say(CHANNEL, `NOPERS  ${error}`);
+        
       }
 
       if (command === "uwu") {
