@@ -2,6 +2,9 @@
 // irc dank chat usage - https://github.com/robotty/dank-twitch-irc#usage
 module.exports = (() => {
   try {
+    
+    const getFivePercentChance = () => (Math.floor(Math.random() * 100) + 1 > 95);
+    
     const {
       appEnvRuntime,
       DEBUG,
@@ -333,7 +336,7 @@ module.exports = (() => {
 
       if (command.startsWith('poop')) {
         const msg1 = `${sender} is pooping`;
-        if (command === 'pooproll') target = getRandomArrayElement(activechatters);
+        if (command === 'pooproll' || getFivePercentChance()) target = getRandomArrayElement(activechatters);
         const msg2 = getRandomArrayElement([
           `on ${target}'s bed`,
           `in ${target}'s bathtub`,
