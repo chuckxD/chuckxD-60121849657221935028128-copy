@@ -224,18 +224,18 @@ module.exports = (() => {
           );
           return;
         }
-        let result, channel, error, status;
+        let channelid, channel, error, status;
         fetch(`https://api.ivr.fi/twitch/emotes/${target}`)
           .then((response) => response.json())
           .then((__result) => {
-            ({ channel, error, status } = __result);
+            ({ channel, error, status, channelid } = __result);
             if (error && status === 404) {
               throw new Error(error);
             }
             if (!error && status === 200) {
               client.say(
                 CHANNEL,
-                `${sender} emote: ${target} belongs to channel: ${channel}`
+                `${sender} emote: ${target} belongs to channel: ${channel} | https://twitchemotes.com/channels/${channelid}`
               );
             }
           })
