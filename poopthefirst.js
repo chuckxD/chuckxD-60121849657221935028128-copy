@@ -86,14 +86,15 @@ module.exports = (() => {
         serverTimestampRaw,
       } = event;
 
-      if (
+      // don't know what this is
+      /* if (
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
         typeof messageText === "string" &&
         messageText.startsWith("!")
       ) {
         if (DEBUG) console.info(`[${serverTimestampRaw}] ${sender}: ${messageText}`);
-      }
+      } */
       if (!sender) return;
 
       if (!activechatters.includes(sender)) {
