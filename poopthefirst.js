@@ -336,19 +336,19 @@ module.exports = (() => {
 
       if (command.startsWith('poop')) {
         const msg1 = `${sender} is pooping`;
-        if (command === 'pooproll' || getFivePercentChance()) target = getRandomArrayElement(activechatters);
+        const __target = (command === 'pooproll' || getFivePercentChance()) ? getRandomArrayElement(activechatters) : 'chat';
         const msg2 = getRandomArrayElement([
-          `on ${target}'s bed`,
-          `in ${target}'s bathtub`,
-          `in the trunk of ${target}'s car`,
-          `on ${target}'s chest`,
-          `on ${target}'s desk`,
-          `on ${target}'s porch`,
-          `on ${target}'s carpet`,
-          `on ${target}'s toes moon2SNIFF`,
-          `in ${target}'s sink`,
-          `in ${target}'s litter box. ${target} is a cat MYAAA`,
-          `in ${target}'s dog bowl. ${target} is a dog EEKUM`,
+          `on ${__target}'s bed`,
+          `in ${__target}'s bathtub`,
+          `in the trunk of ${__target}'s car`,
+          `on ${__target}'s chest`,
+          `on ${__target}'s desk`,
+          `on ${__target}'s porch`,
+          `on ${__target}'s carpet`,
+          `on ${__target}'s toes moon2SNIFF`,
+          `in ${__target}'s sink`,
+          `in ${__target}'s litter box. ${target} is a cat MYAAA`,
+          `in ${__target}'s dog bowl. ${target} is a dog EEKUM`,
         ]);
         const msg3 = getRandomArrayElement(["SHITTERS", "moon2DEV", "moon2C"]);
         fullMessage = [msg1, msg2, msg3].join(" ");
