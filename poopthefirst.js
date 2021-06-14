@@ -337,7 +337,7 @@ module.exports = (() => {
 
       if (command.startsWith('poop')) {
         const msg1 = `${sender} is pooping`;
-        const __target = (command === 'pooproll' || getFivePercentChance() === true) ? getRandomArrayElement(activechatters) : 'chat';
+        const __target = (command === 'pooproll' || getFivePercentChance() === true) ? getRandomArrayElement(activechatters) : target;
         const msg2 = getRandomArrayElement([
           `on ${__target}'s bed`,
           `in ${__target}'s bathtub`,
