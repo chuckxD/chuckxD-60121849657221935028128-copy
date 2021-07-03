@@ -1,4 +1,5 @@
 module.exports = [
+  "do u realise he just came back today for fun but have been playing a bit offline on wl? Didn't spent a single cent on this yolo heist btw, keep hating for nothing bronze bot ",
   "Why when X gets mald he gets banned, while cops powergame and get mald whenever they fail and devs dont do nothing about it. X literally had the world in his hands, and they take it away while those other are really breaking rules of the server. Disappointing to be honest.",
   "Honestly if it wasn’t for XQC I wouldn’t even be watching GTA roleplay. He’s done more for the server and the game then anyone else with his following and has boosted the careers of so many people just by playing the game.",
   "NoPixel is literally ran by cops and they all have power trips. NoPixel is just like the Stanford Prison Experimental... truly sad to see...",
