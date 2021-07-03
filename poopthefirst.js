@@ -138,7 +138,7 @@ module.exports = (() => {
 
       let fullMessage = "";
       
-      if (sender === "Khasters") { // Evacuationz
+      if (sender === "Evacuationz") { // Evacuationz
         
         setTimeout(() => {
           let msgArray = [].concat(uwu.uwuifySentence(messageText));
