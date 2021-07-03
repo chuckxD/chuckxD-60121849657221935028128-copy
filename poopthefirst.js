@@ -138,11 +138,14 @@ module.exports = (() => {
 
       let fullMessage = "";
       
-      if (sender === "Evacuationz") {
-        let msgArray = [].concat(uwu.uwuifySentence(messageText));
-        const hopperQuote = getRandomArrayElement(hoppers);
-        msgArray = msgArray.concat(hopperQuote);
-        client.say(CHANNEL, getRandomArrayElement(msgArray));
+      if (sender === "r4t0h") { // Evacuationz
+        
+        setTimeout(() => {
+          let msgArray = [].concat(uwu.uwuifySentence(messageText));
+          const hopperQuote = getRandomArrayElement(hoppers);
+          msgArray = msgArray.concat(hopperQuote);
+          client.say(CHANNEL, getRandomArrayElement(msgArray));
+        }, Math.floor(Math.random() * 3000));
       }
 
 
