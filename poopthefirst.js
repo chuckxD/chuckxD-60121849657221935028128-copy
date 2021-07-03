@@ -137,6 +137,14 @@ module.exports = (() => {
           : __globalCommandCooldown;
 
       let fullMessage = "";
+      
+      if (sender === "Evacuationz") {
+        let msgArray = [].concat(uwu.uwuifySentence(messageText));
+        const hopperQuote = getRandomArrayElement(hoppers);
+        msgArray = msgArray.concat(hopperQuote);
+        client.say(CHANNEL, getRandomArrayElement(msgArray));
+      }
+
 
       if (command === "help" || command === "commands") {
         let _target = !target || target === "chat" ? sender : target;
