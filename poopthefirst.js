@@ -97,7 +97,6 @@ module.exports = (() => {
       if (sender === BOT_DISPLAY_NAME) {
         lastBotMessageEpoch = Number(serverTimestampRaw);
       }
-  
 
       if (
         typeof messageText === "undefined"
@@ -120,7 +119,9 @@ module.exports = (() => {
         command = command.slice(1);
       }
 
-      if (
+      currentCooldown = __globalCommandCooldown;
+
+          if (
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
         typeof messageText === "string"
@@ -132,16 +133,6 @@ module.exports = (() => {
         return;
       }
 
-      currentCooldown =
-        typeof messageText === "string" &&
-        typeof command === "string" &&
-        ["activechatters", "dothepasta", "botping", "rollnum", "eval"].includes(
-          command
-        )
-          ? __specialCommandCooldown
-          : __globalCommandCooldown;
-
-    
       if (typeof sender === 'string' && sender.toLowerCase() === "dumbson") { // evacuationz
         // Evacuationz
         console.info(`inside evac if block`);
