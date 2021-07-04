@@ -137,7 +137,6 @@ module.exports = (() => {
       // xd
       if (
         typeof sender === "string" &&
-        sender.toLowerCase() === "dumbson" &&
         typeof messageText === "string" &&
         !messageText.startsWith("!")
       ) {
@@ -148,13 +147,13 @@ module.exports = (() => {
         if (command.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
           console.info(`inside evac if block -> in 1st if`);
           setTimeout(() => {
-            const evacQuote = getRandomArrayElement(evacQuotes);
-            client.say(CHANNEL, evacQuote);
+            const evacQuote = getRandomArrayElement(evacQuotes.filter(q => q.startsWith('@')));
+            client.say(CHANNEL, evacQuote.replace(/^\@[\w]/, `@${sender}`));
           }, Math.floor(Math.random() * 3000));
           return;
         }
 
-        if (Math.floor(Math.random() * 4) + 1 === 1) {
+        if (Math.floor(Math.random() * 4) + 1 === 1 && sender.toLowerCase() === "evacuationz") {
           console.info(`inside evac if block -> in 2nd if`);
           setTimeout(() => {
             const hopperQuote = getRandomArrayElement(hoppers);
