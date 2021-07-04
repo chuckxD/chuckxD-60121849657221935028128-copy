@@ -24,6 +24,7 @@ module.exports = (() => {
 
     const excludeUsersFromRq = require("./excludeUsersFromRq");
 
+    const evacQuotes  = require("./evac");
     const hoppers = require("./hoppers").filter(
       (v, i, a) => a.indexOf(v) === i
     );
@@ -143,14 +144,27 @@ module.exports = (() => {
 
       let fullMessage = "";
 
-      if (sender === "Evacuationz") {
+      if (typeof sender === 'string' && sender.toLowerCase() === "evacuationz") {
         // Evacuationz
+        console.info(`inside evac if block`);
+        
+        
+        if (target.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
+          console.info(`inside evac if block -> in 1st if`);
+          setTimeout(() => {
+            const evacQuote = getRandomArrayElement(evacQuotes);
+            client.say(CHANNEL, evacQuote);
+          }, Math.floor(Math.random() * 3000));
+          return;
+        }
 
-        if (Math.floor(Math.random() * 3) + 1 === 1) {
+        if (Math.floor(Math.random() * 2) + 1 === 1) {
+          console.info(`inside evac if block -> in 2nd if`);
           setTimeout(() => {
             const hopperQuote = getRandomArrayElement(hoppers);
             client.say(CHANNEL, hopperQuote);
           }, Math.floor(Math.random() * 4000));
+          return;
         }
       }
 
