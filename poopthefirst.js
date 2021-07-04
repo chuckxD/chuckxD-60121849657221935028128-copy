@@ -2,9 +2,8 @@
 // irc dank chat usage - https://github.com/robotty/dank-twitch-irc#usage
 module.exports = (() => {
   try {
-    
-    const getFivePercentChance = () => (Math.floor(Math.random() * 100) + 1 > 95);
-    
+    const getFivePercentChance = () => Math.floor(Math.random() * 100) + 1 > 95;
+
     const {
       appEnvRuntime,
       DEBUG,
@@ -119,7 +118,8 @@ module.exports = (() => {
         target = "chat";
       }
 
-      if (DEBUG) console.info(`[${(new Date()).toUTCString()}] ${sender}: ${messageText}`);
+      if (DEBUG)
+        console.info(`[${new Date().toUTCString()}] ${sender}: ${messageText}`);
       command = command.slice(1).toLocaleLowerCase();
 
       if (typeof target === "string" && target.startsWith("@")) {
@@ -137,17 +137,17 @@ module.exports = (() => {
           : __globalCommandCooldown;
 
       let fullMessage = "";
-      
-      if (sender === "Evacuationz") { // Evacuationz
-        
-        setTimeout(() => {
-          let msgArray = [].concat(uwu.uwuifySentence(messageText));
-          const hopperQuote = getRandomArrayElement(hoppers);
-          msgArray = msgArray.concat(hopperQuote);
-          client.say(CHANNEL, getRandomArrayElement(msgArray));
-        }, Math.floor(Math.random() * 3000));
-      }
 
+      if (sender === "Evacuationz") {
+        // Evacuationz
+
+        if (Math.floor(Math.random() * 3) + 1 === 1) {
+          setTimeout(() => {
+            const hopperQuote = getRandomArrayElement(hoppers);
+            client.say(CHANNEL, hopperQuote);
+          }, Math.floor(Math.random() * 4000));
+        }
+      }
 
       if (command === "help" || command === "commands") {
         let _target = !target || target === "chat" ? sender : target;
@@ -315,7 +315,7 @@ module.exports = (() => {
       if (command === "color") {
         let { r, g, b } = senderColorRgb;
         let msg = `${sender} `;
-        if (DEBUG) console.dir(recentChatterColors);
+        // if (DEBUG) console.dir(recentChatterColors);
         if (target && target !== "chat" && !activechatters.includes(target)) {
           msg += `couldn't find ${target} in recent chatters.. Sadge `;
         }
@@ -339,16 +339,19 @@ module.exports = (() => {
           ({ r, g, b } = senderColorRgb);
           msg += ` here is ${target}'s hex color's value: ${senderColorHex} | RGB values (respectively): ${r}, ${g}, ${b} ; type /color for more info `;
         }
-        if (DEBUG) console.log('{ r, g, b } ', { r, g, b });
+        if (DEBUG) console.log("{ r, g, b } ", { r, g, b });
         // client.setColor({ r, g, b });
         setTimeout(() => {
           client.say(CHANNEL, msg);
         }, 500);
       }
 
-      if (command.startsWith('poop')) {
+      if (command.startsWith("poop")) {
         const msg1 = `${sender} is pooping`;
-        const __target = (command === 'pooproll' || getFivePercentChance() === true) ? getRandomArrayElement(activechatters) : target;
+        const __target =
+          command === "pooproll" || getFivePercentChance() === true
+            ? getRandomArrayElement(activechatters)
+            : target;
         const msg2 = getRandomArrayElement([
           `on ${__target}'s bed`,
           `in ${__target}'s bathtub`,
@@ -648,5 +651,6 @@ module.exports = (() => {
     });
   } catch (err) {
     console.error(err);
+    client.say(CHANNEL, `${err.message} Sadge`);
   }
 })();
