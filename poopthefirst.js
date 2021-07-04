@@ -97,6 +97,43 @@ module.exports = (() => {
       if (sender === BOT_DISPLAY_NAME) {
         lastBotMessageEpoch = Number(serverTimestampRaw);
       }
+      
+      if (
+        typeof currentCooldown === "number" &&
+        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
+        typeof messageText === "string" &&
+        messageText.startsWith("!")
+      ) {
+        if (DEBUG)
+          console.info(
+            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
+          );
+        return;
+      }
+      
+      if (typeof sender === 'string' && sender.toLowerCase() === "dumbson") { // evacuationz
+        // Evacuationz
+        console.info(`inside evac if block`);
+        
+        
+        if (target.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
+          console.info(`inside evac if block -> in 1st if`);
+          setTimeout(() => {
+            const evacQuote = getRandomArrayElement(evacQuotes);
+            client.say(CHANNEL, evacQuote);
+          }, Math.floor(Math.random() * 3000));
+          return;
+        }
+
+        if (Math.floor(Math.random() * 2) + 1 === 1) {
+          console.info(`inside evac if block -> in 2nd if`);
+          setTimeout(() => {
+            const hopperQuote = getRandomArrayElement(hoppers);
+            client.say(CHANNEL, hopperQuote);
+          }, Math.floor(Math.random() * 4000));
+          return;
+        }
+      }
 
       if (
         typeof messageText === "undefined" ||
@@ -129,44 +166,8 @@ module.exports = (() => {
           ? __specialCommandCooldown
           : __globalCommandCooldown;
 
-      if (
-        typeof currentCooldown === "number" &&
-        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
-        typeof messageText === "string" &&
-        messageText.startsWith("!")
-      ) {
-        if (DEBUG)
-          console.info(
-            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
-          );
-        return;
-      }
 
       let fullMessage = "";
-
-      if (typeof sender === 'string' && sender.toLowerCase() === "dumbson") { // evacuationz
-        // Evacuationz
-        console.info(`inside evac if block`);
-        
-        
-        if (target.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
-          console.info(`inside evac if block -> in 1st if`);
-          setTimeout(() => {
-            const evacQuote = getRandomArrayElement(evacQuotes);
-            client.say(CHANNEL, evacQuote);
-          }, Math.floor(Math.random() * 3000));
-          return;
-        }
-
-        if (Math.floor(Math.random() * 2) + 1 === 1) {
-          console.info(`inside evac if block -> in 2nd if`);
-          setTimeout(() => {
-            const hopperQuote = getRandomArrayElement(hoppers);
-            client.say(CHANNEL, hopperQuote);
-          }, Math.floor(Math.random() * 4000));
-          return;
-        }
-      }
 
       if (command === "help" || command === "commands") {
         let _target = !target || target === "chat" ? sender : target;
