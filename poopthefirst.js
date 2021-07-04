@@ -96,7 +96,7 @@ module.exports = (() => {
 
       if (sender === BOT_DISPLAY_NAME) {
         lastBotMessageEpoch = isNaN(serverTimestampRaw) ? Date.now() : Number(serverTimestampRaw);
-        console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
+        if (CLIENT_EVENT_DEBUG) console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
       }
 
       // all messages
@@ -108,7 +108,7 @@ module.exports = (() => {
       ) {
         if (CLIENT_EVENT_DEBUG)
           console.info(
-            `[[-- CURRENTLY ON COOL DOWN --] ${serverTimestampRaw}] ${sender}: ${messageText}`
+            `[[-- GLOBAL MESSAGE COOL DOWN --] ${serverTimestampRaw}] ${sender}: ${messageText}`
           );
         return;
       }
@@ -177,7 +177,7 @@ module.exports = (() => {
       ) {
         if (DEBUG)
           console.info(
-            `[[- CURRENTLY ON COOL DOWN -] [${serverTimestampRaw}]] ${sender}: ${messageText}`
+            `[[- BOT COMMAND MESSAGE COOL DOWN -] [${serverTimestampRaw}]] ${sender}: ${messageText}`
           );
         return;
       }
