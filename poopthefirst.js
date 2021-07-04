@@ -261,6 +261,47 @@ module.exports = (() => {
           );
       }
 
+      if (command === "kanyequote") {
+        fetch(`https://api.kanye.rest/`)
+          .then((response) => response.json())
+          .then((result) => {
+            client.say(CHANNEL, result.quote);
+          })
+          .catch((err) => {
+            console.error(err.message);
+            client.say(CHANNEL, `${err.message} Sadge`);
+          });
+      }
+
+      if (command === "meemo") {
+        const apiEndpoint =
+          target === "fact" ? "fact"
+            : target === "pic" ? "pic"
+            : getRandomArrayElement(["fact", "pic"]);
+
+        if (apiEndpoint === "fact") {
+          fetch(`https://cat-fact.herokuapp.com/facts/random`)
+            .then((response) => response.json())
+            .then((result) => {
+              client.say(CHANNEL, result.text);
+            })
+            .catch((err) => {
+              console.error(err.message);
+              client.say(CHANNEL, `${err.message} Sadge`);
+            });
+        }
+
+        if (apiEndpoint === "pic") {
+          fetch(`https://aws.random.cat/meow`)
+            .then((response) => response.json())
+            .then((result) => client.say(CHANNEL, result.file))
+            .catch((err) => {
+              console.error(err.message);
+              client.say(CHANNEL, `${err.message} Sadge`);
+            });
+        }
+      }
+
       if (command === "uwu") {
         if (
           typeof target === "undefined" ||
