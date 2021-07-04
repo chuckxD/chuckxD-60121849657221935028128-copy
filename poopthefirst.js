@@ -85,15 +85,6 @@ module.exports = (() => {
         serverTimestampRaw,
       } = event;
 
-      // don't know what this is
-      /* if (
-        typeof currentCooldown === "number" &&
-        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
-        typeof messageText === "string" &&
-        messageText.startsWith("!")
-      ) {
-        if (DEBUG) console.info(`[${serverTimestampRaw}] ${sender}: ${messageText}`);
-      } */
       if (!sender) return;
 
       if (!activechatters.includes(sender)) {
@@ -120,6 +111,7 @@ module.exports = (() => {
 
       if (DEBUG)
         console.info(`[${new Date().toUTCString()}] ${sender}: ${messageText}`);
+
       command = command.slice(1).toLocaleLowerCase();
 
       if (typeof target === "string" && target.startsWith("@")) {
@@ -135,6 +127,19 @@ module.exports = (() => {
         )
           ? __specialCommandCooldown
           : __globalCommandCooldown;
+
+      if (
+        typeof currentCooldown === "number" &&
+        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
+        typeof messageText === "string" &&
+        messageText.startsWith("!")
+      ) {
+        if (DEBUG)
+          console.info(
+            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
+          );
+        return;
+      }
 
       let fullMessage = "";
 
