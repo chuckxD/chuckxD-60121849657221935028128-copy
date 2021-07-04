@@ -105,14 +105,10 @@ module.exports = (() => {
         return;
       }
 
-      
       let [command, target] = messageText.split(" ");
       if (!target) {
         target = "chat";
       }
-      
-      if (DEBUG)
-        console.info(`[${new Date().toUTCString()}] ${sender}: ${messageText}`);
 
       command = command.slice(1).toLocaleLowerCase();
 
@@ -120,14 +116,16 @@ module.exports = (() => {
         target = target.slice(1);
       }
 
+      if (typeof command === "string" && command.startsWith("@")) {
+        command = command.slice(1);
+      }
+
       if (
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
         typeof messageText === "string") {
-        if (DEBUG)
-          console.info(
-            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
-          );
+      
+          if (DEBUG) console.info(`[${new Date().toUTCString()}] ${sender}: ${messageText}`);
         return;
       }
     
@@ -136,7 +134,7 @@ module.exports = (() => {
         console.info(`inside evac if block`);
         
         
-        if (target.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
+        if (command.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
           console.info(`inside evac if block -> in 1st if`);
           setTimeout(() => {
             const evacQuote = getRandomArrayElement(evacQuotes);
@@ -145,7 +143,7 @@ module.exports = (() => {
           return;
         }
 
-        if (Math.floor(Math.random() * 2) + 1 === 1) {
+        if (Math.floor(Math.random() * 4) + 1 === 1) {
           console.info(`inside evac if block -> in 2nd if`);
           setTimeout(() => {
             const hopperQuote = getRandomArrayElement(hoppers);
