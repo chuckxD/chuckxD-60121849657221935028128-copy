@@ -144,7 +144,7 @@ module.exports = (() => {
 
       let fullMessage = "";
 
-      if (typeof sender === 'string' && sender.toLowerCase() === "evacuationz") {
+      if (typeof sender === 'string' && sender.toLowerCase() === "dumbson") { // evacuationz
         // Evacuationz
         console.info(`inside evac if block`);
         
