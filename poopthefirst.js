@@ -76,7 +76,7 @@ module.exports = (() => {
       // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
       // - for polling if broadcaster is offline/online
 
-      if (DEBUG && CLIENT_EVENT_DEBUG) console.info("client event: ", event);
+      // if (DEBUG && CLIENT_EVENT_DEBUG) console.info("client event: ", event);
 
       const {
         displayName: sender,
@@ -95,7 +95,7 @@ module.exports = (() => {
       recentChatterColors[sender] = { senderColorHex, senderColorRgb };
 
       if (sender === BOT_DISPLAY_NAME) {
-        lastBotMessageEpoch = Number(serverTimestampRaw);
+        lastBotMessageEpoch = isNaN(serverTimestampRaw) ? Date.now() : Number(serverTimestampRaw);
         console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
       }
 
