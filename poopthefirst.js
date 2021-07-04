@@ -159,10 +159,17 @@ module.exports = (() => {
           return;
         }
 
-        if (DEBUG) console.info(`sender: ${sender} // command: ${command} // messageText: ${messageText}`);
-        
-        if (Math.floor(Math.random() * 3) + 1 === 1 && sender.toLowerCase() === "dumbson") { // evacuationz
-          console.info(`inside evac if block -> in 2nd if`);
+        if (CLIENT_EVENT_DEBUG)
+          console.info(
+            `sender: ${sender} // command: ${command} // messageText: ${messageText}`
+          );
+
+        if (
+          Math.floor(Math.random() * 3) + 1 === 1 &&
+          sender.toLowerCase() === "evacuationz"
+        ) {
+          // evacuationz
+          // console.info(`inside evac if block -> in 2nd if`);
           setTimeout(() => {
             const hopperQuote = getRandomArrayElement(hoppers);
             client.say(CHANNEL, hopperQuote);
