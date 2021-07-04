@@ -159,11 +159,9 @@ module.exports = (() => {
           return;
         }
 
-        if (
-          Math.floor(Math.random() * 4) + 1 === 1 &&
-          sender.toLowerCase() === "dumbson"
-        ) {
-          // evacuationz
+        if (DEBUG) console.info(`sender: ${sender} // command: ${command} // messageText: ${messageText}`);
+        
+        if (Math.floor(Math.random() * 3) + 1 === 1 && sender.toLowerCase() === "dumbson") { // evacuationz
           console.info(`inside evac if block -> in 2nd if`);
           setTimeout(() => {
             const hopperQuote = getRandomArrayElement(hoppers);
