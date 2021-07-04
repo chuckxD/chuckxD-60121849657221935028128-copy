@@ -97,12 +97,39 @@ module.exports = (() => {
       if (sender === BOT_DISPLAY_NAME) {
         lastBotMessageEpoch = Number(serverTimestampRaw);
       }
+  
 
+      if (
+        typeof messageText === "undefined"
+      ) {
+        return;
+      }
+
+      
       let [command, target] = messageText.split(" ");
       if (!target) {
         target = "chat";
       }
       
+      if (DEBUG)
+        console.info(`[${new Date().toUTCString()}] ${sender}: ${messageText}`);
+
+      command = command.slice(1).toLocaleLowerCase();
+
+      if (typeof target === "string" && target.startsWith("@")) {
+        target = target.slice(1);
+      }
+
+      if (
+        typeof currentCooldown === "number" &&
+        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
+        typeof messageText === "string") {
+        if (DEBUG)
+          console.info(
+            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
+          );
+        return;
+      }
     
       if (typeof sender === 'string' && sender.toLowerCase() === "dumbson") { // evacuationz
         // Evacuationz
@@ -139,24 +166,6 @@ module.exports = (() => {
             `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
           );
         return;
-      }
-  
-
-      if (
-        typeof messageText === "undefined" ||
-        (typeof messageText === "string" && !messageText.startsWith("!"))
-      ) {
-        return;
-      }
-
-
-      if (DEBUG)
-        console.info(`[${new Date().toUTCString()}] ${sender}: ${messageText}`);
-
-      command = command.slice(1).toLocaleLowerCase();
-
-      if (typeof target === "string" && target.startsWith("@")) {
-        target = target.slice(1);
       }
 
       currentCooldown =
