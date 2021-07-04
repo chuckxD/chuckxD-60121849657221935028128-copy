@@ -93,6 +93,18 @@ module.exports = (() => {
         activechatters.slice(0, 49);
       }
       recentChatterColors[sender] = { senderColorHex, senderColorRgb };
+      
+      if (
+        typeof currentCooldown === "number" &&
+        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
+        typeof messageText === "string"
+      ) {
+        if (DEBUG)
+          console.info(
+            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
+          );
+        return;
+      }
 
       if (sender === BOT_DISPLAY_NAME) {
         console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`)
@@ -120,17 +132,6 @@ module.exports = (() => {
 
       currentCooldown = __globalCommandCooldown;
 
-      if (
-        typeof currentCooldown === "number" &&
-        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
-        typeof messageText === "string"
-      ) {
-        if (DEBUG)
-          console.info(
-            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
-          );
-        return;
-      }
 
       if (typeof sender === "string" && sender.toLowerCase() === "dumbson") {
         // evacuationz
