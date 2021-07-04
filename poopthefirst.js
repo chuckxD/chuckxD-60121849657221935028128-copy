@@ -95,8 +95,11 @@ module.exports = (() => {
       recentChatterColors[sender] = { senderColorHex, senderColorRgb };
 
       if (sender === BOT_DISPLAY_NAME) {
-        lastBotMessageEpoch = isNaN(serverTimestampRaw) ? Date.now() : Number(serverTimestampRaw);
-        if (CLIENT_EVENT_DEBUG) console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
+        lastBotMessageEpoch = isNaN(serverTimestampRaw)
+          ? Date.now()
+          : Number(serverTimestampRaw);
+        if (CLIENT_EVENT_DEBUG)
+          console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
       }
 
       // all messages
@@ -122,14 +125,15 @@ module.exports = (() => {
         target = "chat";
       }
 
-      command = command.slice(1).toLocaleLowerCase();
-
       if (typeof target === "string" && target.startsWith("@")) {
         target = target.slice(1);
       }
 
-      if (typeof command === "string" && command.startsWith("@")) {
-        command = command.slice(1);
+      if (
+        typeof command === "string" &&
+        (command.startsWith("@") || command.startsWith("!"))
+      ) {
+        command = command.slice(1).toLocaleLowerCase();
       }
 
       currentCooldown = __globalCommandCooldown;
@@ -142,18 +146,24 @@ module.exports = (() => {
       ) {
         // evacuationz
         // Evacuationz
-        console.info(`inside evac if block`);
+        // console.info(`inside evac if block`);
 
         if (command.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
-          console.info(`inside evac if block -> in 1st if`);
+          // console.info(`inside evac if block -> in 1st if`);
           setTimeout(() => {
-            const evacQuote = getRandomArrayElement(evacQuotes.filter(q => q.startsWith('@')));
+            const evacQuote = getRandomArrayElement(
+              evacQuotes.filter((q) => q.startsWith("@"))
+            );
             client.say(CHANNEL, evacQuote.replace(/^\@[\w]+/, `@${sender}`));
           }, Math.floor(Math.random() * 3000));
           return;
         }
 
-        if (Math.floor(Math.random() * 4) + 1 === 1 && sender.toLowerCase() === "dumbson") { // evacuationz
+        if (
+          Math.floor(Math.random() * 4) + 1 === 1 &&
+          sender.toLowerCase() === "dumbson"
+        ) {
+          // evacuationz
           console.info(`inside evac if block -> in 2nd if`);
           setTimeout(() => {
             const hopperQuote = getRandomArrayElement(hoppers);
@@ -172,7 +182,7 @@ module.exports = (() => {
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
         typeof messageText === "string" &&
-        messageText.startsWith('!')
+        messageText.startsWith("!")
       ) {
         if (DEBUG)
           console.info(
