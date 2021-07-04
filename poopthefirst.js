@@ -419,7 +419,7 @@ module.exports = (() => {
         }, 500);
       }
 
-      if (command.startsWith("poop")) {
+      if (command === "poop" || command === "pooproll") {
         const msg1 = `${sender} is pooping`;
         const __target =
           command === "pooproll" || getFivePercentChance() === true
