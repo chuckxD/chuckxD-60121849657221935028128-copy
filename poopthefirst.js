@@ -97,19 +97,21 @@ module.exports = (() => {
       // all messages
       if (
         typeof currentCooldown === "number" &&
+        typeof lastBotMessageEpoch === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
         typeof messageText === "string"
       ) {
         if (CLIENT_EVENT_DEBUG)
           console.info(
-            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
+            `[[-- CURRENTLY ON COOL DOWN --] ${serverTimestampRaw}] ${sender}: ${messageText}`
           );
         return;
       }
 
       if (sender === BOT_DISPLAY_NAME) {
-        console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
         lastBotMessageEpoch = Number(serverTimestampRaw);
+        console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
+
       }
 
       if (typeof messageText === "undefined") {
