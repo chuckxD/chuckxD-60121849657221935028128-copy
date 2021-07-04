@@ -148,7 +148,7 @@ module.exports = (() => {
           console.info(`inside evac if block -> in 1st if`);
           setTimeout(() => {
             const evacQuote = getRandomArrayElement(evacQuotes.filter(q => q.startsWith('@')));
-            client.say(CHANNEL, evacQuote.replace(/^\@[\w]/, `@${sender}`));
+            client.say(CHANNEL, evacQuote.replace(/^\@[\w]+/, `@${sender}`));
           }, Math.floor(Math.random() * 3000));
           return;
         }
