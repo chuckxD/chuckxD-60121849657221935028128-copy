@@ -149,7 +149,7 @@ module.exports = (() => {
         // console.info(`inside evac if block`);
 
         if (command.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
-          // console.info(`inside evac if block -> in 1st if`);
+          console.info(`inside evac if block -> in 1st if`);
           setTimeout(() => {
             const evacQuote = getRandomArrayElement(
               evacQuotes.filter((q) => q.startsWith("@"))
@@ -165,11 +165,11 @@ module.exports = (() => {
           );
 
         if (
-          Math.floor(Math.random() * 3) + 1 === 1 &&
+          Math.floor(Math.random() * 2) + 1 === 1 &&
           sender.toLowerCase() === "evacuationz"
         ) {
           // evacuationz
-          // console.info(`inside evac if block -> in 2nd if`);
+          console.info(`inside evac if block -> in 2nd if`);
           setTimeout(() => {
             const hopperQuote = getRandomArrayElement(hoppers);
             client.say(CHANNEL, hopperQuote);
