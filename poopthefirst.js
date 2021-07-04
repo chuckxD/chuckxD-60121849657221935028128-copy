@@ -24,7 +24,7 @@ module.exports = (() => {
 
     const excludeUsersFromRq = require("./excludeUsersFromRq");
 
-    const evacQuotes  = require("./evac");
+    const evacQuotes = require("./evac");
     const hoppers = require("./hoppers").filter(
       (v, i, a) => a.indexOf(v) === i
     );
@@ -95,12 +95,11 @@ module.exports = (() => {
       recentChatterColors[sender] = { senderColorHex, senderColorRgb };
 
       if (sender === BOT_DISPLAY_NAME) {
+        console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`)
         lastBotMessageEpoch = Number(serverTimestampRaw);
       }
 
-      if (
-        typeof messageText === "undefined"
-      ) {
+      if (typeof messageText === "undefined") {
         return;
       }
 
@@ -121,7 +120,7 @@ module.exports = (() => {
 
       currentCooldown = __globalCommandCooldown;
 
-          if (
+      if (
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
         typeof messageText === "string"
@@ -133,11 +132,11 @@ module.exports = (() => {
         return;
       }
 
-      if (typeof sender === 'string' && sender.toLowerCase() === "dumbson") { // evacuationz
+      if (typeof sender === "string" && sender.toLowerCase() === "dumbson") {
+        // evacuationz
         // Evacuationz
         console.info(`inside evac if block`);
-        
-        
+
         if (command.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
           console.info(`inside evac if block -> in 1st if`);
           setTimeout(() => {
@@ -156,8 +155,10 @@ module.exports = (() => {
           return;
         }
       }
-      
 
+      if (typeof messageText === 'string' && !messageText.startsWith('!')) {
+        return;
+      }
 
       let fullMessage = "";
 
@@ -282,8 +283,10 @@ module.exports = (() => {
 
       if (command === "meemo") {
         const apiEndpoint =
-          target === "fact" ? "fact"
-            : target === "pic" ? "pic"
+          target === "fact"
+            ? "fact"
+            : target === "pic"
+            ? "pic"
             : getRandomArrayElement(["fact", "pic"]);
 
         if (apiEndpoint === "fact") {
