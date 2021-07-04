@@ -593,7 +593,7 @@ module.exports = (() => {
       if (command === "cuddle") {
         client.say(
           CHANNEL,
-          `${sender} is cuddling with ${target} in bed moon2BED UwU`
+          `${sender} peepoShy is cuddling with ${target} in bed moon2BED Grumpge`
         );
       }
 
