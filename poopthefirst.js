@@ -123,11 +123,24 @@ module.exports = (() => {
       if (
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
-        typeof messageText === "string") {
-      
-          if (DEBUG) console.info(`[${new Date().toUTCString()}] ${sender}: ${messageText}`);
+        typeof messageText === "string"
+      ) {
+        if (DEBUG)
+          console.info(
+            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
+          );
         return;
       }
+
+      currentCooldown =
+        typeof messageText === "string" &&
+        typeof command === "string" &&
+        ["activechatters", "dothepasta", "botping", "rollnum", "eval"].includes(
+          command
+        )
+          ? __specialCommandCooldown
+          : __globalCommandCooldown;
+
     
       if (typeof sender === 'string' && sender.toLowerCase() === "dumbson") { // evacuationz
         // Evacuationz
@@ -153,28 +166,6 @@ module.exports = (() => {
         }
       }
       
-      if (
-        typeof currentCooldown === "number" &&
-        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
-        typeof messageText === "string" &&
-        messageText.startsWith("!")
-      ) {
-        if (DEBUG)
-          console.info(
-            `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
-          );
-        return;
-      }
-
-      currentCooldown =
-        typeof messageText === "string" &&
-        messageText.startsWith("!") &&
-        typeof command === "string" &&
-        ["activechatters", "dothepasta", "botping", "rollnum", "eval"].includes(
-          command
-        )
-          ? __specialCommandCooldown
-          : __globalCommandCooldown;
 
 
       let fullMessage = "";
