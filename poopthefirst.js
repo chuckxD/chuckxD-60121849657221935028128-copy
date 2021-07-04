@@ -170,10 +170,10 @@ module.exports = (() => {
       }
 
       if (["poopthefirst", "thiscode", "thisbot", "code"].includes(command)) {
-        client.say(
-          CHANNEL,
-          `poopthefirst port; novelty bot for fun 4Head https://github.com/chuckxD/chuckxD-60121849657221935028128-copy | PR's, issues, and other contributions welcome; props to og creator Mish_al and api.ivr.fi and logs.ivr.fi.`
-        );
+        // client.say(
+        //  CHANNEL,
+        //  `poopthefirst port; novelty bot for fun 4Head https://github.com/chuckxD/chuckxD-60121849657221935028128-copy | PR's, issues, and other contributions welcome; props to og creator Mish_al and api.ivr.fi and logs.ivr.fi.`
+        // );
       }
 
       if (command === "dothepasta") {
