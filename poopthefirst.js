@@ -94,6 +94,11 @@ module.exports = (() => {
       }
       recentChatterColors[sender] = { senderColorHex, senderColorRgb };
 
+      if (sender === BOT_DISPLAY_NAME) {
+        lastBotMessageEpoch = Number(serverTimestampRaw);
+        console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
+      }
+
       // all messages
       if (
         typeof currentCooldown === "number" &&
@@ -106,12 +111,6 @@ module.exports = (() => {
             `[[-- CURRENTLY ON COOL DOWN --] ${serverTimestampRaw}] ${sender}: ${messageText}`
           );
         return;
-      }
-
-      if (sender === BOT_DISPLAY_NAME) {
-        lastBotMessageEpoch = Number(serverTimestampRaw);
-        console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
-
       }
 
       if (typeof messageText === "undefined") {
