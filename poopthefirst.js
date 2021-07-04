@@ -93,13 +93,14 @@ module.exports = (() => {
         activechatters.slice(0, 49);
       }
       recentChatterColors[sender] = { senderColorHex, senderColorRgb };
-      
+
+      // all messages
       if (
         typeof currentCooldown === "number" &&
         lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
         typeof messageText === "string"
       ) {
-        if (DEBUG)
+        if (CLIENT_EVENT_DEBUG)
           console.info(
             `[[CURRENTLY ON COOL DOWN] ${serverTimestampRaw}] ${sender}: ${messageText}`
           );
@@ -107,7 +108,7 @@ module.exports = (() => {
       }
 
       if (sender === BOT_DISPLAY_NAME) {
-        console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`)
+        console.log(`lastBotMessageEpoch: ${lastBotMessageEpoch}`);
         lastBotMessageEpoch = Number(serverTimestampRaw);
       }
 
@@ -132,8 +133,13 @@ module.exports = (() => {
 
       currentCooldown = __globalCommandCooldown;
 
-
-      if (typeof sender === "string" && sender.toLowerCase() === "dumbson") {
+      // xd
+      if (
+        typeof sender === "string" &&
+        sender.toLowerCase() === "dumbson" &&
+        typeof messageText === "string" &&
+        !messageText.startsWith("!")
+      ) {
         // evacuationz
         // Evacuationz
         console.info(`inside evac if block`);
@@ -157,7 +163,21 @@ module.exports = (() => {
         }
       }
 
-      if (typeof messageText === 'string' && !messageText.startsWith('!')) {
+      if (typeof messageText === "string" && !messageText.startsWith("!")) {
+        return;
+      }
+
+      // bot command cd check
+      if (
+        typeof currentCooldown === "number" &&
+        lastBotMessageEpoch + currentCooldown > Number(serverTimestampRaw) &&
+        typeof messageText === "string" &&
+        messageText.startsWith('!')
+      ) {
+        if (DEBUG)
+          console.info(
+            `[[- CURRENTLY ON COOL DOWN -] [${serverTimestampRaw}]] ${sender}: ${messageText}`
+          );
         return;
       }
 
