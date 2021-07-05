@@ -166,14 +166,17 @@ module.exports = (() => {
 
         if (
           Math.floor(Math.random() * 4) + 1 === 1 &&
-          sender.toLowerCase() === "evacuationz"
+          sender.toLowerCase() === "fsdafasdfasdfas"
         ) {
           // evacuationz
-          console.info(`inside evac if block -> in 2nd if`);
-          setTimeout(() => {
-            const hopperQuote = getRandomArrayElement(hoppers);
-            client.say(CHANNEL, hopperQuote);
-          }, Math.floor(Math.random() * 4000));
+          // setTimeout(() => {
+            // fetch(`https://icanhazdadjoke.com/`, {
+            //   headers: { Accept: "application/json" },
+            // })
+            //   .then((response) => response.json())
+            //   .then((result) => client.say(CHANNEL, result.joke))
+            //   .catch((err) => console.error(err));
+          // }, Math.floor(Math.random() * 10000) + 5000);
           return;
         }
       }
