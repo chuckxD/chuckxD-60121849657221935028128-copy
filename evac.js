@@ -1,6 +1,6 @@
 module.exports = [
   `Yes that is what you are`,
-  `qc_bajs you're a nobody I don't need to talk to u`,
+  `@qc_bajs you're a nobody I don't need to talk to u`,
   `keep spamming kid`,
   `Isn't that sad`,
   `you're literally taking to a bot`,

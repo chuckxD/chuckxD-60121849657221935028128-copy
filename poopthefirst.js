@@ -165,7 +165,7 @@ module.exports = (() => {
           );
 
         if (
-          Math.floor(Math.random() * 2) + 1 === 1 &&
+          Math.floor(Math.random() * 4) + 1 === 1 &&
           sender.toLowerCase() === "evacuationz"
         ) {
           // evacuationz
