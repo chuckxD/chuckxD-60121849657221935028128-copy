@@ -112,7 +112,11 @@ module.exports = (() => {
       ) {
         if (CLIENT_EVENT_DEBUG)
           console.info(
-            `[[-- GLOBAL MESSAGE COOL DOWN --] ${new Date(serverTimestampRaw)}] ${sender}: ${messageText}`
+            `[[-- GLOBAL MESSAGE COOL DOWN --] ${
+              typeof serverTimestampRaw === "number"
+                ? new Date(serverTimestampRaw)
+                : new Date()
+            }] ${sender}: ${messageText}`
           );
         return;
       }
@@ -172,6 +176,15 @@ module.exports = (() => {
         }
       }
 
+      if (DEBUG && CLIENT_EVENT_DEBUG)
+        console.info(`peepod expr: `, [
+          Math.floor(Math.random() * 2) + 1 === 1,
+          typeof messageText === "string",
+          !messageText.startsWith("!"),
+          sender.toLowerCase() === "peepod",
+          messageText === "peepoD ❗",
+        ]);
+
       if (
         Math.floor(Math.random() * 2) + 1 === 1 &&
         typeof messageText === "string" &&
@@ -185,6 +198,7 @@ module.exports = (() => {
             getRandomArrayElement[(`peepoD ‼`, `!peepod peepoD ‼`)]
           );
         }, Math.floor(Math.random() * 2000) + 1000);
+        return;
       }
 
       if (typeof messageText === "string" && !messageText.startsWith("!")) {
@@ -200,7 +214,11 @@ module.exports = (() => {
       ) {
         if (DEBUG)
           console.info(
-            `[[- BOT COMMAND MESSAGE COOL DOWN -] [${new Date(serverTimestampRaw)}]] ${sender}: ${messageText}`
+            `[[- BOT COMMAND MESSAGE COOL DOWN -] [${
+              typeof serverTimestampRaw === "number"
+                ? new Date(serverTimestampRaw)
+                : new Date()
+            }]] ${sender}: ${messageText}`
           );
         return;
       }
