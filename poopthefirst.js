@@ -163,17 +163,18 @@ module.exports = (() => {
 
         if (CLIENT_EVENT_DEBUG)
           console.info(
-            `sender: ${sender} // command: ${command} // messageText: ${messageText}`
+            `sender: ${sender} | command: ${command} | (full) messageText: ${messageText}`
           );
 
 
           if (
-            Math.floor(Math.random() * 2) + 1 === 1 &&
-            sender.toLowerCase() === "peepoD" &&
+            Math.floor(Math.random() * 3) + 1 === 1 &&
+            sender.toLowerCase() === "peepod" &&
+            command.toLowerCase() === 'peepod' &&
             messageText.trim() === "peepoD ❗"
           ) {
             setTimeout(() => {
-              client.say(CHANNEL, `peepoD ‼`);
+              client.say(CHANNEL, getRandomArrayElement[`peepoD ‼`, `!peepod peepoD ‼`]);
             }, Math.floor(Math.random() * 2000) + 1000)
           }
         }
