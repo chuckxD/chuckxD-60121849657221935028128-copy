@@ -12,6 +12,7 @@ module.exports = (() => {
       TWITCH_OAUTH_USERNAME,
       CLIENT_EVENT_DEBUG,
       NODE_EVAL_ENABLED,
+      LOG_ALL,
       SPECIAL_COMMAND_COOLDOWN_MS: specialCommandCooldown,
       GLOBAL_COMMAND_COOLDOWN_MS: globalCommandCooldown,
     } = require("./env");
@@ -111,7 +112,7 @@ module.exports = (() => {
       ) {
         if (CLIENT_EVENT_DEBUG)
           console.info(
-            `[[-- GLOBAL MESSAGE COOL DOWN --] ${serverTimestampRaw}] ${sender}: ${messageText}`
+            `[[-- GLOBAL MESSAGE COOL DOWN --] ${new Date(serverTimestampRaw)}] ${sender}: ${messageText}`
           );
         return;
       }
@@ -136,7 +137,17 @@ module.exports = (() => {
         command = command.slice(1).toLocaleLowerCase();
       }
 
+      // ???? (deprecated special cd)
       currentCooldown = __globalCommandCooldown;
+
+      if (CLIENT_EVENT_DEBUG && LOG_ALL)
+        console.info(
+          `[ ${
+            typeof serverTimestampRaw === "number"
+              ? new Date(serverTimestampRaw)
+              : new Date()
+          } ] - sender: ${sender} | command: ${command} | (full) messageText: ${messageText}`
+        );
 
       // xd
       if (
@@ -144,13 +155,12 @@ module.exports = (() => {
         typeof messageText === "string" &&
         !messageText.startsWith("!")
       ) {
-
         if (command.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
           setTimeout(() => {
-            let botMention = '';
+            let botMention = "";
 
-            if (messageText.trim().toLowerCase().includes('peepod')) {
-              botMention = 'peepoD'
+            if (messageText.trim().toLowerCase().includes("peepod")) {
+              botMention = "peepoD";
             } else {
               botMention = getRandomArrayElement(
                 evacQuotes.filter((q) => q.startsWith("@"))
@@ -160,40 +170,21 @@ module.exports = (() => {
           }, Math.floor(Math.random() * 3000));
           return;
         }
+      }
 
-        if (CLIENT_EVENT_DEBUG)
-          console.info(
-            `sender: ${sender} | command: ${command} | (full) messageText: ${messageText}`
+      if (
+        Math.floor(Math.random() * 2) + 1 === 1 &&
+        typeof messageText === "string" &&
+        !messageText.startsWith("!") &&
+        sender.toLowerCase() === "peepod" &&
+        messageText === "peepoD ❗"
+      ) {
+        setTimeout(() => {
+          client.say(
+            CHANNEL,
+            getRandomArrayElement[(`peepoD ‼`, `!peepod peepoD ‼`)]
           );
-
-
-          if (
-            Math.floor(Math.random() * 3) + 1 === 1 &&
-            sender.toLowerCase() === "peepod" &&
-            command.toLowerCase() === 'peepod' &&
-            messageText.trim() === "peepoD ❗"
-          ) {
-            setTimeout(() => {
-              client.say(CHANNEL, getRandomArrayElement[`peepoD ‼`, `!peepod peepoD ‼`]);
-            }, Math.floor(Math.random() * 2000) + 1000)
-          }
-        }
-
-        if (
-          Math.floor(Math.random() * 4) + 1 === 1 &&
-          sender.toLowerCase() === "fsdafasdfasdfas"
-        ) {
-          // evacuationz
-          // setTimeout(() => {
-            // fetch(`https://icanhazdadjoke.com/`, {
-            //   headers: { Accept: "application/json" },
-            // })
-            //   .then((response) => response.json())
-            //   .then((result) => client.say(CHANNEL, result.joke))
-            //   .catch((err) => console.error(err));
-          // }, Math.floor(Math.random() * 10000) + 5000);
-          // return;
-        // }
+        }, Math.floor(Math.random() * 2000) + 1000);
       }
 
       if (typeof messageText === "string" && !messageText.startsWith("!")) {
@@ -209,7 +200,7 @@ module.exports = (() => {
       ) {
         if (DEBUG)
           console.info(
-            `[[- BOT COMMAND MESSAGE COOL DOWN -] [${serverTimestampRaw}]] ${sender}: ${messageText}`
+            `[[- BOT COMMAND MESSAGE COOL DOWN -] [${new Date(serverTimestampRaw)}]] ${sender}: ${messageText}`
           );
         return;
       }
