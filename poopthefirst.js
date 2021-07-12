@@ -144,17 +144,19 @@ module.exports = (() => {
         typeof messageText === "string" &&
         !messageText.startsWith("!")
       ) {
-        // evacuationz
-        // Evacuationz
-        // console.info(`inside evac if block`);
 
         if (command.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
-          console.info(`inside evac if block -> in 1st if`);
           setTimeout(() => {
-            const evacQuote = getRandomArrayElement(
-              evacQuotes.filter((q) => q.startsWith("@"))
-            );
-            client.say(CHANNEL, evacQuote.replace(/^\@[\w]+/, `@${sender}`));
+            let botMention = '';
+
+            if (messageText.trim().toLowerCase().includes('peepod')) {
+              botMention = 'peepoD'
+            } else {
+              botMention = getRandomArrayElement(
+                evacQuotes.filter((q) => q.startsWith("@"))
+              );
+            }
+            client.say(CHANNEL, botMention.replace(/^\@[\w]+/, `@${sender}`));
           }, Math.floor(Math.random() * 3000));
           return;
         }
@@ -163,6 +165,18 @@ module.exports = (() => {
           console.info(
             `sender: ${sender} // command: ${command} // messageText: ${messageText}`
           );
+
+
+          if (
+            Math.floor(Math.random() * 2) + 1 === 1 &&
+            sender.toLowerCase() === "peepoD" &&
+            messageText.trim() === "peepoD ❗"
+          ) {
+            setTimeout(() => {
+              client.say(CHANNEL, `peepoD ‼`);
+            }, Math.floor(Math.random() * 2000) + 1000)
+          }
+        }
 
         if (
           Math.floor(Math.random() * 4) + 1 === 1 &&
@@ -177,8 +191,8 @@ module.exports = (() => {
             //   .then((result) => client.say(CHANNEL, result.joke))
             //   .catch((err) => console.error(err));
           // }, Math.floor(Math.random() * 10000) + 5000);
-          return;
-        }
+          // return;
+        // }
       }
 
       if (typeof messageText === "string" && !messageText.startsWith("!")) {
