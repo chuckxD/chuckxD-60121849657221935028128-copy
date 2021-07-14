@@ -159,7 +159,7 @@ module.exports = (() => {
         typeof messageText === "string" &&
         !messageText.startsWith("!")
       ) {
-        if (command.toLowerCase() === BOT_DISPLAY_NAME.toLowerCase()) {
+        if (command.toLowerCase().replace(/[,:]+$/g, '') === BOT_DISPLAY_NAME.toLowerCase()) {
           setTimeout(() => {
             let botMention = "";
 
