@@ -162,9 +162,12 @@ module.exports = (() => {
         if (command.toLowerCase().replace(/[,:]+$/g, '') === BOT_DISPLAY_NAME.toLowerCase()) {
           setTimeout(() => {
             let botMention = "";
-
-            if (messageText.trim().toLowerCase().includes("peepod")) {
-              botMention = "peepoD";
+            if (
+              Math.floor(Math.random() * 2) + 1 === 1 &&
+              sender.toLowerCase() === "peepod" &&
+              messageText === "peepoD ❗"
+            ) {
+              botMention = getRandomArrayElement[(`peepoD ‼`, `!peepod peepoD ‼`)];
             } else {
               botMention = getRandomArrayElement(
                 evacQuotes.filter((q) => q.startsWith("@"))
@@ -172,33 +175,7 @@ module.exports = (() => {
             }
             client.say(CHANNEL, botMention.replace(/^\@[\w]+/, `@${sender}`));
           }, Math.floor(Math.random() * 3000));
-          return;
         }
-      }
-
-      if (DEBUG && CLIENT_EVENT_DEBUG)
-        console.info(`peepod expr: `, [
-          Math.floor(Math.random() * 2) + 1 === 1,
-          typeof messageText === "string",
-          !messageText.startsWith("!"),
-          sender.toLowerCase() === "peepod",
-          messageText === "peepoD ❗",
-        ]);
-
-      if (
-        Math.floor(Math.random() * 2) + 1 === 1 &&
-        typeof messageText === "string" &&
-        !messageText.startsWith("!") &&
-        sender.toLowerCase() === "peepod" &&
-        messageText === "peepoD ❗"
-      ) {
-        setTimeout(() => {
-          client.say(
-            CHANNEL,
-            getRandomArrayElement[(`peepoD ‼`, `!peepod peepoD ‼`)]
-          );
-        }, Math.floor(Math.random() * 2000) + 1000);
-        return;
       }
 
       if (typeof messageText === "string" && !messageText.startsWith("!")) {
