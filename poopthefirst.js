@@ -321,6 +321,10 @@ module.exports = (() => {
           });
       }
 
+      if (command === 'plead') {
+        client.say(CHANNEL, "VoHiYo https://clips.twitch.tv/CrunchySmoothYakFUNgineer");
+      }
+      
       if (command === "meemo") {
         const apiEndpoint =
           target === "fact"
