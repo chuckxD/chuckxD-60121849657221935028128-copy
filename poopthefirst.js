@@ -168,6 +168,8 @@ module.exports = (() => {
               messageText === "peepoD ❗"
             ) {
               botMention = getRandomArrayElement[(`peepoD ‼`, `!peepod peepoD ‼`)];
+            } else if (messageText.startsWith('moon21 moon22') {
+              botMention = 'NOPERS Tssk'
             } else {
               botMention = getRandomArrayElement(
                 evacQuotes.filter((q) => q.startsWith("@"))
