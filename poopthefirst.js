@@ -13,6 +13,7 @@ module.exports = (() => {
       CLIENT_EVENT_DEBUG,
       NODE_EVAL_ENABLED,
       LOG_ALL,
+      NO_COMBO_MODE,
       SPECIAL_COMMAND_COOLDOWN_MS: specialCommandCooldown,
       GLOBAL_COMMAND_COOLDOWN_MS: globalCommandCooldown,
     } = require("./env");
@@ -159,7 +160,10 @@ module.exports = (() => {
         typeof messageText === "string" &&
         !messageText.startsWith("!")
       ) {
-        if (command.toLowerCase().replace(/[,:]+$/g, '') === BOT_DISPLAY_NAME.toLowerCase()) {
+        if (
+          command.toLowerCase().replace(/[,:]+$/g, "") ===
+          BOT_DISPLAY_NAME.toLowerCase()
+        ) {
           setTimeout(() => {
             let botMention = "";
             if (
@@ -167,9 +171,13 @@ module.exports = (() => {
               sender.toLowerCase() === "peepod" &&
               messageText === "peepoD ❗"
             ) {
-              botMention = getRandomArrayElement[(`peepoD ‼`, `!peepod peepoD ‼`)];
-            } else if (messageText.startsWith('moon21 moon22') {
-              botMention = 'NOPERS Tssk'
+              botMention =
+                getRandomArrayElement[(`peepoD ‼`, `!peepod peepoD ‼`)];
+            } else if (
+              messageText.startsWith("moon21 moon22") &&
+              NO_COMBO_MODE === "true"
+            ) {
+              botMention = "NOPERS Tssk";
             } else {
               botMention = getRandomArrayElement(
                 evacQuotes.filter((q) => q.startsWith("@"))
@@ -323,10 +331,13 @@ module.exports = (() => {
           });
       }
 
-      if (command === 'plead') {
-        client.say(CHANNEL, "VoHiYo https://clips.twitch.tv/CrunchySmoothYakFUNgineer");
+      if (command === "plead") {
+        client.say(
+          CHANNEL,
+          "VoHiYo https://clips.twitch.tv/CrunchySmoothYakFUNgineer"
+        );
       }
-      
+
       if (command === "meemo") {
         const apiEndpoint =
           target === "fact"
