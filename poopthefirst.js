@@ -96,12 +96,16 @@ module.exports = (() => {
 
       // pyramidChatter.user = sender.toLowerCase();
       if (
+        typeof sender === "string" &&
         pyramidChatter.user === sender.toLowerCase() &&
         messageText.includes(pyarmidChatter.msg)
       )
         pyarmidChatter.count += 1;
 
-      if (pyramidChatter.user != sender.toLowerCase()) {
+      if (
+        typeof sender === "string" &&
+        pyramidChatter.user != sender.toLowerCase()
+      ) {
         pyarmidChatter.user = sender.toLowerCase();
         pyramidChatter.count = 1;
         pyramidChatter.msg = messageText;
