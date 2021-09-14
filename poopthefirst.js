@@ -94,15 +94,15 @@ module.exports = (() => {
         serverTimestampRaw,
       } = event;
 
-      // pyramidChatter.user = sender.toLocaleLowerCase();
+      // pyramidChatter.user = sender.toLowerCase();
       if (
-        pyramidChatter.user === sender.toLocaleLowerCase() &&
+        pyramidChatter.user === sender.toLowerCase() &&
         messageText.includes(pyarmidChatter.msg)
       )
         pyarmidChatter.count += 1;
 
-      if (pyramidChatter.user != sender.toLocaleLowerCase()) {
-        pyarmidChatter.user = sender.toLocaleLowerCase();
+      if (pyramidChatter.user != sender.toLowerCase()) {
+        pyarmidChatter.user = sender.toLowerCase();
         pyramidChatter.count = 1;
         pyramidChatter.msg = messageText;
       }
@@ -166,7 +166,7 @@ module.exports = (() => {
         typeof command === "string" &&
         (command.startsWith("@") || command.startsWith("!"))
       ) {
-        command = command.slice(1).toLocaleLowerCase();
+        command = command.slice(1).toLowerCase();
       }
 
       // ???? (deprecated special cd)
