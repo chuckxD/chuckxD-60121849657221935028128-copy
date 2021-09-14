@@ -71,7 +71,13 @@ module.exports = (() => {
       isMoonLive = false,
       activechatters = [],
       recentChatterColors = {},
-      nodeEval;
+      nodeEval,
+      pyramidChatter = {
+        user: "",
+        count: 0,
+        lastMsg: "",
+        msg: "",
+      };
 
     client.on("message", (event) => {
       // TODO: broadcaster status
@@ -87,6 +93,19 @@ module.exports = (() => {
         messageText,
         serverTimestampRaw,
       } = event;
+
+      // pyramidChatter.user = sender.toLocaleLowerCase();
+      if (
+        pyramidChatter.user === sender.toLocaleLowerCase() &&
+        messageText.includes(pyarmidChatter.msg)
+      )
+        pyarmidChatter.count += 1;
+
+      if (pyramidChatter.user != sender.toLocaleLowerCase()) {
+        pyarmidChatter.user = sender.toLocaleLowerCase();
+        pyramidChatter.count = 1;
+        pyramidChatter.msg = messageText;
+      }
 
       if (!sender) return;
 
@@ -124,6 +143,14 @@ module.exports = (() => {
 
       if (typeof messageText === "undefined") {
         return;
+      }
+
+      if (
+        pyramidChatter.count >= 3 &&
+        pyarmidChatter.lastMsg.split(" ").length >
+          pyarmidChatter.msg.split(" ").length
+      ) {
+        console.info("test pyramid");
       }
 
       let [command, target] = messageText.split(" ");
