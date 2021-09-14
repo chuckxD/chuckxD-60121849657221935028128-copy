@@ -106,7 +106,7 @@ module.exports = (() => {
         typeof sender === "string" &&
         pyramidChatter.user != sender.toLowerCase()
       ) {
-        pyarmidChatter.user = sender.toLowerCase();
+        pyramidChatter.user = sender.toLowerCase();
         pyramidChatter.count = 1;
         pyramidChatter.msg = messageText;
       }
