@@ -530,7 +530,6 @@ module.exports = (() => {
           "fuBaldi",
           "peepoD",
           "robDab",
-          "HYPERROBDAB",
         ]);
         client.say(
           CHANNEL,
@@ -748,7 +747,7 @@ module.exports = (() => {
       if (command === "dab") {
         client.say(
           CHANNEL,
-          `HYPERROBDAB ${sender} is dabbing all over ${target}'s face HYPERROBDAB`
+          `peepoD ${sender} is dabbing all over ${target}'s face peepoD`
         );
       }
 
