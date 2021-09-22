@@ -71,13 +71,7 @@ module.exports = (() => {
       isMoonLive = false,
       activechatters = [],
       recentChatterColors = {},
-      nodeEval,
-      pyramidChatter = {
-        user: "",
-        count: 0,
-        lastMsg: "",
-        msg: "",
-      };
+      nodeEval;
 
     client.on("message", (event) => {
       // TODO: broadcaster status
@@ -93,23 +87,6 @@ module.exports = (() => {
         messageText,
         serverTimestampRaw,
       } = event;
-
-      // pyramidChatter.user = sender.toLowerCase();
-      if (
-        typeof sender === "string" &&
-        pyramidChatter.user === sender.toLowerCase() &&
-        messageText.includes(pyarmidChatter.msg)
-      )
-        pyarmidChatter.count += 1;
-
-      if (
-        typeof sender === "string" &&
-        pyramidChatter.user != sender.toLowerCase()
-      ) {
-        pyramidChatter.user = sender.toLowerCase();
-        pyramidChatter.count = 1;
-        pyramidChatter.msg = messageText;
-      }
 
       if (!sender) return;
 
@@ -149,14 +126,6 @@ module.exports = (() => {
         return;
       }
 
-      if (
-        pyramidChatter.count >= 3 &&
-        pyarmidChatter.lastMsg.split(" ").length >
-          pyarmidChatter.msg.split(" ").length
-      ) {
-        console.info("test pyramid");
-      }
-
       let [command, target] = messageText.split(" ");
       if (!target) {
         target = "chat";
@@ -170,7 +139,7 @@ module.exports = (() => {
         typeof command === "string" &&
         (command.startsWith("@") || command.startsWith("!"))
       ) {
-        command = command.slice(1).toLowerCase();
+        command = command.slice(1).toLocaleLowerCase();
       }
 
       // ???? (deprecated special cd)
@@ -526,11 +495,7 @@ module.exports = (() => {
       }
 
       if (command === "untuck") {
-        const dab = getRandomArrayElement([
-          "fuBaldi",
-          "peepoD",
-          "robDab",
-        ]);
+        const dab = getRandomArrayElement(["fuBaldi", "peepoD", "robDab"]);
         client.say(
           CHANNEL,
           `${sender} untucks ${target} from bed and dabs on their face ${dab} Grumpge`
