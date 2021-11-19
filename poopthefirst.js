@@ -337,6 +337,20 @@ module.exports = (() => {
           "VoHiYo https://clips.twitch.tv/CrunchySmoothYakFUNgineer"
         );
       }
+      
+
+      if (sender.toLowerCase() === 'je_ek' && messageText.includes('but who asked')) {
+        const insult = getRandomArrayElement([
+          "ELYOUEL DRUE ",
+          "modCheck askers?",
+          "ELYOUEL",
+        ]);
+        
+        setTimeout(() => {
+          client.say(CHANNEL, [insult, "moon2LOLE"].join(" "));
+        }, 1200);
+        
+      }
 
       if (command === "meemo") {
         const apiEndpoint =
