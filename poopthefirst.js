@@ -606,7 +606,14 @@ module.exports = (() => {
           `${sender} is slapping their cock on ${target}'s face PEPELEPSY`
         );
       }
-
+      
+      if (command === "fart") {
+        client.say(
+          CHANNEL,
+          `${sender} is farting on ${target}'s stupid face in bed Grumpege POOTERS`
+        );
+      }
+      
       if (command === "bully") {
         const insult = getRandomArrayElement([
           "VIRGIN LOOOOLE",
