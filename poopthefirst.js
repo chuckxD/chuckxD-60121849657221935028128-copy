@@ -610,7 +610,7 @@ module.exports = (() => {
       if (command === "fart") {
         client.say(
           CHANNEL,
-          `${sender} is farting on ${target}'s stupid face in bed Grumpege POOTERS`
+          `${sender} is farting on ${target}'s stupid face in bed Grumpge  POOTERS`
         );
       }
       
