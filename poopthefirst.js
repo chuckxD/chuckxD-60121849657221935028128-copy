@@ -323,7 +323,38 @@ module.exports = (() => {
         fetch(`https://api.kanye.rest/`)
           .then((response) => response.json())
           .then((result) => {
-            client.say(CHANNEL, result.quote);
+            client.say(CHANNEL, result.value);
+          })
+          .catch((err) => {
+            console.error(err.message);
+            client.say(CHANNEL, `${err.message} Sadge`);
+          });
+      }
+      //
+      // if (command === "trumpquotehelp") {
+      //   fetch(`https://api.tronalddump.io/tag`)
+      //     .then((response) => response.json())
+      //     .then((result) => {
+      //       const tags = result._embedded.tag
+      //         .map((tag) => tag.value)
+      //         .join(", ");
+      //       client.say(
+      //         CHANNEL,
+      //         `do !trumpquote followed by any of the following tags: https://i.imgur.com/dONEPMl.png e.g. !trumpquote Women]`
+      //       );
+      //     })
+      //     .catch((err) => {
+      //       console.error(err.message);
+      //       client.say(CHANNEL, `${err.message} Sadge`);
+      //     });
+      // }
+      if (command === "trumpquote") {
+        fetch(`https://api.tronalddump.io/random/quote`)
+          // fetch(`https://api.tronalddump.io/tag/Women`)
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            client.say(CHANNEL, result.value);
           })
           .catch((err) => {
             console.error(err.message);
