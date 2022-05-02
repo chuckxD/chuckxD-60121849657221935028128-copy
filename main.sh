@@ -1,1 +1,1 @@
-npm install && export NODE_APP_ENV=replit && node poopthefirst.js
+npm install && NODE_APP_ENV=replit && node poopthefirst.js

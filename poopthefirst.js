@@ -323,7 +323,7 @@ module.exports = (() => {
         fetch(`https://api.kanye.rest/`)
           .then((response) => response.json())
           .then((result) => {
-            client.say(CHANNEL, result.value);
+            client.say(CHANNEL, result.quote);
           })
           .catch((err) => {
             console.error(err.message);
@@ -368,19 +368,20 @@ module.exports = (() => {
           "VoHiYo https://clips.twitch.tv/CrunchySmoothYakFUNgineer"
         );
       }
-      
 
-      if (sender.toLowerCase() === 'je_ek' && messageText.includes('but who asked')) {
+      if (
+        sender.toLowerCase() === "je_ek" &&
+        messageText.includes("but who asked")
+      ) {
         const insult = getRandomArrayElement([
           "ELYOUEL DRUE ",
           "modCheck askers?",
           "ELYOUEL",
         ]);
-        
+
         setTimeout(() => {
           client.say(CHANNEL, [insult, "moon2LOLE"].join(" "));
         }, 1200);
-        
       }
 
       if (command === "meemo") {
@@ -637,14 +638,14 @@ module.exports = (() => {
           `${sender} is slapping their cock on ${target}'s face PEPELEPSY`
         );
       }
-      
+
       if (command === "fart") {
         client.say(
           CHANNEL,
           `${sender} is farting on ${target}'s stupid face in bed Grumpge  POOTERS`
         );
       }
-      
+
       if (command === "bully") {
         const insult = getRandomArrayElement([
           "VIRGIN LOOOOLE",
