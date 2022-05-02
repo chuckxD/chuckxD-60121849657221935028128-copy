@@ -1,5 +1,5 @@
 module.exports = {
-  BOT_DISPLAY_NAME: "PoopThe1st",
+  BOT_DISPLAY_NAME: "poopthefirst",
   EXCLUDE_CHATTERS: [
     "nightbot",
     "moobot",
