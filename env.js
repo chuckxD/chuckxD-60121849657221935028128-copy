@@ -1,4 +1,5 @@
 let appEnvRuntime = "";
+// test
 const path = require("path");
 if (
   !Object.keys(process.env).includes("NODE_APP_ENV") ||
