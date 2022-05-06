@@ -512,17 +512,17 @@ module.exports = (() => {
             ? getRandomArrayElement(activechatters)
             : target;
         const msg2 = getRandomArrayElement([
-          `on ${__target}'s bed`,
-          `in ${__target}'s bathtub`,
-          `in the trunk of ${__target}'s car`,
-          `on ${__target}'s chest`,
-          `on ${__target}'s desk`,
-          `on ${__target}'s porch`,
-          `on ${__target}'s carpet`,
-          `on ${__target}'s toes moon2SNIFF`,
-          `in ${__target}'s sink`,
-          `in ${__target}'s litter box. ${target} is a cat MYAAA`,
-          `in ${__target}'s dog bowl. ${target} is a dog EEKUM`,
+          `on ${__target} bed`,
+          `in ${__target} bathtub`,
+          `in the trunk of ${__target} car`,
+          `on ${__target} chest`,
+          `on ${__target} desk`,
+          `on ${__target} porch`,
+          `on ${__target} carpet`,
+          `on ${__target} toes moon2SNIFF`,
+          `in ${__target} sink`,
+          `in ${__target} litter box. ${target} is a cat MYAAA`,
+          `in ${__target} dog bowl. ${target} is a dog EEKUM`,
         ]);
         const msg3 = getRandomArrayElement(["SHITTERS", "moon2DEV", "moon2C"]);
         fullMessage = [msg1, msg2, msg3].join(" ");
