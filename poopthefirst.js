@@ -250,7 +250,7 @@ module.exports = (() => {
           _title,
           pastaString = "",
           pastaStringTemplate =
-            "ᅚᅚᅚᅚ ᅚᅚᅚᅚ clintD clintD clintD ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ clintD ᅚᅚ ᅚ ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚ clintD ᅚ ᅚ cJerk ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ clintD clintD clintD 󠀀";
+            "ᅚᅚᅚᅚᅚᅚᅚᅚ clintD clintD clintD ᅚ ᅚᅚᅚᅚᅚᅚ ᅚᅚ ᅚᅚ ᅚ ᅚ clintD ᅚᅚ ᅚ ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚ clintD ᅚ ᅚ cJerk ᅚᅚ clintD ᅚᅚ ᅚᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚᅚᅚ clintD ᅚᅚᅚᅚ ᅚᅚᅚᅚᅚᅚᅚᅚᅚ clintD clintD clintD 󠀀";
 
         [emote1, emote2, title] = messageText.split(" ").slice(1);
         console.info(`[emote1, emote2, title] `, [emote1, emote2, title]);
