@@ -761,6 +761,10 @@ module.exports = (() => {
       if (command.startsWith("gumiho")) {
         client.say(CHANNEL, getRandomArrayElement([`is based`, `is cringe`]));
       }
+      
+      if (command === 'comfi') {
+        client.say(CHANNEL, `${target}: AngelThump dot com / comfi | offline chat moobies wed/sun | https://trakt.tv/users/comfi/lists/offline-chat-completed-list?sort=rank,desc`);
+      }
 
       if (command === "dab") {
         client.say(
