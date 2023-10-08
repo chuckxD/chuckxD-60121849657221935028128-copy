@@ -775,7 +775,7 @@ module.exports = (() => {
 
       if (command === "ratsrats") {
         const messageArray = messageText.split(' ');
-        const genderIdentity = typeof messageArray[3] === 'string' ? messageArray[3] : 'girl';
+        const genderIdentity = typeof messageArray[3] === 'string' ? messageArray[2] : 'girl';
         client.say(
           CHANNEL,
           `!birthday ${target} FeelsBirthdayMan HYPERCLAP https://itsyourbirthday.today/?name=${target}&identity=${genderIdentity} FeelsBirthdayMan HYPERCLAP https://itsyourbirthday.today/?name=${target}&identity=${genderIdentity} FeelsBirthdayMan HYPERCLAP https://itsyourbirthday.today/?name=${target}&identity=${genderIdentity}`
