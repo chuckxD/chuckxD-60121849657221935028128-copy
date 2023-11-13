@@ -369,7 +369,7 @@ module.exports = (() => {
         );
       }
 
-      if (command === "TITLE POGPLANT") {
+      if (command === "title pogplant") {
         client.say(
           CHANNEL,
           "TITLE POGPLANT"
