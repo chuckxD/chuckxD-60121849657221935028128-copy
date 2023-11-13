@@ -369,6 +369,13 @@ module.exports = (() => {
         );
       }
 
+      if (command === "TITLE POGPLANT") {
+        client.say(
+          CHANNEL,
+          "TITLE POGPLANT"
+        );
+      }
+
       if (
         sender.toLowerCase() === "je_ek" &&
         messageText.includes("but who asked")
