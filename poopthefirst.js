@@ -77,6 +77,8 @@ module.exports = (() => {
       // TODO: broadcaster status
       // https://dev.twitch.tv/docs/v5/reference/streams#get-live-streams
       // - for polling if broadcaster is offline/online
+      let utcCurrentHour = (new Date()).getUTCHours();
+      isMoonLive = utcCurrentHour > 22 || utcCurrentHour < 7;
 
       // if (DEBUG && CLIENT_EVENT_DEBUG) console.info("client event: ", event);
 
@@ -536,9 +538,8 @@ module.exports = (() => {
         client.say(CHANNEL, fullMessage);
       }
 
-      if (command === "hopperquote") {
-        //client.say(CHANNEL, getRandomArrayElement(hoppers));
-        return;
+      if (command === "hopperquote" && !isMoonLive) {
+        client.say(CHANNEL, getRandomArrayElement(hoppers));
       }
 
       if (command === "spit") {
