@@ -537,7 +537,7 @@ module.exports = (() => {
       }
 
       if (command === "hopperquote") {
-        client.say(CHANNEL, getRandomArrayElement(hoppers));
+        //client.say(CHANNEL, getRandomArrayElement(hoppers));
       }
 
       if (command === "spit") {
