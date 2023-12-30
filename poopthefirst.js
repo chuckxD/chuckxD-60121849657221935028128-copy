@@ -371,7 +371,7 @@ module.exports = (() => {
         );
       }
 
-      if (sender.toLowerCase() === "keeki_chan" && messageText.includes('sata andagi')) {
+      if (sender === "ケーキちゃん" && messageText.includes('sata andagi')) {
         client.say(
           CHANNEL,
           "sata andagi :D"
