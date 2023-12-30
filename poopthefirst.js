@@ -371,7 +371,7 @@ module.exports = (() => {
         );
       }
 
-      if (sender === "ケーキちゃん" && messageText.includes('sata andagi')) {
+      if (messageText.includes('sata andagi')) {
         client.say(
           CHANNEL,
           "sata andagi :D"
