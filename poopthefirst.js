@@ -542,6 +542,10 @@ module.exports = (() => {
         client.say(CHANNEL, getRandomArrayElement(hoppers));
       }
 
+      if (command === "sata" && sender === 'keeki_chan") {
+        client.say(CHANNEL, `sata andagi :D`);
+      }
+
       if (command === "spit") {
         const msg1 = `${sender} is spitting in ${target}'s`;
         const msg2 = getRandomArrayElement(["hair", "food", "ear"]);
