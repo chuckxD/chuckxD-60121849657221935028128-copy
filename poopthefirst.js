@@ -371,10 +371,10 @@ module.exports = (() => {
         );
       }
 
-      if (command === "title pogplant") {
+      if (sender.toLowerCase() === "keeki_chan" && messageText.includes('sata andagi')) {
         client.say(
           CHANNEL,
-          "TITLE POGPLANT"
+          "sata andagi :D"
         );
       }
 
