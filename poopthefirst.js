@@ -560,11 +560,11 @@ module.exports = (() => {
       
       if (command === 'poopweathertest' && target) {
         const city = target.replace(/\s/g, '+');
-        return fetch(`https://wttr.in/${city}?format=%l:+%c+%f+%h+%p+%P+%m+%w+%S+%s`).then((resp) => {
+        return fetch(`https://wttr.in/${city}?format=%l+%T:+%c+%t+|+humidity:+%h+|+wind:+%w`).then((resp) => {
           console.log('poopweathertest (resp): ', resp);
           return resp.text();
         }).then((weatherString) => {
-          client.say(CHANNEL, weatherString);
+          client.say(CHANNEL, `${weatherString} | https://wttr.in/${city}`);
         }).catch((err) => {
           console.error(err);
           client.say(CHANNEL, err?.message);
