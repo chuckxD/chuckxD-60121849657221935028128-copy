@@ -557,6 +557,19 @@ module.exports = (() => {
           `${sender} untucks ${target} from bed and dabs on their face ${dab} Grumpge`
         );
       }
+      
+      if (command === 'poopweathertest' && target) {
+        const city = target.replace(/\s/g, '+');
+        return fetch(`https://wttr.in/${city}?format=%l:+%c+%f+%h+%p+%P+%m+%w+%S+%s`).then((resp) => {
+          console.log('poopweathertest (resp): ', resp);
+          return resp.text();
+        }).then((weatherString) => {
+          client.say(CHANNEL, weatherString);
+        }).catch((err) => {
+          console.error(err);
+          client.say(CHANNEL, err?.message);
+        });
+      }
 
       if (command === "rq2") {
         try {
