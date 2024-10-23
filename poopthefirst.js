@@ -786,7 +786,7 @@ module.exports = (() => {
       }
 
       if (command === 'comfi') {
-        client.say(CHANNEL, `${target} AngelThump / comfi OR imGlitch / comfibot | offline chat moobies wed/sun (ussually) | https://letterboxd.com/lua/list/comfi-completed-list/`);
+        client.say(CHANNEL, `${target} AngelThump / comfi | offline chat moobies wed/sun (ussually) | https://letterboxd.com/lua/list/comfi-completed-list/`);
       }
 
       if (command === "dab") {
